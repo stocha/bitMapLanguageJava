@@ -13,14 +13,14 @@ package registerTheoric;
 public class ComposedRegister implements IRegister<ComposedRegister> {
     
     private final int nbBits;
-    private final int nbSub;
     private final int nbBlocks;
     private final IRegister finalMask;
     private final IRegister data[];
+    
+    private final IRegister tmp;
 
-    public ComposedRegister(int nbBits, int nbSub,IRegFactory fact) {
+    public ComposedRegister(int nbBits,IRegFactory fact) {
         this.nbBits = nbBits;
-        this.nbSub = nbSub;
         
         IRegister mask=fact.alloc();
         
@@ -39,6 +39,8 @@ public class ComposedRegister implements IRegister<ComposedRegister> {
         for(int i=0;i<nbBlocks;i++){
             data[i]=fact.alloc();
         }
+        
+        tmp=fact.alloc();
         
     }
 
@@ -79,27 +81,57 @@ public class ComposedRegister implements IRegister<ComposedRegister> {
 
     @Override
     public void shl() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for(int i=1;i<nbBlocks;i++){
+            int prev=i-1;
+            data[prev].shl();
+            tmp.cp(data[i]);
+            data[i].shr(tmp.size()-1);
+            data[prev].or(tmp);
+        }
+        data[nbBlocks-1].shl();
     }
 
     @Override
     public void shr() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for(int i=nbBlocks-2;i>0;i++){
+            int prev=i+1;
+            data[prev].shr();
+            tmp.cp(data[i]);
+            data[i].shl(tmp.size()-1);
+            data[prev].or(tmp);
+        }
+        data[0].shr();
     }
 
     @Override
     public int getAt(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int b=i/tmp.size();
+        int in=i%tmp.size();
+        
+        return data[b].getAt(in);
     }
 
     @Override
     public void setAt(int i, int v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int b=i/tmp.size();
+        int in=i%tmp.size();
+        
+        data[b].setAt(in,v);
     }
 
     @Override
     public int size() {
         return nbBits;
+    }
+
+    @Override
+    public void shl(int n) {
+        for(int i=0;i<n;i++) shl();
+    }
+
+    @Override
+    public void shr(int n) {
+        for(int i=0;i<n;i++) shr();
     }
 
     

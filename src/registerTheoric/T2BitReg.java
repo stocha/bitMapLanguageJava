@@ -70,5 +70,19 @@ public class T2BitReg implements IRegister<T2BitReg> {
     public int size() {
         return 2;
     }
+
+    @Override
+    public void shl(int n) {
+        for(int i=0;i<n;i++){
+            shl();
+        }
+    }
+
+    @Override
+    public void shr(int n) {
+        for(int i=0;i<n;i++){
+            shr();
+        }
+    }
     
 }
