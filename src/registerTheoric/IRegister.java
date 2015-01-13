@@ -24,6 +24,4 @@ public interface IRegister< Conc extends IRegister> {
     int getAt(int i);
     void setAt(int i,int v);
     int size();
-    
-    
 }
