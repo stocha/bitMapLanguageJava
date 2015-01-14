@@ -207,7 +207,7 @@ public class TestComposedRegister {
         assertEquals("OXXOOXOOOXO",RegisterUtilis.toString(b) );         
     }    
     
-    @Test
+    //@Test
     public void rule30_onBase2_disp(){      
         
         IRegFactory fact=() -> new T2BitReg();
@@ -232,7 +232,7 @@ public class TestComposedRegister {
         int medSz;
         
         
-        for(medSz=3;medSz<32;medSz++){
+        for(medSz=13;medSz<17;medSz++){
             IRegFactory fact=() -> new T2BitReg();
             
             final int curmed=medSz;
