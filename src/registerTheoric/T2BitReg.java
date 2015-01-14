@@ -63,7 +63,7 @@ public class T2BitReg implements IRegister<T2BitReg> {
 
     @Override
     public void setAt(int i, int v) {
-        val[i]=(v==0);
+        val[i]=(v!=0);
     }
 
     @Override
