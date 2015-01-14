@@ -207,7 +207,7 @@ public class TestComposedRegister {
         assertEquals("OXXOOXOOOXO",RegisterUtilis.toString(b) );         
     }    
     
-    //@Test
+    @Test
     public void rule30_onBase2_disp(){      
         
         IRegFactory fact=() -> new T2BitReg();
@@ -219,14 +219,14 @@ public class TestComposedRegister {
         RegisterUtilis x=new RegisterUtilis(factBig);
 
         for(int i=0;i<200;i++){
-            x.applyRollRuleOn(b, "00011110");
+            x.applyRollRuleOn(b, "10010110");
             System.out.println(""+RegisterUtilis.toString(b,'X','.'));
         }
     
     }     
     
     
-    @Test
+    //@Test
     public void multiSubSize(){      
         
         int medSz;
