@@ -128,4 +128,35 @@ public class RegisterUtilis {
         return v;
     }     
     
+    
+    public void applyRollRuleOn (IRegister inout, String rule){
+        IRegister res=fact.alloc();
+        res.xor(res);
+        
+            RegisterUtilis x=new RegisterUtilis(fact);
+                   
+            IRegister l=x.ror(inout);
+            IRegister c=x.nop(inout);
+            IRegister r=x.rol(inout);        
+        
+        for(int b=7;b>=0;b--){
+            boolean ap=rule.charAt(7-b)=='1';
+            
+            if(ap){
+                final IRegister lc;
+                final IRegister cc;
+                final IRegister rc;
+
+
+                if((b&1)==1) rc=x.nop(r); else rc=x.not(r);
+                if(((b>>1)&1)==1) cc=x.nop(c); else cc=x.not(c);
+                if(((b>>2)&1)==1) lc=x.nop(l); else lc=x.not(l);
+                
+                res.or(x.and(lc,x.and(cc,rc)));
+            }
+        }
+        
+        inout.cp(res);
+    }
+    
 }
