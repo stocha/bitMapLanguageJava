@@ -68,9 +68,9 @@ public class TestComposedRegister {
     
     public void apply30On(IRegister i,IRegFactory fact){
         IRegister res=fact.alloc();
-        IRegister l=fact.alloc();
+        IRegister l;
         IRegister c=fact.alloc();
-        IRegister r=fact.alloc();
+        IRegister r;
         IRegister v=fact.alloc();
        
         IRegister lc;
@@ -216,12 +216,52 @@ public class TestComposedRegister {
         b.xor(b);             
         b.setAt(15, 1);
         System.out.println(""+RegisterUtilis.toString(b,'X','.'));
-        
+        RegisterUtilis x=new RegisterUtilis(factBig);
 
         for(int i=0;i<200;i++){
-            apply30On(b, factBig);
+            x.applyRollRuleOn(b, "00011110");
             System.out.println(""+RegisterUtilis.toString(b,'X','.'));
         }
     
-    }        
+    }     
+    
+    
+    @Test
+    public void multiSubSize(){      
+        
+        int medSz;
+        
+        
+        for(medSz=3;medSz<32;medSz++){
+            IRegFactory fact=() -> new T2BitReg();
+            
+            final int curmed=medSz;
+            IRegFactory factMed1=() -> new ComposedRegister(curmed-1, fact);
+            IRegFactory factHigh1=() -> new ComposedRegister(128, factMed1);
+            
+            IRegFactory factMed2=() -> new ComposedRegister(curmed, fact);
+            IRegFactory factHigh2=() -> new ComposedRegister(128, factMed2);            
+            
+            
+            IRegister a1=factHigh1.alloc();  
+            IRegister a2=factHigh2.alloc();  
+            a1.xor(a1);    
+            a2.xor(a2); 
+            a1.setAt(15, 1);
+            a2.setAt(15, 1);
+        
+
+            for(int i=0;i<200;i++){
+                
+                RegisterUtilis x=new RegisterUtilis(factHigh2);
+                
+                apply30On(a1, factHigh1);
+                x.applyRollRuleOn(a2, "00011110");
+                
+                assertEquals(RegisterUtilis.toString(a1), RegisterUtilis.toString(a2));
+            }
+        }
+       
+    
+    }            
 }
