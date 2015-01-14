@@ -93,7 +93,7 @@ public class ComposedRegister implements IRegister<ComposedRegister> {
 
     @Override
     public void shr() {
-        for(int i=nbBlocks-2;i>0;i--){
+        for(int i=nbBlocks-2;i>=0;i--){
             int prev=i+1;
             data[prev].shr();
             tmp.cp(data[i]);
@@ -101,6 +101,7 @@ public class ComposedRegister implements IRegister<ComposedRegister> {
             data[prev].or(tmp);
         }
         data[0].shr();
+        data[nbBlocks-1].and(finalMask);
     }
 
     @Override

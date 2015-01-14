@@ -80,33 +80,32 @@ public class TestComposedRegister {
         
         res.xor(res);
         
+        RegisterUtilis x=new RegisterUtilis(fact);
+        
+        
         c.cp(i);
-        l.cp(i);l.shl();
-        r.cp(i);r.shr();
+        l.cp(i);l.shr();
+        r.cp(i);r.shl();
+
+        System.out.println("lnp : "+RegisterUtilis.toString(l));        
+        System.out.println("cnp : "+RegisterUtilis.toString(c));        
+        System.out.println("rnp : "+RegisterUtilis.toString(r));
         
-        
-        
-        lc=RegisterUtilis.and(
-                RegisterUtilis.and(l, RegisterUtilis.not(c, fact), fact),
-                RegisterUtilis.not(c, fact)
-                , fact);
+        v.cp(x.and(x.nop(l), x.and(x.not(c),x.not(r))));
+        System.out.println("100 : "+RegisterUtilis.toString(v));
         res.or(v);
         
-        v.cp(i);
-        v.shr();
+        v.cp(x.and(x.not(l), x.and(x.nop(c),x.nop(r))));
+        System.out.println("011 : "+RegisterUtilis.toString(v));
         res.or(v);
         
-        v.cp(i);
-        v.shl();
-        v.and(i);
+        v.cp(x.and(x.not(l), x.and(x.nop(c),x.not(r))));
+        System.out.println("010 : "+RegisterUtilis.toString(v));
         res.or(v);
         
-        v.cp(i);
+        v.cp(x.and(x.not(l), x.and(x.not(c),x.nop(r))));
+        System.out.println("001 : "+RegisterUtilis.toString(v));
         res.or(v);
-        
-        v.cp(i);
-        v.shl();
-        res.or(v);        
         
         i.cp(res);
     }
@@ -201,6 +200,10 @@ public class TestComposedRegister {
         apply30On(b, ()->{
             return new ComposedRegister(11, fact);
         });        
-        assertEquals("OOXXOXXXXO",RegisterUtilis.toString(b) ); 
+        assertEquals("OOXXOXXXXOO",RegisterUtilis.toString(b) ); 
+        apply30On(b, ()->{
+            return new ComposedRegister(11, fact);
+        });        
+        assertEquals("OXXOOXOOOXO",RegisterUtilis.toString(b) );         
     }    
 }

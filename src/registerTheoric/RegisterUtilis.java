@@ -51,8 +51,13 @@ public class RegisterUtilis {
             if(c==truec) reg.setAt(i, 1); else reg.setAt(i, 0);
         }
     }
+ 
+    final IRegFactory fact;
+    RegisterUtilis(IRegFactory fact){
+        this.fact=fact;
+    }
     
-    static IRegister and(IRegister a,IRegister b,IRegFactory fact){
+   IRegister and(IRegister a,IRegister b){
         IRegister v=fact.alloc();
 
         v.cp(a);
@@ -60,7 +65,7 @@ public class RegisterUtilis {
         return v;
     }
     
-    static IRegister or(IRegister a,IRegister b,IRegFactory fact){
+    IRegister or(IRegister a,IRegister b){
         IRegister v=fact.alloc();
 
         v.cp(a);
@@ -68,7 +73,7 @@ public class RegisterUtilis {
         return v;
     }   
     
-    static IRegister xor(IRegister a,IRegister b,IRegFactory fact){
+    IRegister xor(IRegister a,IRegister b){
         IRegister v=fact.alloc();
 
         v.cp(a); 
@@ -76,11 +81,20 @@ public class RegisterUtilis {
         return v;
     }      
     
-    static IRegister not(IRegister a,IRegFactory fact){
+    IRegister not(IRegister a){
         IRegister v=fact.alloc();
 
         v.cp(a); 
         v.not();
         return v;
     } 
+    
+    
+    IRegister nop(IRegister a){
+        IRegister v=fact.alloc();
+
+        v.cp(a); 
+        return v;
+    }     
+    
 }
