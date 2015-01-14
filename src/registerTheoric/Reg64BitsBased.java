@@ -81,7 +81,7 @@ public class Reg64BitsBased implements IRegister<Reg64BitsBased>{
             int prev=i-1;
             data[prev]=data[prev]<<1;
             tmp=(data[i]);
-            tmp=tmp>>(dwsize-1);
+            tmp=tmp>>>(dwsize-1);
             data[prev]|=(tmp);
         }
         data[nbBlocks-1]=data[nbBlocks-1]<<1;
@@ -92,12 +92,12 @@ public class Reg64BitsBased implements IRegister<Reg64BitsBased>{
         long tmp;
         for(int i=nbBlocks-2;i>=0;i--){
             int prev=i+1;
-            data[prev]=data[prev]>>1;
+            data[prev]=data[prev]>>>1;
             tmp=(data[i]);
             tmp=tmp<<(dwsize-1);
             data[prev]|=(tmp);
         }
-        data[0]=data[0]>>1;
+        data[0]=data[0]>>>1;
         data[nbBlocks-1]&=(finalMask);
     }
 
@@ -106,7 +106,7 @@ public class Reg64BitsBased implements IRegister<Reg64BitsBased>{
         int b=i/dwsize;
         int in=i%dwsize;
         
-        return (int)((data[b]>>(dwsize-1-in))&1);
+        return (int)((data[b]>>>(dwsize-1-in))&1);
     }
 
     @Override

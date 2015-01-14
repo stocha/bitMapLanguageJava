@@ -78,20 +78,20 @@ public class TestREg64BitsBased {
         
     }        
 
-    @Test
-    public void compareToRefImpl(){      
+    public void compareToRefImpl(int nbBit){      
         
         int medSz=13;
         
         
 
             IRegFactory fact=() -> new T2BitReg();
+            int nbBitsTot=nbBit;
             
             final int curmed=medSz;
             IRegFactory factMed1=() -> new ComposedRegister(curmed-1, fact);
-            IRegFactory factHigh1=() -> new ComposedRegister(20, factMed1);
+            IRegFactory factHigh1=() -> new ComposedRegister(nbBitsTot, factMed1);
             
-            IRegFactory factHigh2=() -> new Reg64BitsBased(20);            
+            IRegFactory factHigh2=() -> new Reg64BitsBased(nbBitsTot);            
             
             
             IRegister a1=factHigh1.alloc();  
@@ -110,11 +110,18 @@ public class TestREg64BitsBased {
                 x.applyRollRuleOn(a1, "00011110");
                 y.applyRollRuleOn(a2, "00011110");
                 
-                System.out.println(""+RegisterUtilis.toString(a1,'#','.'));
-                System.out.println(""+RegisterUtilis.toString(a2,'X','.'));
+                //System.out.println(""+RegisterUtilis.toString(a1,'#','.'));
+                //System.out.println(""+RegisterUtilis.toString(a2,'X','.'));
                 assertEquals(RegisterUtilis.toString(a1), RegisterUtilis.toString(a2));
             }
        
     
     }            
+    
+    @Test
+    public void compareToRefImpl(){
+        compareToRefImpl(191);
+        compareToRefImpl(192);
+        compareToRefImpl(193);
+    }
 }
