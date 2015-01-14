@@ -84,8 +84,8 @@ public class TestComposedRegister {
         
         
         c.cp(i);
-        l.cp(i);l.shr();
-        r.cp(i);r.shl();
+        l=x.ror(i);
+        r=x.rol(i);
 
         //System.out.println("lnp : "+RegisterUtilis.toString(l));        
         //System.out.println("cnp : "+RegisterUtilis.toString(c));        
@@ -179,7 +179,7 @@ public class TestComposedRegister {
     }       
     
     @Test
-    public void rule30(){      
+    public void rule30_onBase2(){      
         
         IRegFactory fact=() -> new T2BitReg();
         ComposedRegister b=new ComposedRegister(11, fact);  
@@ -206,4 +206,22 @@ public class TestComposedRegister {
         });        
         assertEquals("OXXOOXOOOXO",RegisterUtilis.toString(b) );         
     }    
+    
+    @Test
+    public void rule30_onBase2_disp(){      
+        
+        IRegFactory fact=() -> new T2BitReg();
+        IRegFactory factBig=() -> new ComposedRegister(128, fact);
+        IRegister b=factBig.alloc();  
+        b.xor(b);             
+        b.setAt(15, 1);
+        System.out.println(""+RegisterUtilis.toString(b,'X','.'));
+        
+
+        for(int i=0;i<200;i++){
+            apply30On(b, factBig);
+            System.out.println(""+RegisterUtilis.toString(b,'X','.'));
+        }
+    
+    }        
 }

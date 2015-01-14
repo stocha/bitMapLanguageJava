@@ -21,19 +21,25 @@ public class RegisterUtilis {
     }
     
     static String toString(IRegister reg){
+
+        
+        return toString(reg,'X','O');
+    };
+    
+     static String toString(IRegister reg,char t,char f){
         StringBuilder sb=new StringBuilder();
         
         for(int i=0;i<reg.size();i++){
             char ap;
             int v=reg.getAt(i);
             
-            if(v>0) ap='X'; else ap='O';
+            if(v>0) ap=t; else ap=f;
             
             sb.append(ap);
         }
         
         return sb.toString();
-    };
+    };   
     
     static boolean assertEqual(IRegister reg, String s) throws AssertException{
         boolean r= s.equals(reg.toString());
@@ -94,6 +100,31 @@ public class RegisterUtilis {
         IRegister v=fact.alloc();
 
         v.cp(a); 
+        return v;
+    }    
+    
+    
+    IRegister rol(IRegister a){
+        IRegister v=fact.alloc();
+        IRegister f=fact.alloc();
+
+        v.cp(a); 
+        f.cp(a);
+        v.shl();
+        f.shr(f.size()-1);
+        v.or(f);
+        
+        return v;
+    } 
+    IRegister ror(IRegister a){
+        IRegister v=fact.alloc();
+        IRegister f=fact.alloc();
+
+        v.cp(a); 
+        f.cp(a);
+        v.shr();
+        f.shl(f.size()-1);
+        v.or(f);
         return v;
     }     
     
