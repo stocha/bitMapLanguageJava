@@ -30,6 +30,7 @@ public class ComposedRegister implements IRegister<ComposedRegister> {
         int nbBitLast=nbBits%blocSz;
         lnbBlocks+=((nbBits%blocSz)==0?0:1);
         nbBlocks=lnbBlocks;
+        if(nbBitLast==0) nbBitLast=blocSz;
         
         mask.xor(mask);
         finalMask=mask;

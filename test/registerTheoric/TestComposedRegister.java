@@ -87,24 +87,24 @@ public class TestComposedRegister {
         l.cp(i);l.shr();
         r.cp(i);r.shl();
 
-        System.out.println("lnp : "+RegisterUtilis.toString(l));        
-        System.out.println("cnp : "+RegisterUtilis.toString(c));        
-        System.out.println("rnp : "+RegisterUtilis.toString(r));
+        //System.out.println("lnp : "+RegisterUtilis.toString(l));        
+        //System.out.println("cnp : "+RegisterUtilis.toString(c));        
+        //System.out.println("rnp : "+RegisterUtilis.toString(r));
         
         v.cp(x.and(x.nop(l), x.and(x.not(c),x.not(r))));
-        System.out.println("100 : "+RegisterUtilis.toString(v));
+        //System.out.println("100 : "+RegisterUtilis.toString(v));
         res.or(v);
         
         v.cp(x.and(x.not(l), x.and(x.nop(c),x.nop(r))));
-        System.out.println("011 : "+RegisterUtilis.toString(v));
+        //System.out.println("011 : "+RegisterUtilis.toString(v));
         res.or(v);
         
         v.cp(x.and(x.not(l), x.and(x.nop(c),x.not(r))));
-        System.out.println("010 : "+RegisterUtilis.toString(v));
+        //System.out.println("010 : "+RegisterUtilis.toString(v));
         res.or(v);
         
         v.cp(x.and(x.not(l), x.and(x.not(c),x.nop(r))));
-        System.out.println("001 : "+RegisterUtilis.toString(v));
+        //System.out.println("001 : "+RegisterUtilis.toString(v));
         res.or(v);
         
         i.cp(res);
