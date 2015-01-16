@@ -26,7 +26,7 @@ public class RegisterUtilis {
         return toString(reg,'X','O');
     };
     
-     static String toString(IRegister reg,char t,char f){
+     public static String toString(IRegister reg,char t,char f){
         StringBuilder sb=new StringBuilder();
         
         for(int i=0;i<reg.size();i++){
@@ -59,7 +59,7 @@ public class RegisterUtilis {
     }
  
     final IRegFactory fact;
-    RegisterUtilis(IRegFactory fact){
+    public RegisterUtilis(IRegFactory fact){
         this.fact=fact;
     }
     
@@ -128,6 +128,21 @@ public class RegisterUtilis {
         return v;
     }     
     
+    
+     public String outString(IRegister reg,char t,char f){
+        StringBuilder sb=new StringBuilder();
+        
+        for(int i=0;i<reg.size();i++){
+            char ap;
+            int v=reg.getAt(i);
+            
+            if(v>0) ap=t; else ap=f;
+            
+            sb.append(ap);
+        }
+        
+        return sb.toString();
+    };       
     
     public void applyRollRuleOn (IRegister inout, String rule){
         IRegister res=fact.alloc();
