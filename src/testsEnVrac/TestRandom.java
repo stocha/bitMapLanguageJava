@@ -35,11 +35,21 @@ public class TestRandom {
         mem.cp(rr.next());
         System.out.println("memSeed="+RegisterUtilis.toString(mem, '#', '.'));
         
-        for(int i=0;i<100;i++){
+        AggregateStatsOnRegister rso=new AggregateStatsOnRegister(sz);
+        
+        
+        for(int i=0;i<320000;i++){
             IRegister r=rr.next();
-            rr.seed(mem);
-            System.out.println(RegisterUtilis.toString(r, '#', '.'));
+            mem.cp(r);
+            mem.and(rr.next());
+            mem.and(rr.next());
+            mem.and(rr.next());
+            mem.and(rr.next());
+            //System.out.println(RegisterUtilis.toString(r, '#', '.'));
+            rso.input(mem);
         }
+        
+        System.out.println(""+rso.dispCount(6));
         
     }
 

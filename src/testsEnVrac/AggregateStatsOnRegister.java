@@ -35,7 +35,7 @@ public class AggregateStatsOnRegister {
     }
     
     public void input(IRegister r){
-        
+        nb++;
         for(int i=0;i<r.size();i++){
             hit[i]+=r.getAt(i);
         }
@@ -59,12 +59,27 @@ public class AggregateStatsOnRegister {
         
         for(int i=0;i<sz;i++){
             long v=(long)(getAt(i)*mul);
-            sb.append(String.format("%0"+n+"i", v));
+            sb.append(String.format("%0"+n+"d", v));
+            //sb.append(getAt(i));
             sb.append('|');
         }
         
         return sb.toString();
     }
+    
+    
+    public String dispCount(int n){
+        StringBuilder sb=new StringBuilder();
+        
+        for(int i=0;i<sz;i++){
+            long v=(hit[i]);
+            sb.append(String.format("%0"+n+"d", v));
+            //sb.append(getAt(i));
+            sb.append('|');
+        }
+        
+        return sb.toString();
+    }    
 
     
 }

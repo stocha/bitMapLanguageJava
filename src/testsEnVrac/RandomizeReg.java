@@ -23,6 +23,7 @@ public interface RandomizeReg {
 
         final int sz;
         final IRegister v;
+        final IRegister seed;
         final RegisterUtilis x;
 
         public Impl(int sz) {
@@ -30,20 +31,24 @@ public interface RandomizeReg {
             IRegFactory fact = () -> new Reg64BitsBased(this.sz);
 
             v = fact.alloc();
+            seed = fact.alloc();
             x=new RegisterUtilis(fact);
 
         }
 
         @Override
         public IRegister next() {
+            v.xor(seed);
             x.applyRollRuleOn(v, "00011110");
+            x.applyRollRuleOn(v, "00011110");
+            
             
             return v;
         }
 
         @Override
         public void seed(IRegister seed) {
-            v.xor(seed);
+            this.seed.cp(seed);
         }
 
     }
