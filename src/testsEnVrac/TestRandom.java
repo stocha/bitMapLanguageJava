@@ -24,7 +24,7 @@ public class TestRandom {
     public static void doIt2(){
         int sz=130;
         IRegister mem=new Reg64BitsBased(sz);
-        RandomizeReg rr=new RandomizeReg.Impl(sz);
+        RandRegTests rr=new RandRegTests.Impl(sz);
         mem.setAt(13, 1);mem.setAt(32, 1);mem.setAt(47, 1);
         rr.seed(mem);
         

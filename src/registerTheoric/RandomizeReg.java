@@ -3,12 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package testsEnVrac;
-
-import registerTheoric.IRegFactory;
-import registerTheoric.IRegister;
-import registerTheoric.Reg64BitsBased;
-import registerTheoric.RegisterUtilis;
+package registerTheoric;
 
 /**
  *
@@ -25,10 +20,12 @@ public interface RandomizeReg {
         final IRegister v;
         final IRegister seed;
         final RegisterUtilis x;
+        final IRegFactory fact;
 
-        public Impl(int sz) {
+        public Impl(int sz,IRegFactory fact) {
             this.sz = sz;
-            IRegFactory fact = () -> new Reg64BitsBased(this.sz);
+            this.fact=fact;
+            //IRegFactory fact = () -> new Reg64BitsBased(this.sz);
 
             v = fact.alloc();
             seed = fact.alloc();
