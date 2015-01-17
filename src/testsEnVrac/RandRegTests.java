@@ -40,8 +40,8 @@ public interface RandRegTests {
         @Override
         public IRegister next() {
             v.xor(seed);
-            x.applyRollRuleOn(v, "01011010");
-            x.applyRollRuleOn(v, "10010110");
+            x.applyRollRuleOn(v, "00011110");
+            x.applyRollRuleOn(v, "00011110");
             
             
             return v;

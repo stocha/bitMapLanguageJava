@@ -7,6 +7,7 @@ package testsEnVrac;
 
 import registerTheoric.IRegFactory;
 import registerTheoric.IRegister;
+import registerTheoric.RandomizeReg;
 import registerTheoric.Reg64BitsBased;
 import registerTheoric.RegisterUtilis;
 
@@ -23,8 +24,9 @@ public class TestRandom {
     
     public static void doIt2(){
         int sz=130;
-        IRegister mem=new Reg64BitsBased(sz);
-        RandRegTests rr=new RandRegTests.Impl(sz);
+        IRegFactory fact=()->new Reg64BitsBased(sz);
+        IRegister mem=fact.alloc();
+        RandomizeReg rr=new RandomizeReg.Impl(sz,fact);
         mem.setAt(13, 1);mem.setAt(32, 1);mem.setAt(47, 1);
         rr.seed(mem);
         
