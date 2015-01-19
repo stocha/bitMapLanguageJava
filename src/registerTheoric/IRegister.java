@@ -16,6 +16,7 @@ public interface IRegister< Conc extends IRegister> {
     void or(Conc r);
     void xor(Conc r);
     void cp(Conc r);
+    void cp(Conc r, int start,int nb);
     void not();
     
     void shl();

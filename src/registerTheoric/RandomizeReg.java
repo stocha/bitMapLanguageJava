@@ -16,14 +16,12 @@ public interface RandomizeReg {
 
     public static class Impl implements RandomizeReg {
 
-        final int sz;
         final IRegister v;
         final IRegister seed;
         final RegisterUtilis x;
         final IRegFactory fact;
 
-        public Impl(int sz,IRegFactory fact) {
-            this.sz = sz;
+        public Impl(IRegFactory fact) {
             this.fact=fact;
             //IRegFactory fact = () -> new Reg64BitsBased(this.sz);
 

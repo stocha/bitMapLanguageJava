@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 
-package ihdebug;
+package old.ihdebug;
 
-import bitmap.BitMap;
+import old.bitmap.BitMap;
 import ihm.GridViewerModel;
 
 /**

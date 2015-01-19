@@ -84,5 +84,13 @@ public class T2BitReg implements IRegister<T2BitReg> {
             shr();
         }
     }
+
+    @Override
+    public void cp(T2BitReg r, int start, int nb) {
+        for(int i=0;i<nb;i++){
+            int ind=start+i;
+            setAt(ind, r.getAt(ind));
+        }
+    }
     
 }

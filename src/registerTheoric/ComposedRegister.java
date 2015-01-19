@@ -136,6 +136,14 @@ public class ComposedRegister implements IRegister<ComposedRegister> {
         for(int i=0;i<n;i++) shr();
     }
 
+    @Override
+    public void cp(ComposedRegister r, int start, int nb) {
+        for(int i=0;i<nb;i++){
+            int ind=start+i;
+            setAt(ind, r.getAt(ind));
+        }
+    }
+
     
 
 

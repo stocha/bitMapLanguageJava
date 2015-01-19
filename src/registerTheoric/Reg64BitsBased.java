@@ -137,5 +137,13 @@ public class Reg64BitsBased implements IRegister<Reg64BitsBased>{
     public void shr(int n) {
         for(int i=0;i<n;i++) shr();
     }    
+
+    @Override
+    public void cp(Reg64BitsBased r, int start, int nb) {
+        for(int i=0;i<nb;i++){
+            int ind=start+i;
+            setAt(ind, r.getAt(ind));
+        }
+    }
     
 }

@@ -207,7 +207,7 @@ public class TestComposedRegister {
         assertEquals("OXXOOXOOOXO",RegisterUtilis.toString(b) );         
     }    
     
-    @Test
+    //@Test
     public void rule30_onBase2_disp(){      
         
         IRegFactory fact=() -> new T2BitReg();
