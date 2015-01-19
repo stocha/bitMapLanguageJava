@@ -49,6 +49,8 @@ public interface IRegBitMap<T> {
     public void xor(T a);
 
     public void cp(T a);
+    
+    public void cp(T a,int x,int y, int widht,int height);
 
     public void not();
 
@@ -195,6 +197,15 @@ public interface IRegBitMap<T> {
                     mem.and(RegBitMapImpl.this.separator);
                 }
             };
+        }
+
+        @Override
+        public void cp(RegBitMapImpl a, int x, int y, int width, int height) {
+            for(int i=0;i<height;i++){
+                for(int j=0;j<width;j++){
+                    setAt(x+j, y+i, a.getAt(x+j, y+i));
+                }
+            }
         }
 
     }

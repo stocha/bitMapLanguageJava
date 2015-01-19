@@ -162,7 +162,7 @@ public class RegisterUtilis {
      
       public String outString(IRegBitMap reg, char t, char f) {
         StringBuilder sb = new StringBuilder();
-        sb.append("<BITMAP>\n\r");
+        sb.append("<BITMAP>\n");
         for (int y = 0; y < reg.getHeight(); y++) {
             for (int x = 0; x < reg.getWidth(); x++) {
                 char ap;
@@ -176,7 +176,7 @@ public class RegisterUtilis {
 
                 sb.append(ap);
             }
-            sb.append("\n\r");
+            sb.append("\n");
            
         }
          return sb.toString();
@@ -247,5 +247,9 @@ public class RegisterUtilis {
 
         inout.cp(res);
     }
+    
+    void inString(IRegister reg, String s, char truec) {
+        RegisterUtilis.inputString(reg, s, truec);
+    }            
 
 }
