@@ -50,7 +50,7 @@ public interface IRegBitMap<T> {
 
     public void cp(T a);
     
-    public void cp(T a,int x,int y, int widht,int height);
+    public void cp(T a,int x,int y, int widht,int height,int dx,int dy);
 
     public void not();
 
@@ -200,10 +200,10 @@ public interface IRegBitMap<T> {
         }
 
         @Override
-        public void cp(RegBitMapImpl a, int x, int y, int width, int height) {
+        public void cp(RegBitMapImpl a, int x, int y, int width, int height, int dx,int dy) {
             for(int i=0;i<height;i++){
                 for(int j=0;j<width;j++){
-                    setAt(x+j, y+i, a.getAt(x+j, y+i));
+                    setAt(dx+j, dy+i, a.getAt(x+j, y+i));
                 }
             }
         }
