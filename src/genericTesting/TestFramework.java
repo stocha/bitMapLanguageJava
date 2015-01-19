@@ -29,14 +29,18 @@ public class TestFramework {
         }catch(Exception e){
             int l=e.getStackTrace().length;
             
-//            for(int i=0;i<l;i++){
-//                            StackTraceElement st=e.getStackTrace()[i];
-//                            key=st.getClassName()+"."+st.getMethodName()+"."+st.getLineNumber();
-//                            System.out.println("debut ps "+key);
-//            }
+            
+            key="";
+            //System.out.println("debug ps ===================");
+            for(int i=2;i<l;i++){
+                            StackTraceElement st=e.getStackTrace()[i];
+                            //String vt=st.getClassName()+"."+st.getMethodName()+"."+st.getLineNumber();
+                            //System.out.println("debug ps "+key);
+                            key+=st.getMethodName()+"["+st.getLineNumber()+"].";
+            }
             {
             StackTraceElement st=e.getStackTrace()[1];
-            key=st.getClassName()+"."+st.getMethodName()+"."+st.getLineNumber();
+            key+=st.getClassName()+"."+st.getMethodName()+"."+st.getLineNumber();
             }
         }
         
