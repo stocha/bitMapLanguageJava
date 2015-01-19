@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package bitmapfun;
+package main;
 
 import ihm.GridViewerModel;
 import ihm.JGrid;
@@ -14,7 +14,7 @@ import ihm.Windows;
  *
  * @author Jahan
  */
-public class BitMapFun {
+public class Main {
 
     /**
      * @param args the command line arguments

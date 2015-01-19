@@ -10,6 +10,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JComponent;
 
 /**
@@ -19,11 +21,41 @@ import javax.swing.JComponent;
 public class JGrid extends JComponent {
     GridViewerModel theModel;
 
+    MouseListener mouseAct=new MouseListener() {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            System.out.println("MouseClicked "+e.getButton()+" "+e.getX()+"/"+e.getY());
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+           // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+           // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+           // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+    };
+    
     public JGrid(GridViewerModel theModel) {
         setPreferredSize(new Dimension(800, 800));
         setOpaque(true);
         
         this.theModel=theModel;
+        
+        this.addMouseListener(mouseAct);
     }
     
     
