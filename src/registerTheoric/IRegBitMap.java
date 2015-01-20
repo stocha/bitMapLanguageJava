@@ -23,7 +23,7 @@ public interface IRegBitMap<T> {
 
     public interface Factory {
 
-        IRegBitMap alloc();
+        IRegBitMap alloc(int w,int h);
     }
 
     public int getWidth();
