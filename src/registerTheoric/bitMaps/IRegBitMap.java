@@ -81,9 +81,9 @@ public interface IRegBitMap<T> {
             separator.xor(separator);
 
             for (int i = 0; i < h; i++) {
-                separator.setAt(i * wdec + w - 1, 1);
+                separator.setAt(i * wdec + w , 1);
             }
-            for (int i = ((h - 1) * wdec + w - 1); i < separator.size(); i++) {
+            for (int i = ((h -1) * wdec + w ); i < separator.size(); i++) {
                 separator.setAt(i, 1);
             }
 
@@ -143,8 +143,12 @@ public interface IRegBitMap<T> {
 
         @Override
         public void shiftr() {
+            //System.out.println("shifting right");
+            RegBitMapsUtils x=new RegBitMapsUtils();
+            //System.out.println(x.outString(this, '#', '-'));
             mem.shr();
             mem.and(separator);
+            //System.out.println(x.outString(this, '#', '-'));
         }
 
         @Override

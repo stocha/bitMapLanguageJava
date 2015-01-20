@@ -232,6 +232,18 @@ public class FastTest_RegBm256 {
                     + "OXXXOXXOOOOOXXXOOOOXOO\n"                  
                 );
             
+            assertEquals(x.outString(bm, 'X', 'O'),
+                    "<BITMAP>\n"                    
+                    + "OOOXXXOXXOXXXXOOXXXOOO\n"
+                    + "XXOOOOXXOOXXXXXXXXXXOO\n"
+                    + "XXOXOXOXXOXOXXOOXXOXXO\n"
+                    + "OOXOXXXXXXOXOOXXOOXXOO\n"
+                    + "OOOXXOXXXXOOOXOOOXXXOO\n"
+                    + "OOOXOOOXOOOOXOOXXXOXOO\n"
+                    + "XXXOXXOXOXXOOXOXOOXXOO\n"
+                    + "OOOXXXXXXOOOOOXOXOOXXO\n"
+                    + "OXXXOXXOOOOOXXXOOOOXOO\n"  
+            ); 
             
             bm.shiftr();
             
