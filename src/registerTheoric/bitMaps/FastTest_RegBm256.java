@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package registerTheoric;
+package registerTheoric.bitMaps;
 
 import registerTheoric.registers.RegisterUtilis;
 import registerTheoric.bitMaps.IRegBitMap;
@@ -40,6 +40,7 @@ public class FastTest_RegBm256 {
             bmTest001();
             bmBase5_3();
             testCopy();
+            testShift();
         }
 
         public void bmTest001() {
@@ -169,6 +170,101 @@ public class FastTest_RegBm256 {
                     + "OXXXOXXOOOOOXXXOOOOXOO\n"
             );
         }
+        
+        
+         public void testShift() {
+            RegBitMapsUtils x = new RegBitMapsUtils();
+            IRegBitMap bm = fact.alloc(22, 9);
+
+            x.intString(bm, 'X', 'O', "<BITMAP>\n"
+                    + "OOOXXXOXXOXXXXOOXXXOOO\n"
+                    + "XXOOOOXXOOXXXXXXXXXXOO\n"
+                    + "XXOXOXOXXOXOXXOOXXOXXO\n"
+                    + "OOXOXXXXXXOXOOXXOOXXOO\n"
+                    + "OOOXXOXXXXOOOXOOOXXXOO\n"
+                    + "OOOXOOOXOOOOXOOXXXOXOO\n"
+                    + "XXXOXXOXOXXOOXOXOOXXOO\n"
+                    + "OOOXXXXXXOOOOOXOXOOXXO\n"
+                    + "OXXXOXXOOOOOXXXOOOOXOO\n"
+            );
+            
+            bm.shiftd();
+
+            assertEquals(x.outString(bm, 'X', 'O'),
+                    "<BITMAP>\n"
+                    + "OOOOOOOOOOOOOOOOOOOOOO\n"
+                    + "OOOXXXOXXOXXXXOOXXXOOO\n"
+                    + "XXOOOOXXOOXXXXXXXXXXOO\n"
+                    + "XXOXOXOXXOXOXXOOXXOXXO\n"
+                    + "OOXOXXXXXXOXOOXXOOXXOO\n"
+                    + "OOOXXOXXXXOOOXOOOXXXOO\n"
+                    + "OOOXOOOXOOOOXOOXXXOXOO\n"
+                    + "XXXOXXOXOXXOOXOXOOXXOO\n"
+                    + "OOOXXXXXXOOOOOXOXOOXXO\n"
+                    
+            );     
+            
+            bm.shiftu();            
+            assertEquals(x.outString(bm, 'X', 'O'),
+                    "<BITMAP>\n"                    
+                    + "OOOXXXOXXOXXXXOOXXXOOO\n"
+                    + "XXOOOOXXOOXXXXXXXXXXOO\n"
+                    + "XXOXOXOXXOXOXXOOXXOXXO\n"
+                    + "OOXOXXXXXXOXOOXXOOXXOO\n"
+                    + "OOOXXOXXXXOOOXOOOXXXOO\n"
+                    + "OOOXOOOXOOOOXOOXXXOXOO\n"
+                    + "XXXOXXOXOXXOOXOXOOXXOO\n"
+                    + "OOOXXXXXXOOOOOXOXOOXXO\n"
+                    + "OOOOOOOOOOOOOOOOOOOOOO\n"
+                    
+            );              
+            
+            //====
+            x.intString(bm, 'X', 'O', "<BITMAP>\n"
+                    + "OOOXXXOXXOXXXXOOXXXOOO\n"
+                    + "XXOOOOXXOOXXXXXXXXXXOO\n"
+                    + "XXOXOXOXXOXOXXOOXXOXXO\n"
+                    + "OOXOXXXXXXOXOOXXOOXXOO\n"
+                    + "OOOXXOXXXXOOOXOOOXXXOO\n"
+                    + "OOOXOOOXOOOOXOOXXXOXOO\n"
+                    + "XXXOXXOXOXXOOXOXOOXXOO\n"
+                    + "OOOXXXXXXOOOOOXOXOOXXO\n"
+                    + "OXXXOXXOOOOOXXXOOOOXOO\n"                  
+                );
+            
+            
+            bm.shiftr();
+            
+            assertEquals(x.outString(bm, 'X', 'O'),
+                    "<BITMAP>\n"                    
+                    + "OOOOXXXOXXOXXXXOOXXXOO\n"
+                    + "OXXOOOOXXOOXXXXXXXXXXO\n"
+                    + "OXXOXOXOXXOXOXXOOXXOXX\n"
+                    + "OOOXOXXXXXXOXOOXXOOXXO\n"
+                    + "OOOOXXOXXXXOOOXOOOXXXO\n"
+                    + "OOOOXOOOXOOOOXOOXXXOXO\n"
+                    + "OXXXOXXOXOXXOOXOXOOXXO\n"
+                    + "OOOOXXXXXXOOOOOXOXOOXX\n"
+                    + "OOXXXOXXOOOOOXXXOOOOXO\n" 
+            );             
+            
+            bm.shiftr();
+            
+            assertEquals(x.outString(bm, 'X', 'O'),
+                    "<BITMAP>\n"                    
+                    + "OOOOOXXXOXXOXXXXOOXXXO\n"
+                    + "OOXXOOOOXXOOXXXXXXXXXX\n"
+                    + "OOXXOXOXOXXOXOXXOOXXOX\n"
+                    + "OOOOXOXXXXXXOXOOXXOOXX\n"
+                    + "OOOOOXXOXXXXOOOXOOOXXX\n"
+                    + "OOOOOXOOOXOOOOXOOXXXOX\n"
+                    + "OOXXXOXXOXOXXOOXOXOOXX\n"
+                    + "OOOOOXXXXXXOOOOOXOXOOX\n"
+                    + "OOOXXXOXXOOOOOXXXOOOOX\n" 
+                    
+            );            
+               
+         }
     }// Testeur de bitMap
 
 }

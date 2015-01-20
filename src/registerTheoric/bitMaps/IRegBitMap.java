@@ -41,7 +41,7 @@ public interface IRegBitMap<T> {
 
     public void shiftr();
 
-    public void shiftw();
+    public void shiftd();
 
     public void shiftu();
 
@@ -154,7 +154,7 @@ public interface IRegBitMap<T> {
         }
 
         @Override
-        public void shiftw() {
+        public void shiftd() {
             mem.shr(wdec);
             mem.and(separator);
         }
