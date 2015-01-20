@@ -274,8 +274,39 @@ public class FastTest_RegBm256 {
                     + "OOOOOXXXXXXOOOOOXOXOOX\n"
                     + "OOOXXXOXXOOOOOXXXOOOOX\n" 
                     
-            );            
+            );          
+            
+            bm.shiftl();
+            
+            assertEquals(x.outString(bm, 'X', 'O'),
+                    "<BITMAP>\n"                    
+                    + "OOOOXXXOXXOXXXXOOXXXOO\n"
+                    + "OXXOOOOXXOOXXXXXXXXXXO\n"
+                    + "OXXOXOXOXXOXOXXOOXXOXO\n"
+                    + "OOOXOXXXXXXOXOOXXOOXXO\n"
+                    + "OOOOXXOXXXXOOOXOOOXXXO\n"
+                    + "OOOOXOOOXOOOOXOOXXXOXO\n"
+                    + "OXXXOXXOXOXXOOXOXOOXXO\n"
+                    + "OOOOXXXXXXOOOOOXOXOOXO\n"
+                    + "OOXXXOXXOOOOOXXXOOOOXO\n" 
+                    
+            );              
                
+            bm.shiftl();
+            
+            assertEquals(x.outString(bm, 'X', 'O'),
+                    "<BITMAP>\n"                    
+                    + "OOOXXXOXXOXXXXOOXXXOOO\n"
+                    + "XXOOOOXXOOXXXXXXXXXXOO\n"
+                    + "XXOXOXOXXOXOXXOOXXOXOO\n"
+                    + "OOXOXXXXXXOXOOXXOOXXOO\n"
+                    + "OOOXXOXXXXOOOXOOOXXXOO\n"
+                    + "OOOXOOOXOOOOXOOXXXOXOO\n"
+                    + "XXXOXXOXOXXOOXOXOOXXOO\n"
+                    + "OOOXXXXXXOOOOOXOXOOXOO\n"
+                    + "OXXXOXXOOOOOXXXOOOOXOO\n" 
+                    
+            );              
          }
     }// Testeur de bitMap
 
