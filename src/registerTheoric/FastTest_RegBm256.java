@@ -17,7 +17,7 @@ import registerTheoric.bitMaps.RegBitMapsUtils;
  *
  * @author denis
  */
-public class Test_fastNonRegBm256 {
+public class FastTest_RegBm256 {
 
     public static void main(String args[]) {
         IRegFactory rf = () -> new Reg64BitsBased(256);

@@ -1,50 +1,53 @@
-package registerTheoric;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package registerTheoric.registers;
+
+import genericTesting.TestFramework;
+import static genericTesting.TestFramework.assertEquals;
+import registerTheoric.registers.ComposedRegister;
+import registerTheoric.registers.IRegFactory;
+import registerTheoric.registers.IRegister;
 import registerTheoric.registers.RegisterUtilis;
 import registerTheoric.registers.T2BitReg;
-import registerTheoric.registers.ComposedRegister;
-import registerTheoric.registers.IRegister;
-import registerTheoric.registers.IRegFactory;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
- * @author Jahan
+ * @author denis
  */
-public class TestComposedRegister {
+public class Test_ComposedRegister {
 
-    public TestComposedRegister() {
+    public static void main(String args[]) {
+        IRegFactory rf = () -> new T2BitReg();
+
+        (new TestComposed(rf)).doit();
+
+        TestFramework.showResults();
     }
 
-    @BeforeClass
-    public static void setUpClass() {
-    }
+    public static class TestComposed {
 
-    @AfterClass
-    public static void tearDownClass() {
-    }
+        final IRegFactory fact;
 
-    @Before
-    public void setUp() {
-    }
+        TestComposed(IRegFactory fact) {
+            this.fact = fact;
+        }
 
-    @After
-    public void tearDown() {
-    }
-
-    @Test
+        public void doit() {
+            keep2();
+            basicCopy();
+            basicTest();
+            rule30_basic1();
+            rule30_basic2();
+            rule30_onBase2();
+            multiSubSize();
+            //rule30_onBase2_disp();
+        }
+        
     public void keep2() {
-        ComposedRegister b = new ComposedRegister(2, () -> new T2BitReg());
+        ComposedRegister b = new ComposedRegister(2, fact);
         b.xor(b);
         assertEquals("OO", RegisterUtilis.toString(b));
         b.setAt(0, 1);
@@ -55,7 +58,6 @@ public class TestComposedRegister {
         assertEquals("OO", RegisterUtilis.toString(b));
     }
 
-    @Test
     public void basicTest() {
         ComposedRegister b = new ComposedRegister(11, () -> new T2BitReg());
         b.xor(b);
@@ -68,7 +70,6 @@ public class TestComposedRegister {
         assertEquals("OOOOOOOOOOO", RegisterUtilis.toString(b));
     }
 
-    @Test
     public void basicCopy() {
         ComposedRegister b = new ComposedRegister(11, () -> new T2BitReg());
         ComposedRegister c = new ComposedRegister(11, () -> new T2BitReg());
@@ -127,7 +128,6 @@ public class TestComposedRegister {
         i.cp(res);
     }
 
-    @Test
     public void rule30_basic1() {
         IRegFactory fact = () -> new T2BitReg();
         IRegister b = new ComposedRegister(11, fact);
@@ -166,7 +166,6 @@ public class TestComposedRegister {
 
     }
 
-    @Test
     public void rule30_basic2() {
         IRegFactory fact = () -> new T2BitReg();
         IRegister b = new ComposedRegister(11, fact);
@@ -193,7 +192,6 @@ public class TestComposedRegister {
 
     }
 
-    @Test
     public void rule30_onBase2() {
 
         IRegFactory fact = () -> new T2BitReg();
@@ -273,5 +271,7 @@ public class TestComposedRegister {
             }
         }
 
+    }       
+        
     }
 }

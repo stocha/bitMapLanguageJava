@@ -15,90 +15,93 @@ import java.util.List;
  * @author denis
  */
 public class TestFramework {
-    static HashMap<String,Integer> res=new  HashMap<String,Integer>(1000);
-    static HashMap<String,Integer> tot=new  HashMap<String,Integer>(1000);
-    static HashMap<String,String> modelVal=new  HashMap<String,String>(1000);
-    static HashMap<String,String> actualVal=new  HashMap<String,String>(1000);
-    static int numberOfAnomalies=0;
-    
-    
-    public static void assertEquals(String model,String result){
-        
-        String key="NOKEY";
-        try{
+
+    static HashMap<String, Integer> res = new HashMap<String, Integer>(1000);
+    static HashMap<String, Integer> tot = new HashMap<String, Integer>(1000);
+    static HashMap<String, String> modelVal = new HashMap<String, String>(1000);
+    static HashMap<String, String> actualVal = new HashMap<String, String>(1000);
+    static int numberOfAnomalies = 0;
+
+    public static void assertEquals(String model, String result) {
+
+        String key = "NOKEY";
+        try {
             throw new RuntimeException();
-        }catch(Exception e){
-            int l=e.getStackTrace().length;
-            
-            
-            key="";
+        } catch (Exception e) {
+            int l = e.getStackTrace().length;
+
+            key = "";
             //System.out.println("debug ps ===================");
-            for(int i=2;i<l;i++){
-                            StackTraceElement st=e.getStackTrace()[i];
+            for (int i = 2; i < l; i++) {
+                StackTraceElement st = e.getStackTrace()[i];
                             //String vt=st.getClassName()+"."+st.getMethodName()+"."+st.getLineNumber();
-                            //System.out.println("debug ps "+key);
-                            key+=st.getMethodName()+"["+st.getLineNumber()+"].";
+                //System.out.println("debug ps "+key);
+                key += st.getMethodName() + "[" + st.getLineNumber() + "].";
             }
             {
-            StackTraceElement st=e.getStackTrace()[1];
-            key+=st.getClassName()+"."+st.getMethodName()+"."+st.getLineNumber();
+                StackTraceElement st = e.getStackTrace()[1];
+                key += st.getClassName() + "." + st.getMethodName() + "." + st.getLineNumber();
             }
         }
-        
-        if(!res.containsKey(key)){
-            res.put(key,0);
+
+        if (key == null || key.equals("null")) {
+            throw new RuntimeException("key is null !");
+        }
+        if (!res.containsKey(key)) {
+            res.put(key, 0);
             tot.put(key, 0);
         }
-        
-        tot.put(key, tot.get(key)+1);
-        
-        if(model.equals(result)){
-            res.put(key, res.get(key)+1);
-        }else{
+
+        tot.put(key, tot.get(key) + 1);
+
+        if (model.equals(result) && (model!=null && null!=result)) {
+            res.put(key, res.get(key) + 1);
+        } else {
+            numberOfAnomalies++;
             modelVal.put(key, model);
             actualVal.put(key, result);
-            numberOfAnomalies++;
         }
-        
+
     }
-    
-    public static void showResults(){
-        List<String> a=new  ArrayList<String>();
-        a.addAll(tot.keySet());
+
+    public static void showResults() {
+        List<String> a = new ArrayList<String>();
         
-        Collections.sort(a);
-        
-        for(String s :a ){
-                    
-                    
-                    if(res.get(s)!=tot.get(s)){
-                       // System.out.println(""+modelVal.get(s));
-                       // System.out.println(""+actualVal.get(s));
-                    }
-                    else{
-                        System.out.println(""+s+" "+res.get(s)+"/"+tot.get(s));
-                    }
+        int elemcount=0;
+        for(String s :  tot.keySet()){
+            if(s==null ||s.equals("null")) throw new RuntimeException("null key found");
+            a.add(s);
         }
-        
-         for(String s :a ){
-                    
-                    
-                    if(res.get(s)!=tot.get(s)){
-                        System.out.println(""+s+" "+res.get(s)+"/"+tot.get(s));
-                        System.out.println(""+modelVal.get(s));
-                        System.out.println(""+actualVal.get(s));
-                    }
-                    else{
-                        //System.out.println(""+s+" "+res.get(s)+"/"+tot.get(s));
-                    }
-        }       
-         
-         if(numberOfAnomalies==0){
-             System.out.println("=== EVERYTHING OKAY ===");
-         }else{
-              System.out.println("--- anomalies detecte ["+numberOfAnomalies+"] ---");
-         }
-        
+        //a.addAll(tot.keySet());
+
+        Collections.sort(a);
+
+        for (String s : a) {
+
+           if (!res.get(s).equals(tot.get(s))) {
+                       // System.out.println(""+modelVal.get(s));
+                // System.out.println(""+actualVal.get(s));
+            } else {
+                System.out.println("++" + s + " " + res.get(s) + "/" + tot.get(s));
+            }
+        }
+
+        for (String s : a) {
+
+            if (!res.get(s).equals(tot.get(s))) {
+                System.out.println("" + s + " " + res.get(s) + "/" + tot.get(s));
+                System.out.println("" + modelVal.get(s));
+                System.out.println("" + actualVal.get(s));
+            } else {
+                //System.out.println(""+s+" "+res.get(s)+"/"+tot.get(s));
+            }
+        }
+
+        if (numberOfAnomalies == 0) {
+            System.out.println("=== EVERYTHING OKAY ===");
+        } else {
+            System.out.println("--- anomalies detecte [" + numberOfAnomalies + "] ---");
+        }
 
     }
 }

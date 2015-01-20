@@ -204,7 +204,7 @@ public class RegisterUtilis {
         inout.cp(res);
     }
     
-    void inString(IRegister reg, String s, char truec) {
+    public void inString(IRegister reg, String s, char truec) {
         RegisterUtilis.inputString(reg, s, truec);
     }            
 
