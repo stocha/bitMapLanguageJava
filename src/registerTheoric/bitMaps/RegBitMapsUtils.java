@@ -11,6 +11,69 @@ package registerTheoric.bitMaps;
  */
 public class RegBitMapsUtils {
     
+    
+    final IRegBitMap.Factory fact;
+    
+    final int default_w;
+    final int default_h;
+    
+    public RegBitMapsUtils(IRegBitMap.Factory fact,int default_w,int default_h)
+    {
+        this.fact=fact;
+        this.default_h=default_h;
+        this.default_w=default_w;
+    }    
+    
+    public RegBitMapsUtils(){
+        fact=null;
+        default_w=2;
+        default_h=2;
+    }
+    
+    public IRegBitMap alloc(IRegBitMap model){
+        return fact.alloc(model.getWidth(), model.getHeight());
+        
+    }
+    
+    public IRegBitMap and(IRegBitMap a,IRegBitMap b){
+        IRegBitMap res=alloc(a);
+        res.cp(a);
+        res.and(b);
+        return res;
+    };
+    
+    public IRegBitMap or(IRegBitMap a,IRegBitMap b){
+        IRegBitMap res=alloc(a);
+        res.cp(a);
+        res.or(b);
+        return res;
+    };
+    
+    public IRegBitMap xor(IRegBitMap a,IRegBitMap b){
+        IRegBitMap res=alloc(a);
+        res.cp(a);
+        res.xor(b);
+        return res;
+    };
+    
+    public IRegBitMap not(IRegBitMap a){
+        IRegBitMap res=alloc(a);
+        res.cp(a);
+        return res;
+    };
+    
+    public IRegBitMap nop(IRegBitMap a){
+        IRegBitMap res=alloc(a);
+        res.cp(a);
+        return res;
+    }; 
+    
+    public IRegBitMap cp(IRegBitMap a){
+        IRegBitMap res=alloc(a);
+        res.cp(a);
+        return res;
+    };  
+    
       public String outString(IRegBitMap reg, char t, char f) {
         StringBuilder sb = new StringBuilder();
         sb.append("<BITMAP>\n");
