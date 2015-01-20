@@ -19,6 +19,7 @@ public class TestFramework {
     static HashMap<String,Integer> tot=new  HashMap<String,Integer>(1000);
     static HashMap<String,String> modelVal=new  HashMap<String,String>(1000);
     static HashMap<String,String> actualVal=new  HashMap<String,String>(1000);
+    static int numberOfAnomalies=0;
     
     
     public static void assertEquals(String model,String result){
@@ -56,6 +57,7 @@ public class TestFramework {
         }else{
             modelVal.put(key, model);
             actualVal.put(key, result);
+            numberOfAnomalies++;
         }
         
     }
@@ -67,13 +69,35 @@ public class TestFramework {
         Collections.sort(a);
         
         for(String s :a ){
-                    System.out.println(""+s+" "+res.get(s)+"/"+tot.get(s));
+                    
                     
                     if(res.get(s)!=tot.get(s)){
+                       // System.out.println(""+modelVal.get(s));
+                       // System.out.println(""+actualVal.get(s));
+                    }
+                    else{
+                        System.out.println(""+s+" "+res.get(s)+"/"+tot.get(s));
+                    }
+        }
+        
+         for(String s :a ){
+                    
+                    
+                    if(res.get(s)!=tot.get(s)){
+                        System.out.println(""+s+" "+res.get(s)+"/"+tot.get(s));
                         System.out.println(""+modelVal.get(s));
                         System.out.println(""+actualVal.get(s));
                     }
-        }
+                    else{
+                        //System.out.println(""+s+" "+res.get(s)+"/"+tot.get(s));
+                    }
+        }       
+         
+         if(numberOfAnomalies==0){
+             System.out.println("=== EVERYTHING OKAY ===");
+         }else{
+              System.out.println("--- anomalies detecte ["+numberOfAnomalies+"] ---");
+         }
         
 
     }
