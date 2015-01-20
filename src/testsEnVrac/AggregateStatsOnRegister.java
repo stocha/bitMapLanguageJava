@@ -6,7 +6,7 @@
 
 package testsEnVrac;
 
-import registerTheoric.IRegister;
+import registerTheoric.registers.IRegister;
 
 /**
  *

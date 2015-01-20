@@ -5,12 +5,13 @@
  */
 package testsEnVrac;
 
-import registerTheoric.IRegBitMap;
-import registerTheoric.IRegFactory;
-import registerTheoric.IRegister;
-import registerTheoric.RandomizeReg;
-import registerTheoric.Reg64BitsBased;
-import registerTheoric.RegisterUtilis;
+import registerTheoric.bitMaps.IRegBitMap;
+import registerTheoric.bitMaps.RegBitMapsUtils;
+import registerTheoric.registers.IRegFactory;
+import registerTheoric.registers.IRegister;
+import registerTheoric.registers.RandomizeReg;
+import registerTheoric.registers.Reg64BitsBased;
+import registerTheoric.registers.RegisterUtilis;
 
 /**
  *
@@ -26,13 +27,14 @@ public class TestRandom {
         IRegFactory fact=()->new Reg64BitsBased(256);
         IRegBitMap.RegBitMapImpl bm=new IRegBitMap.RegBitMapImpl(22,9,fact);
         RegisterUtilis x=new RegisterUtilis(fact);
+        RegBitMapsUtils y = new RegBitMapsUtils();
         
         IRegBitMap.Randomizer randbm=bm.newRandomizer();
        randbm.setSeed(0);
         
         for(int i=0;i<10;i++){
             randbm.apply(bm);
-            System.out.println(x.outString(bm, 'X', 'O'));
+            System.out.println(y.outString(bm, 'X', 'O'));
         }
         
     }

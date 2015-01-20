@@ -5,6 +5,11 @@ package registerTheoric;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import registerTheoric.registers.RegisterUtilis;
+import registerTheoric.registers.T2BitReg;
+import registerTheoric.registers.ComposedRegister;
+import registerTheoric.registers.IRegister;
+import registerTheoric.registers.IRegFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

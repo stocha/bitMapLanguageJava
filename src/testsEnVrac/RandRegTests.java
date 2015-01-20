@@ -6,10 +6,10 @@
 
 package testsEnVrac;
 
-import registerTheoric.IRegFactory;
-import registerTheoric.IRegister;
-import registerTheoric.Reg64BitsBased;
-import registerTheoric.RegisterUtilis;
+import registerTheoric.registers.IRegFactory;
+import registerTheoric.registers.IRegister;
+import registerTheoric.registers.Reg64BitsBased;
+import registerTheoric.registers.RegisterUtilis;
 
 /**
  *

@@ -5,14 +5,19 @@
  */
 package registerTheoric;
 
+import registerTheoric.registers.RegisterUtilis;
+import registerTheoric.bitMaps.IRegBitMap;
+import registerTheoric.registers.IRegFactory;
+import registerTheoric.registers.Reg64BitsBased;
 import genericTesting.TestFramework;
 import static genericTesting.TestFramework.*;
+import registerTheoric.bitMaps.RegBitMapsUtils;
 
 /**
  *
  * @author denis
  */
-public class Test_fastNonReg {
+public class Test_fastNonRegBm256 {
 
     public static void main(String args[]) {
         IRegFactory rf = () -> new Reg64BitsBased(256);
@@ -39,7 +44,7 @@ public class Test_fastNonReg {
 
         public void bmTest001() {
 
-            RegisterUtilis x = new RegisterUtilis(null);
+            RegBitMapsUtils x = new RegBitMapsUtils();
             //IRegFactory fact = () -> new Reg64BitsBased(256);
             IRegBitMap bm = fact.alloc(22, 9);
 
@@ -71,7 +76,7 @@ public class Test_fastNonReg {
 
         public void bmBase5_3() {
 
-            RegisterUtilis x = new RegisterUtilis(null);
+            RegBitMapsUtils x = new RegBitMapsUtils();
             IRegFactory rf = () -> new Reg64BitsBased(256);
             IRegBitMap bm = fact.alloc(5, 3);
 
@@ -91,7 +96,7 @@ public class Test_fastNonReg {
 
         public void testCopy() {
 
-            RegisterUtilis x = new RegisterUtilis(null);
+            RegBitMapsUtils x = new RegBitMapsUtils();
             IRegBitMap bm = fact.alloc(22, 9);
 
             x.intString(bm, 'X', 'O', "<BITMAP>\n"
@@ -149,7 +154,20 @@ public class Test_fastNonReg {
                     + "OOXOX\n"
                     + "OOXXX\n"
             );
-
+            
+            bm.cp(bm2, 2, 1, 3, 2, 6, 3);
+            assertEquals(x.outString(bm, 'X', 'O'),
+                    "<BITMAP>\n"
+                    + "OOOXXXOXXOXXXXOOXXXOOO\n"
+                    + "XXOOOOXXOOXXXXXXXXXXOO\n"
+                    + "XXOXOXOXXOXOXXOOXXOXXO\n"
+                    + "OOXOXXXOXXOXOOXXOOXXOO\n"
+                    + "OOOXXOXXXXOOOXOOOXXXOO\n"
+                    + "OOOXOOOXOOOOXOOXXXOXOO\n"
+                    + "XXXOXXOXOXXOOXOXOOXXOO\n"
+                    + "OOOXXXXXXOOOOOXOXOOXXO\n"
+                    + "OXXXOXXOOOOOXXXOOOOXOO\n"
+            );
         }
     }// Testeur de bitMap
 

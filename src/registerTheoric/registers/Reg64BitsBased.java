@@ -4,27 +4,23 @@
  * and open the template in the editor.
  */
 
-package registerTheoric;
+package registerTheoric.registers;
 
 /**
  *
  * @author Jahan
  */
-public class ComposedRegister implements IRegister<ComposedRegister> {
+public class Reg64BitsBased implements IRegister<Reg64BitsBased>{
     
     private final int nbBits;
     private final int nbBlocks;
-    private final IRegister finalMask;
-    private final IRegister data[];
+    private final long finalMask;
+    private final long data[];
+    private final int dwsize=64;
     
-    private final IRegister tmp;
-
-    public ComposedRegister(int nbBits,IRegFactory fact) {
+    public Reg64BitsBased(int nbBits) {
         this.nbBits = nbBits;
-        
-        IRegister mask=fact.alloc();
-        
-        int blocSz=mask.size();
+        final int blocSz=dwsize;
         
         int lnbBlocks=nbBits/blocSz;
         int nbBitLast=nbBits%blocSz;
@@ -32,93 +28,99 @@ public class ComposedRegister implements IRegister<ComposedRegister> {
         nbBlocks=lnbBlocks;
         if(nbBitLast==0) nbBitLast=blocSz;
         
-        mask.xor(mask);
-        finalMask=mask;
-        for(int i=0;i<nbBitLast;i++) {finalMask.setAt(i, 1);}
+        long mask=0;
+        mask=~mask;
+        //System.out.println("mask init "+mask);
+        finalMask= mask<< (blocSz-nbBitLast);
+        //System.out.println("finalshift  "+(blocSz-nbBitLast)+"  "+nbBitLast);
+
         
-        data=new IRegister[nbBlocks];
-        for(int i=0;i<nbBlocks;i++){
-            data[i]=fact.alloc();
-        }
-        
-        tmp=fact.alloc();
-        
+        data=new long[nbBlocks];
     }
+    
 
     @Override
-    public void and(ComposedRegister r) {
+    public void and(Reg64BitsBased r) {
         for(int i=0;i<nbBlocks;i++){
-            data[i].and(r.data[i]);
+            data[i]&=(r.data[i]);
         }
     }
 
     @Override
-    public void or(ComposedRegister r) {
+    public void or(Reg64BitsBased r) {
         for(int i=0;i<nbBlocks;i++){
-            data[i].or(r.data[i]);
+            data[i]|=(r.data[i]);
         }
     }
 
     @Override
-    public void xor(ComposedRegister r) {
+    public void xor(Reg64BitsBased r) {
         for(int i=0;i<nbBlocks;i++){
-            data[i].xor(r.data[i]);
+            data[i]^=(r.data[i]);
         }
     }
 
     @Override
-    public void cp(ComposedRegister r) {
+    public void cp(Reg64BitsBased r) {
         for(int i=0;i<nbBlocks;i++){
-            data[i].cp(r.data[i]);
+            data[i]=(r.data[i]);
         }
     }
 
     @Override
     public void not() {
         for(int i=0;i<nbBlocks;i++){
-            data[i].not();
+            data[i]=~data[i];
         }
     }
 
     @Override
     public void shl() {
+        long tmp;
         for(int i=1;i<nbBlocks;i++){
             int prev=i-1;
-            data[prev].shl();
-            tmp.cp(data[i]);
-            tmp.shr(tmp.size()-1);
-            data[prev].or(tmp);
+            data[prev]=data[prev]<<1;
+            tmp=(data[i]);
+            tmp=tmp>>>(dwsize-1);
+            data[prev]|=(tmp);
         }
-        data[nbBlocks-1].shl();
+        data[nbBlocks-1]=data[nbBlocks-1]<<1;
     }
 
     @Override
     public void shr() {
+        long tmp;
         for(int i=nbBlocks-2;i>=0;i--){
             int prev=i+1;
-            data[prev].shr();
-            tmp.cp(data[i]);
-            tmp.shl(tmp.size()-1);
-            data[prev].or(tmp);
+            data[prev]=data[prev]>>>1;
+            tmp=(data[i]);
+            tmp=tmp<<(dwsize-1);
+            data[prev]|=(tmp);
         }
-        data[0].shr();
-        data[nbBlocks-1].and(finalMask);
+        data[0]=data[0]>>>1;
+        data[nbBlocks-1]&=(finalMask);
     }
 
     @Override
     public int getAt(int i) {
-        int b=i/tmp.size();
-        int in=i%tmp.size();
+        int b=i/dwsize;
+        int in=i%dwsize;
         
-        return data[b].getAt(in);
+        return (int)((data[b]>>>(dwsize-1-in))&1);
     }
 
     @Override
     public void setAt(int i, int v) {
-        int b=i/tmp.size();
-        int in=i%tmp.size();
+        int b=i/dwsize;
+        int in=i%dwsize;
         
-        data[b].setAt(in,v);
+        long at=1L<<(dwsize-1-in);
+        at=~at;
+        
+        data[b]&=at;
+        at=v;
+        at=at<<(dwsize-1-in);
+        data[b]|=at;
     }
 
     @Override
@@ -134,20 +136,14 @@ public class ComposedRegister implements IRegister<ComposedRegister> {
     @Override
     public void shr(int n) {
         for(int i=0;i<n;i++) shr();
-    }
+    }    
 
     @Override
-    public void cp(ComposedRegister r, int start, int nb) {
+    public void cp(Reg64BitsBased r, int start, int nb) {
         for(int i=0;i<nb;i++){
             int ind=start+i;
             setAt(ind, r.getAt(ind));
         }
     }
-
     
-
-
-    
-    
-
 }

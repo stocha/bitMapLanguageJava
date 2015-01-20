@@ -4,7 +4,12 @@
  * and open the template in the editor.
  */
 package registerTheoric;
+import registerTheoric.registers.RegisterUtilis;
+import registerTheoric.bitMaps.IRegBitMap;
+import registerTheoric.registers.IRegFactory;
+import registerTheoric.registers.Reg64BitsBased;
 import static genericTesting.TestFramework.*;
+import registerTheoric.bitMaps.RegBitMapsUtils;
 
 /**
  *
@@ -27,7 +32,7 @@ public class Test_test {
     
     public void basicBm() {
     
-    RegisterUtilis x=new RegisterUtilis(null);
+    RegBitMapsUtils x=new RegBitMapsUtils();
     IRegFactory fact=()->new Reg64BitsBased(256);
     IRegBitMap bm=new IRegBitMap.RegBitMapImpl(22, 9, fact);
     
@@ -60,7 +65,7 @@ public class Test_test {
     
     public void bmBase5_3() {
     
-    RegisterUtilis x=new RegisterUtilis(null);
+    RegBitMapsUtils x=new RegBitMapsUtils();
     IRegFactory fact=()->new Reg64BitsBased(256);
     IRegBitMap bm=new IRegBitMap.RegBitMapImpl(5, 3, fact);
     
@@ -81,7 +86,7 @@ public class Test_test {
     
     public static void testCopy() {
     
-    RegisterUtilis x=new RegisterUtilis(null);
+    RegBitMapsUtils x=new RegBitMapsUtils();
     IRegFactory fact=()->new Reg64BitsBased(256);
     IRegBitMap bm=new IRegBitMap.RegBitMapImpl(22, 9, fact);
     

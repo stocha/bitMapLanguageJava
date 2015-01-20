@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package registerTheoric;
+package registerTheoric.bitMaps;
 
+import registerTheoric.registers.IRegFactory;
+import registerTheoric.registers.RandomizeReg;
+import registerTheoric.registers.IRegister;
 import testsEnVrac.AggregateStatsOnRegister;
 
 /**
