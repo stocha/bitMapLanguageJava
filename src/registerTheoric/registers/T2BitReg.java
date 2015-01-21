@@ -94,7 +94,7 @@ public class T2BitReg implements IRegister<T2BitReg> {
     }
 
     @Override
-    public boolean tst0() {
+    public boolean tstNot0() {
         return (val[0]|val[1]);
     }
 

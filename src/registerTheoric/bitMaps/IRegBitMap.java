@@ -221,7 +221,7 @@ public interface IRegBitMap<T> {
 
         @Override
         public boolean tst0() {
-            return mem.tst0();
+            return mem.tstNot0();
         }
 
         @Override

@@ -145,10 +145,10 @@ public class ComposedRegister implements IRegister<ComposedRegister> {
     }
 
     @Override
-    public boolean tst0() {
+    public boolean tstNot0() {
         boolean res=false;
         for(int i=0;i<data.length;i++){
-            res=data[i].tst0()||res;
+            res=data[i].tstNot0()||res;
         }
         return res;
     }

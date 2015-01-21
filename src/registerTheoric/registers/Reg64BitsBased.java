@@ -147,7 +147,7 @@ public class Reg64BitsBased implements IRegister<Reg64BitsBased>{
     }
     
     @Override
-    public boolean tst0() {
+    public boolean tstNot0() {
         long res=0;
         for(int i=0;i<data.length;i++){
             res|=data[i];
