@@ -72,6 +72,8 @@ public class Reg64BitsBased implements IRegister<Reg64BitsBased>{
         for(int i=0;i<nbBlocks;i++){
             data[i]=~data[i];
         }
+        
+        data[data.length-1]&=finalMask;
     }
 
     @Override

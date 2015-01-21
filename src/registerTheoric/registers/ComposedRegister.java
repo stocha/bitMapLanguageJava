@@ -78,6 +78,7 @@ public class ComposedRegister implements IRegister<ComposedRegister> {
         for(int i=0;i<nbBlocks;i++){
             data[i].not();
         }
+        data[data.length-1].and(finalMask);
     }
 
     @Override
