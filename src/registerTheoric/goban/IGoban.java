@@ -70,7 +70,7 @@ public interface IGoban {
             for (int j = 0; j < height; j++) {
                 for (int i = 0; i < width; i++) {
 
-                    int v = getAt(j, j);
+                    int v = getAt(i, j);
                     char out = ' ';
 
                     switch (v) {
@@ -98,6 +98,7 @@ public interface IGoban {
         public void inputString(String model) {
 
             int pos = 0;
+            boolean ignore = false;
             for (int j = 0; j < height; j++) {
                 for (int i = 0; i < width; i++) {
 
@@ -106,7 +107,7 @@ public interface IGoban {
                     boolean found = false;
 
                     while (!found) {
-                        char in = model.charAt(pos);
+                        char in = model.charAt(pos++);
                         found = true;
                         switch (in) {
                             case '-':
@@ -121,12 +122,21 @@ public interface IGoban {
                             case '#':
                                 out = 3;
                                 break;
+                            case '<':
+                                ignore = true;
+                                break;
+                            case '>':
+                                ignore = false;
+                                found=false;
+                                break;
                             default:
                                 found = false;
                         }
-                        pos++;
+                        if (ignore) {
+                            found = false;
+                        }
                     }//while
-
+                    //System.out.print(""+model.charAt(pos-1));
                     setAt(i, j, out);
                 }//For width
             }//For height
