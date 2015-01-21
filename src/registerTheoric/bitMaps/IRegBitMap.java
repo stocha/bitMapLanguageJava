@@ -56,6 +56,10 @@ public interface IRegBitMap<T> {
     public void cp(T a,int x,int y, int widht,int height,int dx,int dy);
 
     public void not();
+    
+    public boolean tst0();
+    
+    public int countBitsAtOne();
 
     public static class RegBitMapImpl implements IRegBitMap<RegBitMapImpl> {
 
@@ -213,6 +217,16 @@ public interface IRegBitMap<T> {
                     setAt(dx+j, dy+i, a.getAt(x+j, y+i));
                 }
             }
+        }
+
+        @Override
+        public boolean tst0() {
+            return mem.tst0();
+        }
+
+        @Override
+        public int countBitsAtOne() {
+            return mem.countBitsAtOne();
         }
 
     }

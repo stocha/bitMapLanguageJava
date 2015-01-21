@@ -92,5 +92,19 @@ public class T2BitReg implements IRegister<T2BitReg> {
             setAt(ind, r.getAt(ind));
         }
     }
+
+    @Override
+    public boolean tst0() {
+        return (val[0]|val[1]);
+    }
+
+    @Override
+    public int countBitsAtOne() {
+        int res=0;
+        for(int i=0;i<val.length;i++){
+            if(val[i]) res+=1;
+        }
+        return res;
+    }
     
 }

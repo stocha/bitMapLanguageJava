@@ -146,4 +146,29 @@ public class Reg64BitsBased implements IRegister<Reg64BitsBased>{
         }
     }
     
+    @Override
+    public boolean tst0() {
+        long res=0;
+        for(int i=0;i<data.length;i++){
+            res|=data[i];
+        }
+        return res!=0;
+    }
+    
+    private final int countLongBits(long l){
+        long res=0;
+        for(int i=0;i<64;i++){
+            res+=((l>>>i)&1L);
+        }
+        return (int)res;
+    }
+
+    @Override
+    public int countBitsAtOne() {
+        int res=0;
+        for(int i=0;i<data.length;i++){
+            res+=countLongBits(data[i]);
+        }
+        return res;
+    }    
 }

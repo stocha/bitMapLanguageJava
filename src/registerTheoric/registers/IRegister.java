@@ -25,6 +25,9 @@ public interface IRegister< Conc extends IRegister> {
     void shl(int n);
     void shr(int n);
     
+    boolean tst0();
+    int countBitsAtOne();
+    
     int getAt(int i);
     void setAt(int i,int v);
     int size();

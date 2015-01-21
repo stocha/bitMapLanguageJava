@@ -144,6 +144,24 @@ public class ComposedRegister implements IRegister<ComposedRegister> {
         }
     }
 
+    @Override
+    public boolean tst0() {
+        boolean res=false;
+        for(int i=0;i<data.length;i++){
+            res=data[i].tst0()||res;
+        }
+        return res;
+    }
+
+    @Override
+    public int countBitsAtOne() {
+        int res=0;
+        for(int i=0;i<data.length;i++){
+            res+=data[i].countBitsAtOne();
+        }
+        return res;
+    }
+
     
 
 
