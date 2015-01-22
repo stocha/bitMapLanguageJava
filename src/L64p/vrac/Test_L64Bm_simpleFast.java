@@ -36,12 +36,12 @@ public class Test_L64Bm_simpleFast {
         }
         
         public void gobTest001(){
-            String inGob="<BITMAP>\n"
+            String inGob="<GOBAN>\n"
                     + "O O O X X X O X \n"
-                    + "X X O O O O X X \n"
+                    + "X - O O O O X X \n"
                     + "X X O X O X O X \n"
                     + "O O X O X X X X \n"
-                    + "O O O X X O X X \n"
+                    + "O O O X X # X X \n"
                     + "O O O X O O O X \n"
                     + "X X X O X X O X \n"
                     + "O O O X X X X X \n";
@@ -50,12 +50,12 @@ public class Test_L64Bm_simpleFast {
 
 
             assertEquals(outString(b0,b1),
-                    "<BITMAP>\n"
+                    "<GOBAN>\n"
                     + "O O O X X X O X \n"
-                    + "X X O O O O X X \n"
+                    + "X - O O O O X X \n"
                     + "X X O X O X O X \n"
                     + "O O X O X X X X \n"
-                    + "O O O X X O X X \n"
+                    + "O O O X X # X X \n"
                     + "O O O X O O O X \n"
                     + "X X X O X X O X \n"
                     + "O O O X X X X X \n"

@@ -80,7 +80,7 @@ public class L64fbase {
                     }
                 }//while
                 //System.out.print(""+model.charAt(pos-1));
-                res=setAt(res, i, j, (out & player) | ((out & player) >>> 1));
+                res=setAt(res, i, j, ((out&1) & player) | ((out & player) >>> 1));
             }//For width
         }//For height
         return res;
