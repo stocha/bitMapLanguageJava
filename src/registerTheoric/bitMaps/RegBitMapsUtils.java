@@ -67,12 +67,46 @@ public class RegBitMapsUtils {
         res.cp(a);
         return res;
     }; 
+    public IRegBitMap shiftu(IRegBitMap a){
+        IRegBitMap res=alloc(a);
+        res.cp(a);
+        res.shiftu();
+        return res;
+    };   
+    public IRegBitMap shiftd(IRegBitMap a){
+        IRegBitMap res=alloc(a);
+        res.cp(a);
+        res.shiftd();
+        return res;
+    }; 
+    public IRegBitMap shiftl(IRegBitMap a){
+        IRegBitMap res=alloc(a);
+        res.cp(a);
+        res.shiftl();
+        return res;
+    }; 
+    public IRegBitMap shiftr(IRegBitMap a){
+        IRegBitMap res=alloc(a);
+        res.cp(a);
+        res.shiftr();
+        return res;
+    };     
     
     public IRegBitMap cp(IRegBitMap a){
         IRegBitMap res=alloc(a);
         res.cp(a);
         return res;
     };  
+    
+    public IRegBitMap scramble(IRegBitMap a){
+        IRegBitMap res=alloc(a);
+        res.xor(res);
+        res.or(shiftl(a));
+        res.or(shiftu(a));
+        res.or(shiftd(a));
+        res.or(shiftr(a));
+        return res;
+    };      
     
       public String outString(IRegBitMap reg, char t, char f) {
         StringBuilder sb = new StringBuilder();

@@ -37,6 +37,9 @@ public interface IGoban {
         final int height;
 
         public final IRegBitMap.Factory fact;
+        public final IRegBitMap allocBm(){
+            return fact.alloc(width, height);
+        }
 
         public final IRegBitMap color[] = new IRegBitMap[2];
 

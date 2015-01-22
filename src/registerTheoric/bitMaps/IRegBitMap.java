@@ -57,7 +57,7 @@ public interface IRegBitMap<T> {
 
     public void not();
     
-    public boolean tst0();
+    public boolean tstNot0();
     
     public int countBitsAtOne();
 
@@ -220,7 +220,7 @@ public interface IRegBitMap<T> {
         }
 
         @Override
-        public boolean tst0() {
+        public boolean tstNot0() {
             return mem.tstNot0();
         }
 
