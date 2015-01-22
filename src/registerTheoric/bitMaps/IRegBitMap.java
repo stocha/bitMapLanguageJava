@@ -8,7 +8,7 @@ package registerTheoric.bitMaps;
 import registerTheoric.registers.IRegFactory;
 import registerTheoric.registers.RandomizeReg;
 import registerTheoric.registers.IRegister;
-import testsEnVrac.AggregateStatsOnRegister;
+import registerTheoric.AggregateStatsOnRegister;
 
 /**
  *

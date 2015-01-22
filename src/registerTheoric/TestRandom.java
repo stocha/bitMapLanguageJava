@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package testsEnVrac;
+package registerTheoric;
 
 import registerTheoric.bitMaps.IRegBitMap;
 import registerTheoric.bitMaps.RegBitMapsUtils;
