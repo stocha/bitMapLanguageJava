@@ -24,7 +24,19 @@ public class L64fbase {
     }
 
     public static final long deadFull(long mem, long lib) {
-        return 0;
+        long alive;
+        alive=scramble(lib)&mem;
+        
+        long last=alive;
+        
+        while(last!=0){
+            last=alive;
+            alive=scramble(alive)&mem;
+            last^=alive;
+        }
+        
+        
+        return (~alive) & mem;
     }
 
     public static final long count(long mem) {
@@ -245,6 +257,11 @@ public class L64fbase {
             pl|=p0;
             p0=p1;
             p1=pl;
+            phase^=1;
+            
+            empty=~(p0 | p1);
+            long dead=deadFull(p0, empty);
+            p0^=dead;
         }
 
         public final void randomize() {

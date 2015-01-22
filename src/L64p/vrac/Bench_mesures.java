@@ -23,7 +23,7 @@ public class Bench_mesures {
         
         final int nbGame=1000000;
         for(int big=0;big<nbGame;big++){
-        for(int i=0;i<64;i++){
+        for(int i=0;i<128;i++){
             //System.out.println(g.debug_show());
             g.playRandOnFree(0);
         }
@@ -32,7 +32,10 @@ public class Bench_mesures {
         }
         long t1=System.nanoTime();
         
-        double t=(t1-t0)/1000000.0;
-        System.out.println(""+nbGame+" partie en "+t+" millisecondes");
+        double t=(t1-t0)/1000000000.0;
+        System.out.println(""+nbGame+" partie en "+t+" secondes");
+        double nbgamSec=nbGame;
+        nbgamSec/=t;
+        System.out.println(""+nbgamSec+" parties par secondes");
     }     
 }
