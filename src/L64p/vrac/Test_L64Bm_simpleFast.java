@@ -7,10 +7,7 @@ package L64p.vrac;
 
 import genericTesting.TestFramework;
 import static genericTesting.TestFramework.assertEquals;
-import registerTheoric.bitMaps.IRegBitMap;
-import registerTheoric.bitMaps.RegBitMapsUtils;
-import registerTheoric.registers.IRegFactory;
-import registerTheoric.registers.Reg64BitsBased;
+import static L64p.vrac.L64fbase.*;
 
 /**
  *
@@ -32,37 +29,46 @@ public class Test_L64Bm_simpleFast {
 
         public void doit() {
             bmTest001();
+            maskValues();
            // bmBase5_3();
            // testCopy();
            // testShift();
         }
 
+        public void maskValues(){
+            assertEquals(outString(tool_lMask(), 'X', 'O'),outString(LMASK, 'X', 'O'));
+            assertEquals(outString(tool_rMask(), 'X', 'O'),outString(RMASK, 'X', 'O'));
+            
+            //System.out.println("LMask "+outString(LMASK, 'X', '-'));
+            //System.out.println("RMask "+outString(RMASK, 'X', '-'));
+            
+            //System.out.println("Lmask \n"+outString(tool_lMask(), 'X', '-'));
+            //System.out.println("Rmask \n"+outString(tool_rMask(), 'X', '-'));        
+        }
         public void bmTest001() {
+            long bm = 0;
 
-
-            L64Bm bm = new L64Bm();
-
-            bm.inString( 'X', 'O', "<BITMAP>\n"
-                    + "OOOXXXOX\n"
-                    + "XXOOOOXX\n"
-                    + "XXOXOXOX\n"
-                    + "OOXOXXXX\n"
-                    + "OOOXXOXX\n"
-                    + "OOOXOOOX\n"
-                    + "XXXOXXOX\n"
-                    + "OOOXXXXX\n"
+            bm=inString( 'X', 'O', "<BITMAP>\n"
+                    + "O O O X X X O X \n"
+                    + "X X O O O O X X \n"
+                    + "X X O X O X O X \n"
+                    + "O O X O X X X X \n"
+                    + "O O O X X O X X \n"
+                    + "O O O X O O O X \n"
+                    + "X X X O X X O X \n"
+                    + "O O O X X X X X \n"
             );
 
-            assertEquals(bm.outString( 'X', 'O'),
+            assertEquals(outString(bm, 'X', 'O'),
                     "<BITMAP>\n"
-                    + "OOOXXXOX\n"
-                    + "XXOOOOXX\n"
-                    + "XXOXOXOX\n"
-                    + "OOXOXXXX\n"
-                    + "OOOXXOXX\n"
-                    + "OOOXOOOX\n"
-                    + "XXXOXXOX\n"
-                    + "OOOXXXXX\n"
+                    + "O O O X X X O X \n"
+                    + "X X O O O O X X \n"
+                    + "X X O X O X O X \n"
+                    + "O O X O X X X X \n"
+                    + "O O O X X O X X \n"
+                    + "O O O X O O O X \n"
+                    + "X X X O X X O X \n"
+                    + "O O O X X X X X \n"
             );
 
         }
