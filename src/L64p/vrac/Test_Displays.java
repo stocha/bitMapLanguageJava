@@ -14,11 +14,20 @@ import static L64p.vrac.L64fbase.*;
 public class Test_Displays {
 
     public static void main(String args[]) {
-        dispScramble();
+        //dispScramble();
         //dispRandFill();
+        showRandomGame();
     }
     
-    
+    public static void showRandomGame() {
+        L64fbase.gob64Struct g=new gob64Struct();
+        g.init();
+        for(int i=0;i<64;i++){
+            System.out.println(g.debug_show());
+            g.playRandOnFree(0);
+        }
+        System.out.println(g.debug_show());
+    }    
 
     public static void dispScramble() {
         long m = 0;

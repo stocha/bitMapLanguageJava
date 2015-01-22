@@ -221,6 +221,7 @@ public class L64fbase {
         public long p0 = 0;
         public long p1 = 0;
         public long rand = 1;
+        public long phase=0;
 
         public final void reset() {
             p0 = p1 = 0;
@@ -233,8 +234,17 @@ public class L64fbase {
             }
         }
 
-        public final void rSelect(long forbid) {
-            long empty = ~(p0 | p1);
+        public final void playRandOnFree(long forbid) {
+            long empty = ~(p0 | p1 | forbid);
+            if(empty==0) return;
+            long nbBit=count(empty);
+            rand = rule30(rand);
+            int sel=(int)((rand&63)%nbBit);
+            //System.out.println("  "+sel);
+            long pl=selectNth(empty, sel);
+            pl|=p0;
+            p0=p1;
+            p1=pl;
         }
 
         public final void randomize() {
@@ -255,7 +265,10 @@ public class L64fbase {
         }
 
         public String debug_show() {
-            return outString(p0, p1);
+            if(phase==0)
+                return outString(p0, p1);
+            else
+                return outString(p1, p0); 
         }
     }
 }
