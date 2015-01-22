@@ -48,6 +48,8 @@ public interface IGobanFunct<TGoban extends IGoban> {
             }
             // Renvoyer le resultat.
             //TODO renvoyer le resultat.
+            
+            return null;
         }
         
     }
