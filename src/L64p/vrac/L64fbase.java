@@ -14,6 +14,29 @@ public class L64fbase {
     public static final long RMASK = 0x7f7f7f7f7f7f7f7fL;
     public static final long LMASK = 0xFEFEFEFEFEFEFEFEL;
 
+    public static final long scramble(long mem) {
+        long acc = mem;
+        acc |= ((mem >>> 1) & RMASK);
+        acc |= ((mem << 1) & LMASK);
+        acc |= (mem >>> 8);
+        acc |= (mem << 8);
+        return acc;
+    }
+
+    public static final long deadFull(long mem, long lib) {
+        return 0;
+    }
+
+    public static final long count(long mem) {
+        long v = mem;
+        long c;
+        v = v - ((v >>> 1) & 0x5555555555555555L);                           // temp
+        v = (v & (0x3333333333333333L)) + ((v >>> 2) & ( 0x3333333333333333L));      // temp
+        v = (v + (v >>> 4)) & 0xF0F0F0F0F0F0F0FL;                      // temp
+        c = (v * (0x101010101010101L)) >>> ((7) * 8); // count
+        return c;
+    }
+
     public static final long rule30(long mem) {
         //(l xor (c or r))
         long l = (mem >>> 1 | mem << 63);
@@ -80,7 +103,7 @@ public class L64fbase {
                     }
                 }//while
                 //System.out.print(""+model.charAt(pos-1));
-                res=setAt(res, i, j, ((out&1) & player) | ((out & player) >>> 1));
+                res = setAt(res, i, j, ((out & 1) & player) | ((out & player) >>> 1));
             }//For width
         }//For height
         return res;
@@ -181,5 +204,48 @@ public class L64fbase {
             }
         }
         return ~mask;
+    }
+
+    public static final class gob64Struct {
+
+        public long p0 = 0;
+        public long p1 = 0;
+        public long rand = 1;
+
+        public final void reset() {
+            p0 = p1 = 0;
+        }
+
+        public final void init() {
+            reset();
+            for (int i = 0; i < 30; i++) {
+                rand = rule30(rand);
+            }
+        }
+
+        public final void rSelect(long forbid) {
+            long empty = ~(p0 | p1);
+        }
+
+        public final void randomize() {
+            rand = rule30(rand);
+            rand = rule30(rand);
+
+            long split = rand;
+
+            rand = rule30(rand);
+            rand = rule30(rand);
+
+            long hit = rand;
+            long free = ~(p0 | p1);
+            hit &= free;
+
+            p0 |= hit & split;
+            p1 |= hit & ~split;
+        }
+
+        public String debug_show() {
+            return outString(p0, p1);
+        }
     }
 }

@@ -31,8 +31,19 @@ public class Test_L64Bm_simpleFast {
             bmTest001();
             maskValues();
             gobTest001();
+            testBitCount();
+            
             //rule30Test();
            
+        }
+        
+        public void testBitCount(){
+            long mem=0;
+            for(int i=0;i<64;i++){
+                //assertEquals(""+count(mem), ""+i);
+                System.out.println(""+count(mem)+" / "+i+" "+mem);
+                mem|=1L<<(i);
+            }
         }
         
         public void gobTest001(){
