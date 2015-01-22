@@ -31,10 +31,20 @@ public class L64fbase {
         long v = mem;
         long c;
         v = v - ((v >>> 1) & 0x5555555555555555L);                           // temp
-        v = (v & (0x3333333333333333L)) + ((v >>> 2) & ( 0x3333333333333333L));      // temp
+        v = (v & (0x3333333333333333L)) + ((v >>> 2) & (0x3333333333333333L));      // temp
         v = (v + (v >>> 4)) & 0xF0F0F0F0F0F0F0FL;                      // temp
         c = (v * (0x101010101010101L)) >>> ((7) * 8); // count
         return c;
+    }
+
+    public static final long selectNth(long in,int at) {
+        int n;
+        long res=0;
+        for (n = 0; in != 0 && n <= at; n++) {
+            res=in;
+            in &= in - 1;
+        }
+        return res^in;
     }
 
     public static final long rule30(long mem) {

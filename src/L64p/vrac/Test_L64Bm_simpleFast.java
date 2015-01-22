@@ -32,16 +32,34 @@ public class Test_L64Bm_simpleFast {
             maskValues();
             gobTest001();
             testBitCount();
-            
+            testSelectNth();
             //rule30Test();
            
+        }
+        
+        public void testSelectNth(){
+            long m=-1L;
+            long neg=-1L;
+            
+            for(int i=0;i<64;i++){
+                m=selectNth(neg,i);
+                assertEquals(""+(m>>>i), ""+1);
+                assertEquals(""+(m), ""+(1L<<i));
+                //System.out.println(""+i+" "+m);
+            }
+            
+            neg=0;neg|=(1L<<6);neg|=(1L<<15);
+            m=selectNth(neg,0);
+            assertEquals(""+(m), ""+(1L<<6));
+            m=selectNth(neg,1);
+            assertEquals(""+(m), ""+(1L<<15));
         }
         
         public void testBitCount(){
             long mem=0;
             for(int i=0;i<64;i++){
-                //assertEquals(""+count(mem), ""+i);
-                System.out.println(""+count(mem)+" / "+i+" "+mem);
+                assertEquals(""+count(mem), ""+i);
+                //System.out.println(""+count(mem)+" / "+i+" "+mem);
                 mem|=1L<<(i);
             }
         }
