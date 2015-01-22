@@ -30,9 +30,22 @@ public class Test_L64Bm_simpleFast {
         public void doit() {
             bmTest001();
             maskValues();
+            rule30Test();
+            
            // bmBase5_3();
            // testCopy();
            // testShift();
+        }
+        
+        public void rule30Test(){
+            long m=1L<<32;
+            
+            for(int i=0;i<100;i++){
+                m=rule30(m);
+                m=rule30(m);
+                System.out.printf("%64s\n",Long.toBinaryString(m));
+            }
+            
         }
 
         public void maskValues(){

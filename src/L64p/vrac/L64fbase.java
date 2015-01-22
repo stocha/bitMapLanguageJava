@@ -13,6 +13,13 @@ public class L64fbase {
     
     public static final long RMASK=0x7f7f7f7f7f7f7f7fL;
     public static final long LMASK=0xFEFEFEFEFEFEFEFEL;
+    
+    public static final long rule30(long mem){
+        //(l xor (c or r))
+        long l=(mem>>>1 | mem<<63);
+        long r=(mem>>>63 | mem<<1);
+         return (l ^ (mem | r));
+    }
 
     public static final int getAt(long mem, int x, int y) {
         int dec = (y << 3) + x;
