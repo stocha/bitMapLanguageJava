@@ -33,8 +33,54 @@ public class Test_L64Bm_simpleFast {
             gobTest001();
             testBitCount();
             testSelectNth();
-            //rule30Test();
+            testPseudoEye();
+            
+            
            
+        }
+        
+        public void testPseudoEye(){
+            L64fbase.gob64Struct gob=new gob64Struct();
+            gob.debug_input(    "<GOBAN>\n"               
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n");
+            
+            assertEquals(    "<GOBAN>\n"               
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n", gob.debug_show());
+            
+            gob.debug_input(    "<GOBAN>\n"               
+                    + "- X - X - X - X \n"
+                    + "X O - X X O X X \n"
+                    + "- - - - - - - - \n"
+                    + "- - X O - - X - \n"
+                    + "- X - X - X - X \n"
+                    + "- - X O - O X - \n"
+                    + "X - X - - - - - \n"
+                    + "- X - X - - - - \n");   
+            
+            assertEquals(outString(gob.pseudoEyes(),'#','-'),
+                    "<BITMAP>\n"
+                    + "# - - - # - # - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - # - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n" );
         }
         
         public void testSelectNth(){
@@ -89,18 +135,6 @@ public class Test_L64Bm_simpleFast {
                     + "X X X O X X O X \n"
                     + "O O O X X X X X \n"
             );
-        }
-        
-        public void rule30Test(){
-            long m=1L<<32;
-            
-            for(int i=0;i<1;i++){
-                m=rule30(m);
-                m=rule30(m);
-                //System.out.printf("%64s\n",Long.toBinaryString(m));
-                //System.out.println(""+outString(m, 'X', '-'));
-            }
-            
         }
 
         public void maskValues(){

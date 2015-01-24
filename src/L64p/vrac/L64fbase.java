@@ -278,6 +278,10 @@ public class L64fbase {
             p0 ^= dead;
             return pl;            
         }
+        
+        public final long pseudoEyes(){
+            return 0;
+        }
 
         public final long playOneRandomMove() {
 
@@ -331,6 +335,12 @@ public class L64fbase {
             } else {
                 return outString(p1, p0);
             }
+        }
+        
+        public void debug_input(String input){
+            p0=inputString( input,0);
+            p1=inputString( input,1);
+            phase=0;
         }
     }
 }
