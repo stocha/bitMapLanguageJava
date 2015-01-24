@@ -22,9 +22,10 @@ public class Test_Displays {
     public static void showRandomGame() {
         L64fbase.gob64Struct g=new gob64Struct();
         g.init();
-        for(int i=0;i<64*2;i++){
+        for(int i=0;i<64*3;i++){
             System.out.println(g.debug_show());
-            g.playRandOnFree(0);
+            long move=g.playOneRandomMove();
+            if(move==0) g.reset();
         }
         System.out.println(g.debug_show());
     }    

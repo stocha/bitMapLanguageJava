@@ -23,9 +23,10 @@ public class Bench_mesures {
         
         final int nbGame=1000000;
         for(int big=0;big<nbGame;big++){
-        for(int i=0;i<128;i++){
+        for(int i=0;i<64*3;i++){
             //System.out.println(g.debug_show());
-            g.playRandOnFree(0);
+            long move=g.playOneRandomMove();
+            if(move==0) g.reset();
         }
         //System.out.println(g.debug_show());
         g.reset();

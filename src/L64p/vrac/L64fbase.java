@@ -25,17 +25,16 @@ public class L64fbase {
 
     public static final long deadFull(long mem, long lib) {
         long alive;
-        alive=scramble(lib)&mem;
-        
-        long last=alive;
-        
-        while(last!=0){
-            last=alive;
-            alive=scramble(alive)&mem;
-            last^=alive;
+        alive = scramble(lib) & mem;
+
+        long last = alive;
+
+        while (last != 0) {
+            last = alive;
+            alive = scramble(alive) & mem;
+            last ^= alive;
         }
-        
-        
+
         return (~alive) & mem;
     }
 
@@ -49,14 +48,14 @@ public class L64fbase {
         return c;
     }
 
-    public static final long selectNth(long in,int at) {
+    public static final long selectNth(long in, int at) {
         int n;
-        long res=0;
+        long res = 0;
         for (n = 0; in != 0 && n <= at; n++) {
-            res=in;
+            res = in;
             in &= in - 1;
         }
-        return res^in;
+        return res ^ in;
     }
 
     public static final long rule30(long mem) {
@@ -233,7 +232,7 @@ public class L64fbase {
         public long p0 = 0;
         public long p1 = 0;
         public long rand = 1;
-        public long phase=0;
+        public long phase = 0;
 
         public final void reset() {
             p0 = p1 = 0;
@@ -246,22 +245,33 @@ public class L64fbase {
             }
         }
 
-        public final void playRandOnFree(long forbid) {
+        public final long playOneRandomMove() {
+
+            long forbid = 0;
             long empty = ~(p0 | p1 | forbid);
-            if(empty==0) return;
-            long nbBit=count(empty);
+            if(empty==0) return empty;
+            long pl = selectOneFree(empty);
+
+            pl |= p0;
+            p0 = p1;
+            p1 = pl;
+            phase ^= 1;
+            //if(true)
+            {
+                empty = ~(p0 | p1);
+                long dead = deadFull(p0, empty);
+                p0 ^= dead;
+            }
+            return pl;
+        }
+
+        public final long selectOneFree(long empty) {
+            long nbBit = count(empty);
             rand = rule30(rand);
-            int sel=(int)((rand&63)%nbBit);
+            int sel = (int) ((rand & 63) % nbBit);
             //System.out.println("  "+sel);
-            long pl=selectNth(empty, sel);
-            pl|=p0;
-            p0=p1;
-            p1=pl;
-            phase^=1;
-            
-            empty=~(p0 | p1);
-            long dead=deadFull(p0, empty);
-            p0^=dead;
+            long pl = selectNth(empty, sel);
+            return pl;
         }
 
         public final void randomize() {
@@ -282,10 +292,11 @@ public class L64fbase {
         }
 
         public String debug_show() {
-            if(phase==0)
+            if (phase == 0) {
                 return outString(p0, p1);
-            else
-                return outString(p1, p0); 
+            } else {
+                return outString(p1, p0);
+            }
         }
     }
 }
