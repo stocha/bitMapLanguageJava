@@ -244,6 +244,40 @@ public class L64fbase {
                 rand = rule30(rand);
             }
         }
+        
+        public final long playOneRandNoSuicide(){
+
+            long forbid = 0;
+            long empty = ~(p0 | p1 | forbid);
+            if(empty==0) return empty;
+            long pl=0;
+            
+            long libs=~(p0|p1);
+            long dead=0;
+            while(pl==0){
+                pl = selectOneFree(empty);
+                p0 ^= pl;
+                libs^=pl;
+                long suicide = deadFull(p0, libs);
+                dead = deadFull(p1, libs);
+                if(suicide!=0 && dead==0){
+                    p0^=pl;
+                    empty^=pl;
+                    libs^=pl;
+                    pl=0;
+                    
+                    if(empty==0) break;
+                }
+            }
+
+            long sw=p0;
+            p0 = p1;
+            p1 = sw;
+            phase ^= 1;
+            //if(true)
+            p0 ^= dead;
+            return pl;            
+        }
 
         public final long playOneRandomMove() {
 
