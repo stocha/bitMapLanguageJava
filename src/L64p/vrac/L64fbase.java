@@ -280,7 +280,34 @@ public class L64fbase {
         }
         
         public final long pseudoEyes(){
-            return 0;
+            long libs=~(p0|p1);
+            
+            long notP0=~p0;
+            long eyePos=~((notP0>>>8)|(notP0<<8)|((notP0<<1)&LMASK)|((notP0>>>1)&RMASK));
+            
+            long one=0;
+            long two=0;
+            long diag;
+            
+            diag=((p1<<9)&LMASK);
+            two=(diag&one)|two;
+            one=diag|one;
+            
+            diag=((p1<<7)&RMASK);
+            two=(diag&one)|two;
+            one=diag|one;
+            
+            diag=((p1>>>7)&LMASK);
+            two=(diag&one)|two;
+            one=diag|one;
+            
+            diag=((p1>>>9)&RMASK);
+            two=(diag&one)|two;
+            one=diag|one;
+            long border=~RMASK|~LMASK|~(-1L>>>8)|~(-1L<<8);
+            
+            long res=libs&eyePos&((border&one)|two);
+            return res;
         }
 
         public final long playOneRandomMove() {
