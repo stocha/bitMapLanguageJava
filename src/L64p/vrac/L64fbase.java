@@ -247,7 +247,9 @@ public class L64fbase {
         
         public final long playOneRandNoSuicide(){
 
-            long forbid = 0;
+            long notP0=~p0;
+            long eyePos=~((notP0>>>8)|(notP0<<8)|((notP0<<1)&LMASK)|((notP0>>>1)&RMASK));
+            long forbid = ~pseudoEyes()&(eyePos);
             long empty = ~(p0 | p1 | forbid);
             if(empty==0) return empty;
             long pl=0;

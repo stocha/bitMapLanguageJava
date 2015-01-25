@@ -16,7 +16,13 @@ public class Test_Displays {
     public static void main(String args[]) {
         //dispScramble();
         //dispRandFill();
-        showRandomGame();
+        //showRandomGame();
+        
+        showQuadrupleKoGame();
+    }
+    
+    public static void showQuadrupleKoGame(){
+        
     }
     
     public static void showRandomGame() {
