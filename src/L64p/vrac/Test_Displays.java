@@ -15,9 +15,9 @@ public class Test_Displays {
 
     public static void main(String args[]) {
         //dispScramble();
-        //dispRandFill();
+        dispRandFillAccell();
         //showRandomGame();
-        showRandomEnd();
+        //showRandomEnd();
         
         //showDoubleKoGame();
         //showSimpleKoGame();
@@ -135,11 +135,11 @@ public class Test_Displays {
         }
     }
 
-    public static void dispRandFill() {
+    public static void dispRandFillAccell() {
         L64fbase.gob64Struct g = new L64fbase.gob64Struct();
         g.init();
-        for (int i = 0; i < 10; i++) {
-            g.randomize();
+        for (int i = 0; i < 40; i++) {
+            g.randomizeAccelNoConflict();
 
             System.out.println(g.debug_show());
         }

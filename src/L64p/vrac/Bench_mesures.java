@@ -16,6 +16,45 @@ public class Bench_mesures {
         //dispRandFill();
         //timeRandomGame();
         timeRandomNoSuicideGame();
+        timeRandomNoSuicideGameAccelerated();
+    }
+
+    public static void timeRandomNoSuicideGameAccelerated() {
+        L64fbase.gob64Struct g = new L64fbase.gob64Struct();
+        g.init();
+        long t0 = System.nanoTime();
+        for (int ran = 0; ran < 4; ran++) {
+            g.randomizeAccelNoConflict();
+        }
+
+        final int nbGame = 200000;
+        for (int big = 0; big < nbGame; big++) {
+            int pass = 0;
+            for (int i = 0; i < 64 * 3; i++) {
+                //System.out.println(g.debug_show());
+                long move = g.playOneRandNoSuicide();
+                if (move == 0) {
+                    pass++;
+                } else {
+                    pass = 0;
+                }
+                if (pass == 2) {
+                    break;
+                }
+            }
+            //System.out.println(g.debug_show());
+            g.reset();
+            for (int ran = 0; ran < 4; ran++) {
+                g.randomizeAccelNoConflict();
+            }
+        }
+        long t1 = System.nanoTime();
+
+        double t = (t1 - t0) / 1000000000.0;
+        System.out.println("timeRandomNoSuicideGameAccelerated " + nbGame + " partie en " + t + " secondes");
+        double nbgamSec = nbGame;
+        nbgamSec /= t;
+        System.out.println("" + nbgamSec + " parties par secondes");
     }
 
     public static void timeRandomNoSuicideGame() {
@@ -44,7 +83,7 @@ public class Bench_mesures {
         long t1 = System.nanoTime();
 
         double t = (t1 - t0) / 1000000000.0;
-        System.out.println("" + nbGame + " partie en " + t + " secondes");
+        System.out.println(" timeRandomNoSuicideGame " + nbGame + " partie en " + t + " secondes");
         double nbgamSec = nbGame;
         nbgamSec /= t;
         System.out.println("" + nbgamSec + " parties par secondes");

@@ -328,7 +328,7 @@ public class L64fbase {
             
             long res=libs&eyePos&((border&one)|two);
             return res;
-        }
+        }                
 
         public final long playOneRandomMove() {
 
@@ -359,7 +359,7 @@ public class L64fbase {
             return pl;
         }
 
-        public final void randomize() {
+        public final void randomizeAccelNoConflict() {
             rand = rule30(rand);
             rand = rule30(rand);
 
@@ -372,8 +372,43 @@ public class L64fbase {
             long free = ~(p0 | p1);
             hit &= free;
 
+            long p0pre=p0;
+            long p1pre=p1;
+            
             p0 |= hit & split;
             p1 |= hit & ~split;
+            
+            long freeAft = ~(p0 | p1);
+            
+            long e0=deadFull(p0^p0pre, ~p0);
+            long e1=deadFull(p1^p1pre, ~p1);
+            
+            //System.out.println("other "+outString(~p0pre, ~p1pre));
+            //System.out.println("Asphixie "+outString(e0, e1));
+            
+            p0=p0&(~e0 | p0pre);
+            p1=p1&(~e1 | p1pre);
+            
+            long d0=deadFull(p0, freeAft);
+            long d1=deadFull(p1, freeAft);
+            
+            long d0voi=scramble(d0)&d1;
+            long d1voi=scramble(d1)&d0;
+            
+            long noconf0=deadFull(p0, d0voi);
+            long noconf1=deadFull(p1, d1voi);
+            
+            p0=p0pre|noconf0;
+            p1=p1pre|noconf1;
+            
+            long freeFin = ~(p0 | p1);
+            
+            long clean0=deadFull(p0, freeFin);
+            long clean1=deadFull(p1, freeFin);
+            
+            p0^=clean0;
+            p1^=clean1;
+            
         }
 
         public String debug_show() {
