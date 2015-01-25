@@ -245,17 +245,18 @@ public class L64fbase {
             p0 = p1 = 0;
         }
         
-        public final void copy(gob64Struct src,long rand){
+        public final void copy(gob64Struct src){
             p0=src.p0;
             p1=src.p1;
             phase=src.phase;
             
             past0=src.past0;
-            past1=src.past1;past3=src.past3;
+            past1=src.past1;
             past2=src.past2;
+            past3=src.past3;
             
             repet=src.repet;
-            this.rand=rand;
+            this.rand=src.rand;
         }
 
         public final void init() {
@@ -290,7 +291,11 @@ public class L64fbase {
                     pass = 0;
                 }
                 if (pass == 2) {
-                    break;
+                    if(phase==this.phase){
+                        return scoreBoard()+komi;
+                    }else{
+                        return -scoreBoard()+komi;
+                    }
                 }
             }
             
