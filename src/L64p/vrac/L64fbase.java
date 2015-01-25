@@ -233,6 +233,13 @@ public class L64fbase {
         public long p1 = 0;
         public long rand = 1;
         public long phase = 0;
+        public long repet =0;
+        
+        public long past0=0;
+        public long past1=0;
+        public long past2=0;
+        public long past3=0;
+        
 
         public final void reset() {
             p0 = p1 = 0;
@@ -256,10 +263,12 @@ public class L64fbase {
             
             long libs=~(p0|p1);
             long dead=0;
+            long past=0;
             while(pl==0){
                 pl = selectOneFree(empty);
                 p0 ^= pl;
                 libs^=pl;
+                past=p0;
                 long suicide = deadFull(p0, libs);
                 dead = deadFull(p1, libs);
                 if(suicide!=0 && dead==0){
@@ -271,6 +280,14 @@ public class L64fbase {
                     if(empty==0) break;
                 }
             }
+            
+            if(past==past2 || past==past0 ){
+                repet++;                
+            }else{
+                repet=0;
+            }
+            
+            past0=past1;past1=past2;past2=past3;past3=past;
 
             long sw=p0;
             p0 = p1;
@@ -278,6 +295,7 @@ public class L64fbase {
             phase ^= 1;
             //if(true)
             p0 ^= dead;
+            if(repet>=4) return 0;
             return pl;            
         }
         
