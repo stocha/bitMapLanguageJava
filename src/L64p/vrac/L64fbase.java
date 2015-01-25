@@ -244,12 +244,57 @@ public class L64fbase {
         public final void reset() {
             p0 = p1 = 0;
         }
+        
+        public final void copy(gob64Struct src,long rand){
+            p0=src.p0;
+            p1=src.p1;
+            phase=src.phase;
+            
+            past0=src.past0;
+            past1=src.past1;past3=src.past3;
+            past2=src.past2;
+            
+            repet=src.repet;
+            this.rand=rand;
+        }
 
         public final void init() {
             reset();
             for (int i = 0; i < 30; i++) {
                 rand = rule30(rand);
             }
+        }
+        
+        
+        public final long scoreBoard(){
+            long notP0=~p0;
+            long eyePos0=~((notP0>>>8)|(notP0<<8)|((notP0<<1)&LMASK)|((notP0>>>1)&RMASK));
+            notP0=~p1;
+            long eyePos1=~((notP0>>>8)|(notP0<<8)|((notP0<<1)&LMASK)|((notP0>>>1)&RMASK));
+            
+            long s0=count(eyePos0|p0);
+            long s1=count(eyePos1|p1);
+            
+            return s0-s1;
+        }
+        
+        public final double finishRandNoSuicide(double komi){
+            int pass = 0;
+            long phase=this.phase;
+            for (int i = 0; i < 64 * 3; i++) {
+                //System.out.println(g.debug_show());
+                long move = this.playOneRandNoSuicide();
+                if (move == 0) {
+                    pass++;
+                } else {
+                    pass = 0;
+                }
+                if (pass == 2) {
+                    break;
+                }
+            }
+            
+            return komi;
         }
         
         public final long playOneRandNoSuicide(){

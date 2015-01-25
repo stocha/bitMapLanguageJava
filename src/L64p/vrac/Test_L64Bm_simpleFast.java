@@ -34,9 +34,38 @@ public class Test_L64Bm_simpleFast {
             testBitCount();
             testSelectNth();
             testPseudoEye();
-            
+            testScore();
             
            
+        }
+        
+        public void testScore(){
+            L64fbase.gob64Struct gob=new gob64Struct();
+            gob.debug_input(    "<GOBAN>\n"               
+                    + "O O O O O O O O \n"
+                    + "O O - O O O - O \n"
+                    + "O O O O O O O O \n"
+                    + "O O O O O O O O \n"
+                    + "X X X X X X X X \n"
+                    + "X - X X - X X X \n"
+                    + "X X X X X - X X \n"
+                    + "- X - X X X X - \n");      
+            
+            assertEquals(""+gob.scoreBoard(), "0");
+            
+            gob.debug_input(    "<GOBAN>\n"               
+                    + "O O O O O O O O \n"
+                    + "O O - O O O - O \n"
+                    + "O O O O O O O O \n"
+                    + "O O O O O O O O \n"
+                    + "X X X O X X X X \n"
+                    + "X - X X - X X X \n"
+                    + "X X X X X - X X \n"
+                    + "- X - X X X X - \n");  
+            
+            assertEquals(""+gob.scoreBoard(), "-2");
+            gob.playOneRandNoSuicide();
+            assertEquals(""+gob.scoreBoard(), "2");
         }
         
         public void testPseudoEye(){
