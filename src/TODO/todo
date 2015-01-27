@@ -1,0 +1,10 @@
+Ajouter un outil pour gérer le timing des benchs. Plutot que de tout reécrire à chaque fois!
+
+
+Creer un randMap split 1/2 (meme nombre de coups).
+Creer un fast sim avec resolution des zones de conflits par coups individuels.
+Creer un player amafZone. 
+
+Creer un amaf simple.
+Tester un uct simple.
+Tester le flat avec de vrai parties.
