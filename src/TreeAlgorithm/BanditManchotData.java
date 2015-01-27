@@ -19,6 +19,7 @@ public class BanditManchotData implements BoardData {
     double prob = 0;
     
     public static final Random rand=new Random(176276265L);
+    public static final int max=1000;
 
     public BanditManchotData(int nbBandit) {
         this.nbBandit = nbBandit;
@@ -37,6 +38,8 @@ public class BanditManchotData implements BoardData {
         for (int i = 0; i < nbBandit; i++) {
             BanditManchotData bd = new BanditManchotData(0);
             bd.prob = start + ((double) i) * step;
+            int val=(int)(bd.prob*max);
+            bd.prob=val/(double)1000.0;
             r.add(bd);
         }
         
@@ -45,10 +48,10 @@ public class BanditManchotData implements BoardData {
 
     @Override
     public double scoreOnce() {
-        int max=1000;
+        //System.out.println("scoring for "+prob);
         int flip=(int)(max*prob);
         int r=(rand.nextInt()&0xFFFF)%1000;
-        if(r>=flip) return 1.0; else return 0.0;
+        if(r<=flip) return 1.0; else return 0.0;
     }
 
 }

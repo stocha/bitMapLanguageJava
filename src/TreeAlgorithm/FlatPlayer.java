@@ -18,6 +18,13 @@ public class FlatPlayer {
     long hits=0;
     double scoreacc=0;
     final BoardData state;
+    
+    
+    public String toString(){
+        String res="";
+        res+=scoreAvg();
+        return res;
+    }
 
     public FlatPlayer(BoardData state,FlatPlayer father) {
         this.father=father;
@@ -45,8 +52,8 @@ public class FlatPlayer {
     }
     
     double visitValue(FlatPlayer node){
-        if(hits==0) return Double.MAX_VALUE;
-        return 1/hits;
+        if(node.hits==0) return Double.MAX_VALUE;
+        return 1/(double)node.hits;
     }
     
     public double backPropCurrNodeScore(){
@@ -55,9 +62,10 @@ public class FlatPlayer {
     
     
     
-    public double incScore(){
+    public double doSimulation(){
         if(childs!=null){
-            return 0;
+            FlatPlayer ch=selectChildToVisit();
+            return ch.doSimulation();
         }else{
             double sc=state.scoreOnce();
             hits++;
