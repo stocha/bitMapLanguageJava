@@ -23,6 +23,7 @@ public class FlatPlayer {
     public String toString(){
         String res="";
         res+=scoreAvg();
+        res+="/"+hits;
         return res;
     }
 

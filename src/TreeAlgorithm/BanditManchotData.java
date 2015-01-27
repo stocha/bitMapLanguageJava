@@ -18,7 +18,17 @@ public class BanditManchotData implements BoardData {
     final int nbBandit;
     double prob = 0;
     
-    public static final Random rand=new Random(176276265L);
+    public static final Random rand=new Random(){
+
+        long my=1;
+        @Override
+        public int nextInt() {
+            my=L64p.vrac.L64fbase.rule30(my);
+            my=L64p.vrac.L64fbase.rule30(my);
+            return (int)my;
+        }
+        
+    };
     public static final int max=1000;
 
     public BanditManchotData(int nbBandit) {
