@@ -35,8 +35,10 @@ public class FlatPlayer {
     public BoardData bestState(){
         double max=Double.MIN_VALUE;
         FlatPlayer maxfp=null;
+        
+        System.out.println("childs count : "+childs.size());
         for(FlatPlayer fp : childs){
-            double sc=scoreAvg();
+            double sc=fp.scoreAvg();
             if(sc>max) {max=sc;maxfp=fp;}
         }
         return maxfp.state;

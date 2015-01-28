@@ -42,6 +42,8 @@ public class Test_Players {
             
             System.out.println(""+nbSim+" en "+t+" /  "+simSec+" act per second");
             
+            System.out.println("best is "+fp.bestState());
+            
         }
 
         public void doit() {
