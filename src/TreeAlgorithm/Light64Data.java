@@ -7,6 +7,7 @@ package TreeAlgorithm;
 
 import L64p.vrac.L64fbase;
 import L64p.vrac.L64fbase.gob64Struct;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,23 +18,57 @@ public class Light64Data implements BoardData {
 
     final L64fbase.gob64Struct mem = new gob64Struct();
     final double komi;
+    
+    static long rand=9888478;
 
     Light64Data(gob64Struct src, double komi) {
         mem.copy(src);
         this.komi = komi;
     }
+    
+    @Override
+    public String toString(){
+        String res="";
+        res+=mem.debug_show();
+        
+        return res;
+    }
 
     @Override
     public List<BoardData> getSubData() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<BoardData> mv=new ArrayList<>();
+        
+        gob64Struct sim=new gob64Struct();
+        sim.copy(mem);
+        sim.rand=rand;
+        long m=sim.playOneRandNoSuicide();
+        rand=sim.rand;
+        long forbid=0;
+        while(m!=0){
+            mv.add(new Light64Data(sim,-komi));
+            sim.copy(mem);
+            forbid|=m;
+            sim.rand=rand;
+            m=sim.playOneRandNoSuicide(forbid);
+            rand=sim.rand;
+        }
+        
+        
+        
+        
+        return mv;
     }
 
     @Override
     public double scoreOnce() {
         gob64Struct sim = new gob64Struct();
+        
         sim.copy(mem);
+        sim.rand=rand;        
         double sc = sim.finishRandNoSuicide(komi);
-        return sc;
+        rand=sim.rand;
+        if(sc < 0) return 1.0; else return 0.0;
+        //return sc;
     }
 
 }

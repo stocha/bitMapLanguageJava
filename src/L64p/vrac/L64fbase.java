@@ -303,10 +303,14 @@ public class L64fbase {
         }
         
         public final long playOneRandNoSuicide(){
+            return playOneRandNoSuicide(0L);
+        }
+        
+        public final long playOneRandNoSuicide(long extforb){
 
             long notP0=~p0;
             long eyePos=~((notP0>>>8)|(notP0<<8)|((notP0<<1)&LMASK)|((notP0>>>1)&RMASK));
-            long forbid = ~pseudoEyes()&(eyePos);
+            long forbid = (~pseudoEyes()&(eyePos))|extforb;
             long empty = ~(p0 | p1 | forbid);
             if(empty==0) return empty;
             long pl=0;

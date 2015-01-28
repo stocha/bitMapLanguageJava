@@ -26,6 +26,13 @@ public class FlatPlayer {
         res+="/"+hits;
         return res;
     }
+    
+    public String showResNBoard(){
+        String res="";
+            res+=""+this;
+            res+=""+state+"";
+        return res;
+    }
 
     public FlatPlayer(BoardData state,FlatPlayer father) {
         this.father=father;
