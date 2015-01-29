@@ -81,17 +81,27 @@ public class Test_Players {
         }
 
         void showFlatGame() {
+            
+            int pass=0;
 
             L64fbase.gob64Struct gob = new L64fbase.gob64Struct();
+            long black=0;black=~black;
+            black=black>>>8;
+            //black|=((long)(0xAA))<<(64-8);
+            black=black>>>1;black&=L64fbase.RMASK;
+            black=~black;
+            gob.p0=black;
+            double komi=-63;
             for (int mm = 0; mm < 128; mm++) {
 
-                Light64Data band = new Light64Data(gob, (double) 0.5);
+                Light64Data band = new Light64Data(gob, komi);
+                komi=-komi;
             //System.out.println("Theoritical values "+band.getSubData());
 
                 FlatPlayer fp = new FlatPlayer(band, null);
                 fp.deflat();
 
-                int nbSim = 64000;
+                int nbSim = 64000*2;
                 long t0 = System.nanoTime();
                 for (int i = 0; i < nbSim; i++) {
                     fp.doSimulation();
@@ -105,8 +115,29 @@ public class Test_Players {
 
                 //System.out.println("" + nbSim + " en " + t + " /  " + simSec + " act per second");
 
+                for(FlatPlayer chi:fp.childs){
+                    System.out.println("" + chi);
+                }
+                
+                System.out.println(""+gob.phase+" to play");
                 System.out.println("best is " + fp.bestState());
-                gob.copy(((Light64Data)fp.bestState()).mem);
+                if(fp.bestState()==null){
+                    pass++; gob.phase^=1;komi=-komi;
+                }
+                else{
+                    pass=0;
+                    gob.copy(((Light64Data)fp.bestState()).mem);
+                }
+                
+                if(pass>=2){ 
+                    
+                    System.out.println("final board :"+gob.debug_show());
+                    System.out.println("final score = "+gob.finishRandNoSuicide(komi));
+                    
+                    break;
+                
+                
+                }
             }
 
         }

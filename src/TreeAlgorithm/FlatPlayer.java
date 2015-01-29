@@ -39,9 +39,10 @@ public class FlatPlayer {
         this.state = state;
     }
     
+    private static final FlatPlayer nullp=new FlatPlayer(null, null);
     public BoardData bestState(){
-        double max=Double.MIN_VALUE;
-        FlatPlayer maxfp=null;
+        double max=Double.NEGATIVE_INFINITY;
+        FlatPlayer maxfp=nullp;
         
         System.out.println("childs count : "+childs.size());
         for(FlatPlayer fp : childs){
@@ -73,7 +74,7 @@ public class FlatPlayer {
     
     
     public double doSimulation(){
-        if(childs!=null){
+        if(childs!=null && childs.size()>0){
             FlatPlayer ch=selectChildToVisit();
             return ch.doSimulation();
         }else{

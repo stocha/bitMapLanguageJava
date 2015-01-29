@@ -67,8 +67,8 @@ public class Light64Data implements BoardData {
         sim.rand=rand;        
         double sc = sim.finishRandNoSuicide(komi);
         rand=sim.rand;
-        if(sc < 0) return 1.0; else return 0.0;
-        //return sc;
+        if(sc < 0) return 1.0; else return 0.0;        
+        //return -sc;
     }
 
 }

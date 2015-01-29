@@ -292,7 +292,7 @@ public class L64fbase {
                 }
                 if (pass == 2) {
                     if(phase==this.phase){
-                        return scoreBoard()+komi;
+                        return scoreBoard()-komi;
                     }else{
                         return -scoreBoard()+komi;
                     }
