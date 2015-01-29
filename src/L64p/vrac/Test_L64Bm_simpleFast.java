@@ -67,11 +67,11 @@ public class Test_L64Bm_simpleFast {
             
             assertEquals(""+gob.scoreBoard(), "-2");
             assertEquals(""+gob.scoreGame(63.0, 0), "-65.0");
-            assertEquals(""+gob.scoreGame(63.0, 1), "61.0");
+            assertEquals(""+gob.scoreGame(63.0, 1), "65.0");
             gob.playOneRandNoSuicide();
             assertEquals(""+gob.scoreBoard(), "2");
             assertEquals(""+gob.scoreGame(63.0, 0), "-65.0");
-            assertEquals(""+gob.scoreGame(63.0, 1), "61.0");
+            assertEquals(""+gob.scoreGame(63.0, 1), "65.0");
         }
         
         public void testPseudoEye(){

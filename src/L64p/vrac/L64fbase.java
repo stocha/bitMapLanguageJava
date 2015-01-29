@@ -270,7 +270,7 @@ public class L64fbase {
             
             double k=komi;
             if(metaphase!=0) k=-k;
-                    if(phase==0){
+                    if((phase^metaphase)==0){
                         return scoreBoard()-k;
                     }else{
                         return -scoreBoard()-k;
@@ -292,7 +292,6 @@ public class L64fbase {
         
         public final double finishRandNoSuicide(double komi,int metaphase){
             int pass = 0;
-            long phase=this.phase;
             for (int i = 0; i < 64 * 3; i++) {
                 //System.out.println(g.debug_show());
                 long move = this.playOneRandNoSuicide();

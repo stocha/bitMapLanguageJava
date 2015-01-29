@@ -25,7 +25,7 @@ public class Light64Data implements BoardData {
     Light64Data(gob64Struct src, double komi,int metaphase) {
         mem.copy(src);
         this.komi = komi;
-        this.metaphase=metaphase;
+        this.metaphase=metaphase^1;
     }
     
     @Override
@@ -47,7 +47,7 @@ public class Light64Data implements BoardData {
         rand=sim.rand;
         long forbid=0;
         while(m!=0){
-            mv.add(new Light64Data(sim,komi,metaphase^1));
+            mv.add(new Light64Data(sim,komi,metaphase));
             sim.copy(mem);
             forbid|=m;
             sim.rand=rand;
@@ -69,7 +69,7 @@ public class Light64Data implements BoardData {
         sim.rand=rand;        
         double sc = sim.finishRandNoSuicide(komi,metaphase);
         rand=sim.rand;
-        if(sc < 0) return 1.0; else return 0.0;        
+        if(sc > 0) return 1.0; else return 0.0;        
         //return -sc;
     }
 
