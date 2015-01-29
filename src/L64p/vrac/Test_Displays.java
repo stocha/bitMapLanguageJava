@@ -24,6 +24,7 @@ public class Test_Displays {
         //showTripleKoGame();
     }
     
+    
      public static void showRandomEnd() {
         L64fbase.gob64Struct g=new gob64Struct();
         g.init();

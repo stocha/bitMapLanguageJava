@@ -52,7 +52,7 @@ public class Test_Players {
         void TestNBenchFlatLight() {
 
             L64fbase.gob64Struct gob = new L64fbase.gob64Struct();
-            Light64Data band = new Light64Data(gob, (double) 0.5);
+            Light64Data band = new Light64Data(gob, (double) 0.5,0);
             //System.out.println("Theoritical values "+band.getSubData());
 
             FlatPlayer fp = new FlatPlayer(band, null);
@@ -91,10 +91,10 @@ public class Test_Players {
             black=black>>>1;black&=L64fbase.RMASK;
             black=~black;
             gob.p0=black;
-            double komi=-63;
+            double komi=63;
             for (int mm = 0; mm < 128; mm++) {
 
-                Light64Data band = new Light64Data(gob, komi);
+                Light64Data band = new Light64Data(gob, komi,mm&1);
                 komi=-komi;
             //System.out.println("Theoritical values "+band.getSubData());
 
@@ -122,7 +122,7 @@ public class Test_Players {
                 System.out.println(""+gob.phase+" to play");
                 System.out.println("best is " + fp.bestState());
                 if(fp.bestState()==null){
-                    pass++; gob.phase^=1;komi=-komi;
+                    pass++; gob.phase^=1;
                 }
                 else{
                     pass=0;
@@ -132,7 +132,7 @@ public class Test_Players {
                 if(pass>=2){ 
                     
                     System.out.println("final board :"+gob.debug_show());
-                    System.out.println("final score = "+gob.finishRandNoSuicide(komi));
+                    System.out.println("final score = "+gob.finishRandNoSuicide(komi,mm&1));
                     
                     break;
                 

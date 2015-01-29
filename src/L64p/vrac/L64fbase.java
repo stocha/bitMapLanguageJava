@@ -266,6 +266,17 @@ public class L64fbase {
             }
         }
         
+        public final double scoreGame(double komi,int metaphase){
+            
+            double k=komi;
+            if(metaphase!=0) k=-k;
+                    if(phase==0){
+                        return scoreBoard()-k;
+                    }else{
+                        return -scoreBoard()-k;
+                    }            
+            
+        }
         
         public final long scoreBoard(){
             long notP0=~p0;
@@ -279,7 +290,7 @@ public class L64fbase {
             return s0-s1;
         }
         
-        public final double finishRandNoSuicide(double komi){
+        public final double finishRandNoSuicide(double komi,int metaphase){
             int pass = 0;
             long phase=this.phase;
             for (int i = 0; i < 64 * 3; i++) {
@@ -291,11 +302,7 @@ public class L64fbase {
                     pass = 0;
                 }
                 if (pass == 2) {
-                    if(phase==this.phase){
-                        return scoreBoard()-komi;
-                    }else{
-                        return -scoreBoard()+komi;
-                    }
+                    return scoreGame(komi, metaphase);
                 }
             }
             
