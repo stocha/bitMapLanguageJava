@@ -22,6 +22,8 @@ public class Test_Players {
     }
 
     public static class TestIt {
+        
+        
 
         void TesNBenchtFlatOnBandit() {
             BanditManchotData band = new BanditManchotData(4);
@@ -140,12 +142,76 @@ public class Test_Players {
             }
 
         }
+    
+    
+    
+        void showUctGame() {
+            
+            int pass=0;
+
+            L64fbase.gob64Struct gob = new L64fbase.gob64Struct();
+            long black=0;black=~black;
+            black=black>>>8;
+            black|=((long)(0xAA))<<(64-8);
+            black=black>>>1;black&=L64fbase.RMASK;
+            black=~black;
+            gob.p0=black;
+            final double komi=63;
+            for (int mm = 0; mm < 128; mm++) {
+
+                Light64Data band = new Light64Data(gob, komi,mm&1);
+            //System.out.println("Theoritical values "+band.getSubData());
+
+                UctPlayer fp = new UctPlayer(band, null);
+                fp.deflat();
+
+                int nbSim = 64000*2;
+                long t0 = System.nanoTime();
+                for (int i = 0; i < nbSim; i++) {
+                    fp.doSimulation();
+                }
+                long t1 = System.nanoTime();
+
+                double t = t1 - t0;
+                t = t / 1000000;
+                t = t / 1000;
+                double simSec = nbSim / t;
+
+                //System.out.println("" + nbSim + " en " + t + " /  " + simSec + " act per second");
+
+                for(UctPlayer chi:fp.childs){
+                    System.out.println("" + chi);
+                }
+                
+                System.out.println(""+gob.phase+" to play");
+                System.out.println("best is " + fp.bestState());
+                if(fp.bestState()==null){
+                    pass++; gob.phase^=1;
+                }
+                else{
+                    pass=0;
+                    gob.copy(((Light64Data)fp.bestState()).mem);
+                }
+                
+                if(pass>=2){ 
+                    
+                    System.out.println("final board :"+gob.debug_show());
+                    System.out.println("final score = "+gob.finishRandNoSuicide(komi,mm&1));
+                    
+                    break;
+                
+                
+                }
+            }
+
+        }
 
         public void doit() {
 
             //TesNBenchtFlatOnBandit();
 //            TestNBenchFlatLight();
-            showFlatGame();
+            //showFlatGame();
+            showUctGame();
         }
     }
 }
