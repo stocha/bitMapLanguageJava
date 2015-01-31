@@ -233,30 +233,29 @@ public class L64fbase {
         public long p1 = 0;
         public long rand = 1;
         public long phase = 0;
-        public long repet =0;
-        
-        public long past0=0;
-        public long past1=0;
-        public long past2=0;
-        public long past3=0;
-        
+        public long repet = 0;
+
+        public long past0 = 0;
+        public long past1 = 0;
+        public long past2 = 0;
+        public long past3 = 0;
 
         public final void reset() {
             p0 = p1 = 0;
         }
-        
-        public final void copy(gob64Struct src){
-            p0=src.p0;
-            p1=src.p1;
-            phase=src.phase;
-            
-            past0=src.past0;
-            past1=src.past1;
-            past2=src.past2;
-            past3=src.past3;
-            
-            repet=src.repet;
-            this.rand=src.rand;
+
+        public final void copy(gob64Struct src) {
+            p0 = src.p0;
+            p1 = src.p1;
+            phase = src.phase;
+
+            past0 = src.past0;
+            past1 = src.past1;
+            past2 = src.past2;
+            past3 = src.past3;
+
+            repet = src.repet;
+            this.rand = src.rand;
         }
 
         public final void init() {
@@ -265,32 +264,34 @@ public class L64fbase {
                 rand = rule30(rand);
             }
         }
-        
-        public final double scoreGame(double komi,int metaphase){
-            
-            double k=komi;
-            if(metaphase!=0) k=-k;
-                    if((phase^metaphase)==0){
-                        return scoreBoard()-k;
-                    }else{
-                        return -scoreBoard()-k;
-                    }            
-            
+
+        public final double scoreGame(double komi, int metaphase) {
+
+            double k = komi;
+            if (metaphase != 0) {
+                k = -k;
+            }
+            if ((phase ^ metaphase) == 0) {
+                return scoreBoard() - k;
+            } else {
+                return -scoreBoard() - k;
+            }
+
         }
-        
-        public final long scoreBoard(){
-            long notP0=~p0;
-            long eyePos0=~((notP0>>>8)|(notP0<<8)|((notP0<<1)&LMASK)|((notP0>>>1)&RMASK));
-            notP0=~p1;
-            long eyePos1=~((notP0>>>8)|(notP0<<8)|((notP0<<1)&LMASK)|((notP0>>>1)&RMASK));
-            
-            long s0=count(eyePos0|p0);
-            long s1=count(eyePos1|p1);
-            
-            return s0-s1;
+
+        public final long scoreBoard() {
+            long notP0 = ~p0;
+            long eyePos0 = ~((notP0 >>> 8) | (notP0 << 8) | ((notP0 << 1) & LMASK) | ((notP0 >>> 1) & RMASK));
+            notP0 = ~p1;
+            long eyePos1 = ~((notP0 >>> 8) | (notP0 << 8) | ((notP0 << 1) & LMASK) | ((notP0 >>> 1) & RMASK));
+
+            long s0 = count(eyePos0 | p0);
+            long s1 = count(eyePos1 | p1);
+
+            return s0 - s1;
         }
-        
-        public final double finishRandNoSuicide(double komi,int metaphase){
+
+        public final double finishRandNoSuicide(double komi, int metaphase) {
             int pass = 0;
             for (int i = 0; i < 64 * 3; i++) {
                 //System.out.println(g.debug_show());
@@ -304,97 +305,108 @@ public class L64fbase {
                     return scoreGame(komi, metaphase);
                 }
             }
-            
+
             return komi;
         }
-        
-        public final long playOneRandNoSuicide(){
+
+        public final long playOneRandNoSuicide() {
             return playOneRandNoSuicide(0L);
         }
-        
-        public final long playOneRandNoSuicide(long extforb){
 
-            long notP0=~p0;
-            long eyePos=~((notP0>>>8)|(notP0<<8)|((notP0<<1)&LMASK)|((notP0>>>1)&RMASK));
-            long forbid = (~pseudoEyes()&(eyePos))|extforb;
+        public final long playOneRandNoSuicide(long extforb) {
+
+            long notP0 = ~p0;
+            long eyePos = ~((notP0 >>> 8) | (notP0 << 8) | ((notP0 << 1) & LMASK) | ((notP0 >>> 1) & RMASK));
+            long forbid = (~pseudoEyes() & (eyePos)) | extforb;
             long empty = ~(p0 | p1 | forbid);
-            if(empty==0) return empty;
-            long pl=0;
-            
-            long libs=~(p0|p1);
-            long dead=0;
-            long past=0;
-            while(pl==0){
+            if (empty == 0) {
+                return empty;
+            }
+            long pl = 0;
+
+            long libs = ~(p0 | p1);
+            long dead = 0;
+            long past = 0;
+            while (pl == 0) {
                 pl = selectOneFree(empty);
                 p0 ^= pl;
-                libs^=pl;
-                past=p0;
+                libs ^= pl;
+                past = p0;
                 long suicide = deadFull(p0, libs);
                 dead = deadFull(p1, libs);
-                if(suicide!=0 && dead==0){
-                    p0^=pl;
-                    empty^=pl;
-                    libs^=pl;
-                    pl=0;
-                    
-                    if(empty==0) break;
+                if (suicide != 0 && dead == 0) {
+                    p0 ^= pl;
+                    empty ^= pl;
+                    libs ^= pl;
+                    pl = 0;
+
+                    if (empty == 0) {
+                        break;
+                    }
                 }
             }
-            
-            if(past==past2 || past==past0 ){
-                repet++;                
-            }else{
-                repet=0;
-            }
-            
-            past0=past1;past1=past2;past2=past3;past3=past;
 
-            long sw=p0;
+            if (past == past2 || past == past0) {
+                repet++;
+            } else {
+                repet = 0;
+            }
+
+            past0 = past1;
+            past1 = past2;
+            past2 = past3;
+            past3 = past;
+
+            long sw = p0;
             p0 = p1;
             p1 = sw;
             phase ^= 1;
             //if(true)
             p0 ^= dead;
-            if(repet>=4) return 0;
-            return pl;            
+            if (repet >= 4) {
+                return 0;
+            }
+            return pl;
         }
-        
-        public final long pseudoEyes(){
-            long libs=~(p0|p1);
-            
-            long notP0=~p0;
-            long eyePos=~((notP0>>>8)|(notP0<<8)|((notP0<<1)&LMASK)|((notP0>>>1)&RMASK));
-            
-            long one=0;
-            long two=0;
+
+        public final long pseudoEyes() {
+            long libs = ~(p0 | p1);
+
+            long notP0 = ~p0;
+            long eyePos = ~((notP0 >>> 8) | (notP0 << 8) | ((notP0 << 1) & LMASK) | ((notP0 >>> 1) & RMASK));
+
+            long one = 0;
+            long two = 0;
             long diag;
-            
-            diag=((p1<<9)&LMASK);
-            two=(diag&one)|two;
-            one=diag|one;
-            
-            diag=((p1<<7)&RMASK);
-            two=(diag&one)|two;
-            one=diag|one;
-            
-            diag=((p1>>>7)&LMASK);
-            two=(diag&one)|two;
-            one=diag|one;
-            
-            diag=((p1>>>9)&RMASK);
-            two=(diag&one)|two;
-            one=diag|one;
-            long border=~RMASK|~LMASK|~(-1L>>>8)|~(-1L<<8);
-            
-            long res=libs&eyePos&((border&one)|two);
+
+            diag = ((p1 << 9) & LMASK);
+            two = (diag & one) | two;
+            one = diag | one;
+
+            diag = ((p1 << 7) & RMASK);
+            two = (diag & one) | two;
+            one = diag | one;
+
+            diag = ((p1 >>> 7) & LMASK);
+            two = (diag & one) | two;
+            one = diag | one;
+
+            diag = ((p1 >>> 9) & RMASK);
+            two = (diag & one) | two;
+            one = diag | one;
+            long border = ~RMASK | ~LMASK | ~(-1L >>> 8) | ~(-1L << 8);
+
+            long res = libs & eyePos & ((border & one) | two);
             return res;
-        }                
+        }
 
         public final long playOneRandomMove() {
 
             long forbid = 0;
             long empty = ~(p0 | p1 | forbid);
-            if(empty==0) return empty;
+            if (empty == 0) {
+                return empty;
+            }
             long pl = selectOneFree(empty);
 
             pl |= p0;
@@ -432,43 +444,42 @@ public class L64fbase {
             long free = ~(p0 | p1);
             hit &= free;
 
-            long p0pre=p0;
-            long p1pre=p1;
-            
+            long p0pre = p0;
+            long p1pre = p1;
+
             p0 |= hit & split;
             p1 |= hit & ~split;
-            
+
             long freeAft = ~(p0 | p1);
-            
-            long e0=deadFull(p0^p0pre, ~p0);
-            long e1=deadFull(p1^p1pre, ~p1);
-            
+
+            long e0 = deadFull(p0 ^ p0pre, ~p0);
+            long e1 = deadFull(p1 ^ p1pre, ~p1);
+
             //System.out.println("other "+outString(~p0pre, ~p1pre));
             //System.out.println("Asphixie "+outString(e0, e1));
-            
-            p0=p0&(~e0 | p0pre);
-            p1=p1&(~e1 | p1pre);
-            
-            long d0=deadFull(p0, freeAft);
-            long d1=deadFull(p1, freeAft);
-            
-            long d0voi=scramble(d0)&d1;
-            long d1voi=scramble(d1)&d0;
-            
-            long noconf0=deadFull(p0, d0voi);
-            long noconf1=deadFull(p1, d1voi);
-            
-            p0=p0pre|noconf0;
-            p1=p1pre|noconf1;
-            
+            p0 = p0 & (~e0 | p0pre);
+            p1 = p1 & (~e1 | p1pre);
+
+            long d0 = deadFull(p0, freeAft);
+            long d1 = deadFull(p1, freeAft);
+
+            long d0voi = scramble(d0) & d1;
+            long d1voi = scramble(d1) & d0;
+
+            long noconf0 = deadFull(p0, d0voi);
+            long noconf1 = deadFull(p1, d1voi);
+
+            p0 = p0pre | noconf0;
+            p1 = p1pre | noconf1;
+
             long freeFin = ~(p0 | p1);
-            
-            long clean0=deadFull(p0, freeFin);
-            long clean1=deadFull(p1, freeFin);
-            
-            p0^=clean0;
-            p1^=clean1;
-            
+
+            long clean0 = deadFull(p0, freeFin);
+            long clean1 = deadFull(p1, freeFin);
+
+            p0 ^= clean0;
+            p1 ^= clean1;
+
         }
 
         public String debug_show() {
@@ -478,11 +489,19 @@ public class L64fbase {
                 return outString(p1, p0);
             }
         }
-        
-        public void debug_input(String input){
-            p0=inputString( input,0);
-            p1=inputString( input,1);
-            phase=0;
+
+        public void debug_input(String input) {
+            p0 = inputString(input, 0);
+            p1 = inputString(input, 1);
+            phase = 0;
+        }
+
+        public void passMove() {
+            long sw = p0;
+            p0 = p1;
+            p1 = sw;
+            phase ^= 1;
         }
     }
+
 }

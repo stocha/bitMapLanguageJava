@@ -84,7 +84,7 @@ public class UctPlayer {
     
     
     public double doSimulation(){
-        final long expandValue=100;
+        final long expandValue=20;
         
             if(childs==null && hits>expandValue){
                 deflat();
