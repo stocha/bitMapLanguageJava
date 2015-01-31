@@ -84,13 +84,23 @@ public class UctPlayer {
     
     
     public double doSimulation(){
+        final long expandValue=100;
+        
+            if(childs==null && hits>expandValue){
+                deflat();
+            }
+        
         if(childs!=null && childs.size()>0){
             UctPlayer ch=selectChildToVisit();
-            double sc=- ch.doSimulation();
+            double sc=1.0- ch.doSimulation();
             this.hits++;
             this.scoreacc+=sc;
             return sc;
-        }else{
+        }
+        else
+        {
+            
+            
             double sc=state.scoreOnce();
             hits++;
             scoreacc+=sc;
