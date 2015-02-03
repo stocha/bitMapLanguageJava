@@ -399,6 +399,40 @@ public class L64fbase {
             long res = libs & eyePos & ((border & one) | two);
             return res;
         }
+        
+        public final int convertToNormalisedMove(long move){
+            if(move==0) return -1;
+            
+            for(int i=0;i<64;i++){
+                if(
+                        ((
+                            (move >>>(63-i))
+                        &1  )!= 0)
+                    ) return i;
+            }
+            throw new RuntimeException("Impossible path");
+        }
+        public final void forceNormalisedMove(int m,int phase){
+            if(phase!=this.phase) throw new RuntimeException("Inconsistent phase");
+            
+            if(m<=0) m=0;
+            int curr= getAt(p0|p1,m%8, m/8);
+            if(curr!=0) throw new RuntimeException("playing non empty");
+            setAt(p0, m%8, m/8, 1);
+            
+                long empty = ~(p0 | p1);
+                long dead0 = deadFull(p0, empty);
+               
+            
+                empty = ~(p0 | p1);
+                long dead1 = deadFull(p1, empty);
+                p1 ^= dead1;
+                
+                if(dead0!=0 && dead1==0) throw new RuntimeException("playing suicidal move");
+                
+                passMove();
+            
+        }
 
         public final long playOneRandomMove() {
 

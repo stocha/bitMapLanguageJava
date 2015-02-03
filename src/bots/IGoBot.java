@@ -9,10 +9,15 @@ package bots;
  *
  * @author denis
  */
-public interface GoBot {
-    void setBoardSize();
-    void clearBoard();
-    void forceMove(int phase);
+public interface IGoBot {
+    void setBoardSize(int sz);
+    void clearBoard(double komi);
+    void forceMove(int m,int phase);
+    
+    /**
+     * -1 pass; -2 resign;
+     * @return 
+     */
     int genMove();
     String name();
     String version();
