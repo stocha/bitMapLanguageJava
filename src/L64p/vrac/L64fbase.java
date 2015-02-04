@@ -242,6 +242,8 @@ public class L64fbase {
 
         public final void reset() {
             p0 = p1 = 0;
+            phase=0;
+            past0=past1=past2=past3=0;
         }
 
         public final void copy(gob64Struct src) {
@@ -418,15 +420,18 @@ public class L64fbase {
             if(m<=0) m=0;
             int curr= getAt(p0|p1,m%8, m/8);
             if(curr!=0) throw new RuntimeException("playing non empty");
-            setAt(p0, m%8, m/8, 1);
+            p0=setAt(p0, m%8, m/8, 1);
             
                 long empty = ~(p0 | p1);
                 long dead0 = deadFull(p0, empty);
                
             
                 empty = ~(p0 | p1);
+                //System.out.println("examined "+outString(p1, empty));
                 long dead1 = deadFull(p1, empty);
                 p1 ^= dead1;
+                
+                //System.out.println("captured "+outString(dead1, 0));
                 
                 if(dead0!=0 && dead1==0) throw new RuntimeException("playing suicidal move");
                 
