@@ -12,7 +12,7 @@ package bots;
 public class Test_botComparison {
     public static void main(String args[]){
         SimpleBotComparator comp=new SimpleBotComparator();
-        comp.setBots(new FlatBot(7878786L,64), new FlatBot(9991112L,32000));
+        comp.setBots(new FlatBot(7878786L,64*1000), new FlatBot(9991112L,32*1000));
         
         comp.setUp();
         comp.setGameSpooler((String gameDesc) -> {

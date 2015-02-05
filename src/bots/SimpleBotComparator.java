@@ -20,7 +20,7 @@ public class SimpleBotComparator implements IBotComparator {
     IGoBot [] bot= new IGoBot[2];
     DatSpool spooler=null;
     GameSpool gdisp=null;
-    double komi=8.5;
+    double komi=0.5;
     L64fbase.gob64Struct gob=new L64fbase.gob64Struct();
     int nbComparisonDone=0;
     static class GameData{
@@ -114,33 +114,39 @@ public class SimpleBotComparator implements IBotComparator {
     
     public String aggregateData(){
         String res="";
-        GameData agg[]=new GameData[]{new GameData(),new GameData()};
-        double nbgam=data.size();
-        for(GameData d : data){
-            GameData a=agg[d.botb];
-            
-            a.botb+=d.botw;
-            a.botw+=d.botb;
-            a.nbMoves+=d.nbMoves;
-            a.resign+=d.resign;
-            a.scoreres+=d.scoreres;
-            a.winner+=d.winner;
+        
+        {
+            GameData agg[]=new GameData[]{new GameData(),new GameData()};
+            double nbgam=data.size();
+            for(GameData d : data){
+                GameData a=agg[d.botb];
+
+                a.botb+=1;
+                a.botw+=d.botw;
+                a.nbMoves+=d.nbMoves;
+                a.resign+=d.resign;
+                a.scoreres+=d.scoreres;
+                a.winner+=d.winner;
+            }
+
+            int botnum=0;
+            String lf=System.lineSeparator() ;
+            for(GameData a : agg){
+                nbgam=a.botb;
+                if(nbgam==0) continue;
+                res+=("Black "+this.bot[botnum].name()+"["+botnum+"]")+lf;
+                res+=("White "+this.bot[botnum^1].name()+"["+(botnum^1)+"]")+lf;
+                res+="nbGame"+" "+nbgam+" count botw "+a.botw+lf;
+                res+="nbWins"+" "+a.winner+lf;
+                res+="av win "+(a.winner /nbgam)+lf;
+                res+="av score "+(a.scoreres /nbgam)+lf;
+                res+="av resign "+(a.resign /nbgam)+lf;
+                res+="av length "+(a.nbMoves /nbgam)+lf;
+                botnum++;
+            }
         }
         
-        int bot=0;
-        String lf=System.lineSeparator() ;
-        for(GameData a : agg){
-            nbgam=bot==0?a.botb:a.botw;
-            if(nbgam==0) continue;
-            res+=("Black "+this.bot[bot].name()+"["+bot+"]")+lf;
-            res+=("White "+this.bot[bot^1].name()+"["+(bot^1)+"]")+lf;
-            res+="nbGame"+" "+nbgam+lf;
-            res+="av win "+(a.winner /nbgam)+lf;
-            res+="av score "+(a.scoreres /nbgam)+lf;
-            res+="av resign "+(a.resign /nbgam)+lf;
-            res+="av length "+(a.nbMoves /nbgam)+lf;
-            bot++;
-        }
+        
         return res;
     }
 
