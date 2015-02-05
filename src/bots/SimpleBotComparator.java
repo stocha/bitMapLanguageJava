@@ -31,7 +31,7 @@ public class SimpleBotComparator implements IBotComparator {
     public void setUp() {
         for(IGoBot b : bot){
             b.setBoardSize(8*8);
-            b.clearBoard(8.5);
+            b.clearBoard(komi);
         }
         gob.reset();
         
@@ -63,18 +63,27 @@ public class SimpleBotComparator implements IBotComparator {
         int numMove=0;
         int resign=-1;
         
-        setUp();
-        while(nbPass<2 && resign!=-1 && numMove < MAXGAMEMOVE){
-            IGoBot playb=bot[(numMove&1)^mPh];
-            IGoBot othb=bot[(numMove&1)^(mPh^1)];
+        for(IGoBot b : bot){
+            b.clearBoard(komi);
+        }
+        gob.reset();
+        while(nbPass<2 && resign==-1 && numMove < MAXGAMEMOVE){
+            int ap=(numMove&1)^mPh;
+            int bp=(numMove&1)^(mPh^1);
+            
+            System.out.println("ap/bp "+ap+"/"+bp);
+            
+            IGoBot playb=bot[ap];
+            IGoBot othb=bot[bp];
             int m=playb.genMove();
             othb.forceMove(m,numMove&1);
-            if(m==-2)resign=(numMove&1)^mPh;
+            if(m==-2)resign=ap;
             if(m==-1) nbPass++; else nbPass=0;
             
             gob.forceNormalisedMove(m, numMove&1);
 
-            gdisp.spoolOut(gob.debug_show());
+            gdisp.spoolOut("move "+numMove+"\n"+gob.debug_show());
+            numMove++;
         }
     }
 

@@ -6,6 +6,7 @@
 package bots;
 
 import L64p.vrac.L64fbase;
+import TreeAlgorithm.BoardData;
 import TreeAlgorithm.FlatPlayer;
 import TreeAlgorithm.Light64Data;
 
@@ -18,18 +19,29 @@ public class FlatBot implements IGoBot {
     FlatPlayer player;
     L64fbase.gob64Struct gob;
     double komi=0;
-    final int nbSim=32000;
+    final int nbSim;
+    final long seed;
+
+    public FlatBot(long seed,int nbSim) {
+        this.seed = seed;
+                this.nbSim=nbSim;
+    }
+    
+    
 
     @Override
     public void setBoardSize(int sz) {
         gob=new L64fbase.gob64Struct();
+        gob.rand^=seed;
         gob.init();
     }
 
     @Override
     public void clearBoard(double komi) {
         this.komi=komi;
+        gob.rand^=System.nanoTime();
         gob.reset();
+        
     }
 
     @Override
@@ -40,12 +52,19 @@ public class FlatBot implements IGoBot {
     @Override
     public int genMove() {
         player=new FlatPlayer(new Light64Data(gob,komi,(int)gob.phase), null);
+        player.deflat();
         
         for(int i=0;i<nbSim;i++){
             player.doSimulation();
         }
-        long pos=((Light64Data)player.bestState()).mem.p1^gob.p0;
-        return gob.convertToNormalisedMove(pos);
+        BoardData bd=(Light64Data)player.bestState();
+        if(bd==null){gob.passMove(); return -1;}
+        L64fbase.gob64Struct best=((Light64Data)bd).mem;
+        long pos=best.p1^gob.p0;
+        int move= gob.convertToNormalisedMove(pos);
+        gob.copy(best);
+        
+        return move;
     }
 
     @Override

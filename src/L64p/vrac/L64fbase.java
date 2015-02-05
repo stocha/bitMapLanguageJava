@@ -418,7 +418,8 @@ public class L64fbase {
             throw new RuntimeException("Impossible path");
         }
         public final void forceNormalisedMove(int m,int phase){
-            if(phase!=this.phase) throw new RuntimeException("Inconsistent phase");
+            if(phase!=this.phase) throw new RuntimeException("Inconsistent phase "+this.phase+" mais "+phase);
+            if(m==-1){ passMove(); return;}
             
             if(m<=0) m=0;
             int curr= getAt(p0|p1,m%8, m/8);
