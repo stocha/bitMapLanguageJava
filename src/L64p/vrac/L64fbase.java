@@ -23,9 +23,9 @@ public class L64fbase {
         return acc;
     }
 
-    public static final long deadFull(long mem, long lib) {
+    public static final long deadFull(long mem, long lib, long externalLib) {
         long alive;
-        alive = scramble(lib) & mem;
+        alive = ((scramble(lib)|externalLib) & mem);
 
         long last = alive;
 
@@ -231,6 +231,7 @@ public class L64fbase {
 
         public long p0 = 0;
         public long p1 = 0;
+        public long externLibs=0;
         public long rand = 1;
         public long phase = 0;
         public long repet = 0;
@@ -247,6 +248,8 @@ public class L64fbase {
         }
 
         public final void copy(gob64Struct src) {
+            externLibs=src.externLibs;
+            
             p0 = src.p0;
             p1 = src.p1;
             phase = src.phase;
@@ -334,8 +337,8 @@ public class L64fbase {
                 p0 ^= pl;
                 libs ^= pl;
                 past = p0;
-                long suicide = deadFull(p0, libs);
-                dead = deadFull(p1, libs);
+                long suicide = deadFull(p0, libs , externLibs);
+                dead = deadFull(p1, libs , externLibs);
                 if (suicide != 0 && dead == 0) {
                     p0 ^= pl;
                     empty ^= pl;
@@ -422,13 +425,13 @@ public class L64fbase {
             if(curr!=0) throw new RuntimeException("playing non empty");
             p0=setAt(p0, m%8, m/8, 1);
             
-                long empty = ~(p0 | p1);
-                long dead0 = deadFull(p0, empty);
+                long empty = ~(p0 | p1) ;
+                long dead0 = deadFull(p0, empty, externLibs);
                
             
-                empty = ~(p0 | p1);
+                empty = ~(p0 | p1 ) ;
                 //System.out.println("examined "+outString(p1, empty));
-                long dead1 = deadFull(p1, empty);
+                long dead1 = deadFull(p1, empty, externLibs);
                 p1 ^= dead1;
                 
                 //System.out.println("captured "+outString(dead1, 0));
@@ -455,7 +458,7 @@ public class L64fbase {
             //if(true)
             {
                 empty = ~(p0 | p1);
-                long dead = deadFull(p0, empty);
+                long dead = deadFull(p0, empty, externLibs);
                 p0 ^= dead;
             }
             return pl;
@@ -489,32 +492,32 @@ public class L64fbase {
             p0 |= hit & split;
             p1 |= hit & ~split;
 
-            long freeAft = ~(p0 | p1);
+            long freeAft = ~(p0 | p1) ;
 
-            long e0 = deadFull(p0 ^ p0pre, ~p0);
-            long e1 = deadFull(p1 ^ p1pre, ~p1);
+            long e0 = deadFull(p0 ^ p0pre, ~p0,0);
+            long e1 = deadFull(p1 ^ p1pre, ~p1,0);
 
             //System.out.println("other "+outString(~p0pre, ~p1pre));
             //System.out.println("Asphixie "+outString(e0, e1));
             p0 = p0 & (~e0 | p0pre);
             p1 = p1 & (~e1 | p1pre);
 
-            long d0 = deadFull(p0, freeAft);
-            long d1 = deadFull(p1, freeAft);
+            long d0 = deadFull(p0, freeAft, externLibs);
+            long d1 = deadFull(p1, freeAft, externLibs);
 
             long d0voi = scramble(d0) & d1;
             long d1voi = scramble(d1) & d0;
 
-            long noconf0 = deadFull(p0, d0voi);
-            long noconf1 = deadFull(p1, d1voi);
+            long noconf0 = deadFull(p0, d0voi,0);
+            long noconf1 = deadFull(p1, d1voi,0);
 
             p0 = p0pre | noconf0;
             p1 = p1pre | noconf1;
 
-            long freeFin = ~(p0 | p1);
+            long freeFin = ~(p0 | p1) | externLibs;
 
-            long clean0 = deadFull(p0, freeFin);
-            long clean1 = deadFull(p1, freeFin);
+            long clean0 = deadFull(p0, freeFin, externLibs);
+            long clean1 = deadFull(p1, freeFin, externLibs);
 
             p0 ^= clean0;
             p1 ^= clean1;

@@ -178,12 +178,19 @@ public class Test_Players {
 
             L64fbase.gob64Struct gob = new L64fbase.gob64Struct();
             long black=0;black=~black;
-            //black=black>>>8;
+            black=black>>>8;
+            black=black>>>8;
+            black=black<<8;
             //black|=((long)(0xAA))<<(64-8);
-            //black=black>>>1;black&=L64fbase.RMASK;
+            black=black>>>1;black&=L64fbase.RMASK;
+            black=black>>>1;black&=L64fbase.RMASK;
+            black=black<<1;black&=L64fbase.LMASK;
             black=~black;
-            gob.p0=black;
-            final double komi=10.5;
+            System.out.println("External libs "+L64fbase.outString(black, 0));
+            gob.externLibs=black;
+            //gob.p0=black;
+            //final double komi=10.5;
+            final double komi=0.5;
             for (int mm = 0; mm < 128; mm++) {
 
                 Light64Data band = new Light64Data(gob, komi,mm&1);
@@ -192,7 +199,7 @@ public class Test_Players {
                 UctPlayer fp = new UctPlayer(band, null);
                 fp.deflat();
 
-                int nbSim = 64000*2;
+                int nbSim = 32000*2 +4;
                 long t0 = System.nanoTime();
                 for (int i = 0; i < nbSim; i++) {
                     fp.doSimulation();
