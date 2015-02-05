@@ -30,6 +30,7 @@ public class SimpleBotComparator implements IBotComparator {
         int winner;
         int nbMoves;
         int resign;
+        double timeMilli;
     }
     List<GameData> data=new ArrayList<>();
     
@@ -76,6 +77,8 @@ public class SimpleBotComparator implements IBotComparator {
         int numMove=0;
         int resign=-1;
         
+        long t0=System.nanoTime();
+        
         for(IGoBot b : bot){
             b.clearBoard(komi);
         }
@@ -99,12 +102,15 @@ public class SimpleBotComparator implements IBotComparator {
             numMove++;
         }
         
+        long t1=System.nanoTime();
+        
         GameData r=new GameData();
         r.botb=mPh;
         r.botw=mPh^1;
         r.nbMoves=numMove;
         r.scoreres=gob.scoreGame(komi, 0);
         r.winner=r.scoreres>0?1:0;
+        r.timeMilli=(t1-t0)/1000000.0;
         
         data.add( r);
         
@@ -127,6 +133,7 @@ public class SimpleBotComparator implements IBotComparator {
                 a.resign+=d.resign;
                 a.scoreres+=d.scoreres;
                 a.winner+=d.winner;
+                a.timeMilli+=d.timeMilli;
             }
 
             int botnum=0;
@@ -142,6 +149,7 @@ public class SimpleBotComparator implements IBotComparator {
                 res+="av score "+(a.scoreres /nbgam)+lf;
                 res+="av resign "+(a.resign /nbgam)+lf;
                 res+="av length "+(a.nbMoves /nbgam)+lf;
+                res+="av milli "+(a.timeMilli /nbgam)+lf;
                 botnum++;
             }
         }
