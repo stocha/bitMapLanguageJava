@@ -62,6 +62,8 @@ public class SimpleBotComparator implements IBotComparator {
         int nbPass=0;
         int numMove=0;
         int resign=-1;
+        
+        setUp();
         while(nbPass<2 && resign!=-1 && numMove < MAXGAMEMOVE){
             IGoBot playb=bot[(numMove&1)^mPh];
             IGoBot othb=bot[(numMove&1)^(mPh^1)];

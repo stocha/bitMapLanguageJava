@@ -16,13 +16,13 @@ import java.util.List;
  */
 public class Light64Data implements BoardData {
 
-    final L64fbase.gob64Struct mem = new gob64Struct();
+    public final L64fbase.gob64Struct mem = new gob64Struct();
     final double komi;
     final int metaphase;
     
     static long rand=9888478;
 
-    Light64Data(gob64Struct src, double komi,int metaphase) {
+    public Light64Data(gob64Struct src, double komi,int metaphase) {
         mem.copy(src);
         this.komi = komi;
         this.metaphase=metaphase^1;
