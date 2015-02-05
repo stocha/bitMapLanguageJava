@@ -6,6 +6,8 @@
 package bots;
 
 import L64p.vrac.L64fbase;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -20,7 +22,18 @@ public class SimpleBotComparator implements IBotComparator {
     GameSpool gdisp=null;
     double komi=8.5;
     L64fbase.gob64Struct gob=new L64fbase.gob64Struct();
-    int nbComparisonDone=0;;
+    int nbComparisonDone=0;
+    static class GameData{
+        int botw;
+        int botb;
+        double scoreres;
+        int winner;
+        int nbMoves;
+        int resign;
+    }
+    List<GameData> data=new ArrayList<>();
+    
+    
     
     @Override
     public void setBots(IGoBot a, IGoBot b) {
@@ -71,7 +84,7 @@ public class SimpleBotComparator implements IBotComparator {
             int ap=(numMove&1)^mPh;
             int bp=(numMove&1)^(mPh^1);
             
-            System.out.println("ap/bp "+ap+"/"+bp);
+            //System.out.println("ap/bp "+ap+"/"+bp);
             
             IGoBot playb=bot[ap];
             IGoBot othb=bot[bp];
@@ -85,6 +98,50 @@ public class SimpleBotComparator implements IBotComparator {
             gdisp.spoolOut("move "+numMove+"\n"+gob.debug_show());
             numMove++;
         }
+        
+        GameData r=new GameData();
+        r.botb=mPh;
+        r.botw=mPh^1;
+        r.nbMoves=numMove;
+        r.scoreres=gob.scoreGame(komi, 0);
+        r.winner=r.scoreres>0?1:0;
+        
+        data.add( r);
+        
+                nbComparisonDone++;
+    }
+    
+    
+    public String aggregateData(){
+        String res="";
+        GameData agg[]=new GameData[]{new GameData(),new GameData()};
+        double nbgam=data.size();
+        for(GameData d : data){
+            GameData a=agg[d.botb];
+            
+            a.botb+=d.botw;
+            a.botw+=d.botb;
+            a.nbMoves+=d.nbMoves;
+            a.resign+=d.resign;
+            a.scoreres+=d.scoreres;
+            a.winner+=d.winner;
+        }
+        
+        int bot=0;
+        String lf=System.lineSeparator() ;
+        for(GameData a : agg){
+            nbgam=bot==0?a.botb:a.botw;
+            if(nbgam==0) continue;
+            res+=("Black "+this.bot[bot].name()+"["+bot+"]")+lf;
+            res+=("White "+this.bot[bot^1].name()+"["+(bot^1)+"]")+lf;
+            res+="nbGame"+" "+nbgam+lf;
+            res+="av win "+(a.winner /nbgam)+lf;
+            res+="av score "+(a.scoreres /nbgam)+lf;
+            res+="av resign "+(a.resign /nbgam)+lf;
+            res+="av length "+(a.nbMoves /nbgam)+lf;
+            bot++;
+        }
+        return res;
     }
 
     @Override

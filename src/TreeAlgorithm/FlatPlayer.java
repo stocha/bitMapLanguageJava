@@ -44,7 +44,7 @@ public class FlatPlayer {
         double max=Double.NEGATIVE_INFINITY;
         FlatPlayer maxfp=nullp;
         
-        System.out.println("childs count : "+childs.size());
+        //System.out.println("childs count : "+childs.size());
         for(FlatPlayer fp : childs){
             double sc=fp.scoreAvg();
             if(sc>max) {max=sc;maxfp=fp;}

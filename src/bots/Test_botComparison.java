@@ -12,15 +12,17 @@ package bots;
 public class Test_botComparison {
     public static void main(String args[]){
         SimpleBotComparator comp=new SimpleBotComparator();
-        comp.setBots(new FlatBot(7878786L,6400), new FlatBot(9991112L,6400));
+        comp.setBots(new FlatBot(7878786L,64), new FlatBot(9991112L,32000));
         
         comp.setUp();
         comp.setGameSpooler((String gameDesc) -> {
-            System.out.println(""+gameDesc);
+            //System.out.println(""+gameDesc);
         });
         
-        for(int i=0;i<100;i++)
+        for(int i=0;i<1000;i++)
+        {
             comp.addNextComparison();
-        
+            System.out.println("<comparison ...>"+System.lineSeparator()+""+comp.aggregateData());
+        }
     }
 }
