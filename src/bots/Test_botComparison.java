@@ -12,11 +12,14 @@ package bots;
 public class Test_botComparison {
     public static void main(String args[]){
         SimpleBotComparator comp=new SimpleBotComparator();
-        comp.setBots(new FlatBot(7878786L,64*1000), new FlatBot(9991112L,32*1000));
+        //comp.setBots(new FlatBot(7878786L,64*1000), new FlatBot(9991112L,32*1000));
+        
+        //comp.setBots(new UctLightBot(7878786L,8*1000), new FlatBot(9991112L,16*1000));
+        comp.setBots(new UctAccelLightBot(7878786L,9*1000), new UctLightBot(9991112L,5*1000));
         
         comp.setUp();
         comp.setGameSpooler((String gameDesc) -> {
-            //System.out.println(""+gameDesc);
+           // System.out.println(""+gameDesc);
         });
         
         for(int i=0;i<1000;i++)

@@ -44,7 +44,7 @@ public class UctPlayer {
         double max=Double.NEGATIVE_INFINITY;
         UctPlayer maxfp=nullp;
         
-        System.out.println("childs count : "+childs.size());
+        //System.out.println("childs count : "+childs.size());
         for(UctPlayer fp : childs){
             double sc=fp.scoreAvg();
             if(sc>max) {max=sc;maxfp=fp;}
