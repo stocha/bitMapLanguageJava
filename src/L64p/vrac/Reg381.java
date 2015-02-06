@@ -15,6 +15,13 @@ public class Reg381 {
     static final int blocSz = 64;
     static final int nbBits = 381;
     static final int nbBitLast;
+    
+    
+    public static Reg381[] allocBuff(int nb){
+        Reg381 res[]=new Reg381[nb];
+        for(int i=0;i<nb;i++) res[i]=new Reg381();
+        return res;
+    }
 
     static {
 
@@ -228,7 +235,21 @@ public class Reg381 {
         c=(c>>>1)|(b<<63);
         b=(b>>>1)|(a<<63);
         a=(a>>>1)|(oa<<(nbBitLast-1));        
-    }    
+    }
+    
+    public void rule30(Reg381[] buff){
+        Reg381 l=buff[0];
+        Reg381 r=buff[1];
+        
+        l.cp(this);
+        r.cp(this);
+        
+        l.regRor();
+        r.regRol();
+        
+        this.or(r);
+        this.xor(l);
+    }
 
     String debug_regOut() {
         String res = "";

@@ -67,7 +67,23 @@ public class Test_Reg381 {
         assertEquals(op2.debug_regOut(), b.debug_regOut());      
     }
     
+    public void testRegistre(){
+        Reg381 a=new Reg381();
+        Reg381 b=new Reg381();
+        Reg381 op1=new Reg381();
+        Reg381 op2=new Reg381();
+        
+        a.setAt(190, 1);
+        final Reg381 buff[]=Reg381.allocBuff(10);
+        for(int i=0;i<390*2;i++){
+            System.out.println(a.debug_regOut());
+            a.rule30(buff);
+        }
+        System.out.println(a.debug_regOut());
+    }
+            
     public void doit(){
         testSimple();
+        testRegistre();
     }
 }
