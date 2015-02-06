@@ -20,7 +20,7 @@ public class SimpleBotComparator implements IBotComparator {
     IGoBot [] bot= new IGoBot[2];
     DatSpool spooler=null;
     GameSpool gdisp=null;
-    double komi=0.5;
+    double komi=6.5;
     L64fbase.gob64Struct gob=new L64fbase.gob64Struct();
     int nbComparisonDone=0;
     static class GameData{
@@ -119,7 +119,7 @@ public class SimpleBotComparator implements IBotComparator {
     
     
     public String aggregateData(){
-        String res="";
+        String res="Komi("+komi+")";
         
         {
             GameData agg[]=new GameData[]{new GameData(),new GameData()};

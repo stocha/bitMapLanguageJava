@@ -15,115 +15,147 @@ public class Test_Displays {
 
     public static void main(String args[]) {
         //dispScramble();
-        dispRandFillAccell();
+        //dispRandFillAccell();
         //showRandomGame();
         //showRandomEnd();
-        
+        //dispRandFinishAccell();
+        dispSomeFinishAccel();
+
         //showDoubleKoGame();
         //showSimpleKoGame();
         //showTripleKoGame();
     }
-    
-    
-     public static void showRandomEnd() {
-        L64fbase.gob64Struct g=new gob64Struct();
+
+    public static void showRandomEnd() {
+        L64fbase.gob64Struct g = new gob64Struct();
         g.init();
-        int pass=0;
-        int count=1000;
-        while(count>0){
+        int pass = 0;
+        int count = 1000;
+        while (count > 0) {
             //System.out.println(g.debug_show());
-            long move=g.playOneRandNoSuicide();
-            if(move==0) pass++; else pass=0;
-            if(pass==2){System.out.println(g.debug_show()); g.reset(); count--;}
+            long move = g.playOneRandNoSuicide();
+            if (move == 0) {
+                pass++;
+            } else {
+                pass = 0;
+            }
+            if (pass == 2) {
+                System.out.println(g.debug_show());
+                g.reset();
+                count--;
+            }
         }
         //System.out.println(g.debug_show());
-    }    
-    
-    public static void showSimpleKoGame(){
-        L64fbase.gob64Struct g=new gob64Struct();
-        g.init();
-        g.debug_input(    "<GOBAN>\n"               
-                    + "O O O O O O O O \n"
-                    + "O O - O O O - O \n"
-                    + "O O O O O O O O \n"
-                    + "X O O O X O - O \n"
-                    + "X X O X X X O X \n"
-                    + "X X X X X X X X \n"
-                    + "X X X X X X X X \n"
-                    + "X X - X X X X - \n"
-        );
-        
-        int pass=0;
-        for(int i=0;i<64*3;i++){
-            System.out.println(""+g.phase+"|"+g.debug_show());
-            long move=g.playOneRandNoSuicide();
-            if(move==0) pass++; else pass=0;
-            if(pass==2) break;
-        }
-        System.out.println("Final : "+g.debug_show());
     }
-    
-    public static void showDoubleKoGame(){
-        L64fbase.gob64Struct g=new gob64Struct();
+
+    public static void showSimpleKoGame() {
+        L64fbase.gob64Struct g = new gob64Struct();
         g.init();
-        g.debug_input(    "<GOBAN>\n"               
-                    + "O O O O O O O O \n"
-                    + "O O - O O O - O \n"
-                    + "O O O O O O O O \n"
-                    + "X O O O X O - O \n"
-                    + "- X O X X X O X \n"
-                    + "X X X X X X X X \n"
-                    + "X X X X X X X X \n"
-                    + "X X - X X X X - \n"
+        g.debug_input("<GOBAN>\n"
+                + "O O O O O O O O \n"
+                + "O O - O O O - O \n"
+                + "O O O O O O O O \n"
+                + "X O O O X O - O \n"
+                + "X X O X X X O X \n"
+                + "X X X X X X X X \n"
+                + "X X X X X X X X \n"
+                + "X X - X X X X - \n"
         );
-        
-        int pass=0;
-        for(int i=0;i<64*3;i++){
-            System.out.println(""+g.phase+"|"+g.debug_show());
-            long move=g.playOneRandNoSuicide();
-            if(move==0) pass++; else pass=0;
-            if(pass==2) break;
+
+        int pass = 0;
+        for (int i = 0; i < 64 * 3; i++) {
+            System.out.println("" + g.phase + "|" + g.debug_show());
+            long move = g.playOneRandNoSuicide();
+            if (move == 0) {
+                pass++;
+            } else {
+                pass = 0;
+            }
+            if (pass == 2) {
+                break;
+            }
         }
-        System.out.println("Final : "+g.debug_show());
+        System.out.println("Final : " + g.debug_show());
     }
-    
-    public static void showTripleKoGame(){
-        L64fbase.gob64Struct g=new gob64Struct();
+
+    public static void showDoubleKoGame() {
+        L64fbase.gob64Struct g = new gob64Struct();
         g.init();
-        g.debug_input(    "<GOBAN>\n"               
-                    + "O O O O O O O O \n"
-                    + "O O - O O O - O \n"
-                    + "O O O O O O O O \n"
-                    + "X O - O X O - O \n"
-                    + "- X O X X X O X \n"
-                    + "X X X X X X X X \n"
-                    + "X X X X X X X X \n"
-                    + "X X - X X X X - \n"
+        g.debug_input("<GOBAN>\n"
+                + "O O O O O O O O \n"
+                + "O O - O O O - O \n"
+                + "O O O O O O O O \n"
+                + "X O O O X O - O \n"
+                + "- X O X X X O X \n"
+                + "X X X X X X X X \n"
+                + "X X X X X X X X \n"
+                + "X X - X X X X - \n"
         );
-        
-        int pass=0;
-        for(int i=0;i<64*3;i++){
-            System.out.println(""+g.phase+"|"+g.debug_show());
-            long move=g.playOneRandNoSuicide();
-            if(move==0) pass++; else pass=0;
-            if(pass==2) break;
+
+        int pass = 0;
+        for (int i = 0; i < 64 * 3; i++) {
+            System.out.println("" + g.phase + "|" + g.debug_show());
+            long move = g.playOneRandNoSuicide();
+            if (move == 0) {
+                pass++;
+            } else {
+                pass = 0;
+            }
+            if (pass == 2) {
+                break;
+            }
         }
-        System.out.println("Final : "+g.debug_show());
+        System.out.println("Final : " + g.debug_show());
     }
-    
-    
+
+    public static void showTripleKoGame() {
+        L64fbase.gob64Struct g = new gob64Struct();
+        g.init();
+        g.debug_input("<GOBAN>\n"
+                + "O O O O O O O O \n"
+                + "O O - O O O - O \n"
+                + "O O O O O O O O \n"
+                + "X O - O X O - O \n"
+                + "- X O X X X O X \n"
+                + "X X X X X X X X \n"
+                + "X X X X X X X X \n"
+                + "X X - X X X X - \n"
+        );
+
+        int pass = 0;
+        for (int i = 0; i < 64 * 3; i++) {
+            System.out.println("" + g.phase + "|" + g.debug_show());
+            long move = g.playOneRandNoSuicide();
+            if (move == 0) {
+                pass++;
+            } else {
+                pass = 0;
+            }
+            if (pass == 2) {
+                break;
+            }
+        }
+        System.out.println("Final : " + g.debug_show());
+    }
+
     public static void showRandomGame() {
-        L64fbase.gob64Struct g=new gob64Struct();
+        L64fbase.gob64Struct g = new gob64Struct();
         g.init();
-        int pass=0;
-        for(int i=0;i<64*100;i++){
+        int pass = 0;
+        for (int i = 0; i < 64 * 100; i++) {
             System.out.println(g.debug_show());
-            long move=g.playOneRandNoSuicide();
-            if(move==0) pass++; else pass=0;
-            if(pass==2) g.reset();
+            long move = g.playOneRandNoSuicide();
+            if (move == 0) {
+                pass++;
+            } else {
+                pass = 0;
+            }
+            if (pass == 2) {
+                g.reset();
+            }
         }
         System.out.println(g.debug_show());
-    }    
+    }
 
     public static void dispScramble() {
         long m = 0;
@@ -134,6 +166,45 @@ public class Test_Displays {
             m = scramble(m);
             System.out.println(outString(m, 'X', '-'));
         }
+    }
+    
+    
+    public static void dispSomeFinishAccel(){
+        L64fbase.gob64Struct g = new L64fbase.gob64Struct();
+        g.init();
+        gob64Accel c = new gob64Accel(g);
+        
+        
+        for(int i=0;i<40;i++){
+            g.reset();
+            c.finishAccelGame();
+            System.out.println("=================");
+            System.out.println(g.debug_show());
+        }
+    }
+
+    public static void dispRandFinishAccell() {
+        L64fbase.gob64Struct g = new L64fbase.gob64Struct();
+        g.init();
+        gob64Accel c = new gob64Accel(g);
+
+        for (int amaTot = 0; amaTot < 4; amaTot++) {
+            c.prepareAccelGame();
+            for (int i = 0; i < 4; i++) {
+                //System.out.println("=================");
+                c.hitSelectRand();
+                c.stepAccelGameNoConflict();
+                c.synchRefOut();
+
+                //System.out.println(g.debug_show());
+            }
+            System.out.println("=================");
+            c.hitSelectAll();
+            c.stepAccelGameNoConflict();
+            c.synchRefOut();
+
+            System.out.println(g.debug_show());
+        }// Amatot
     }
 
     public static void dispRandFillAccell() {

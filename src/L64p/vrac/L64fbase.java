@@ -25,7 +25,7 @@ public class L64fbase {
 
     public static final long deadFull(long mem, long lib, long externalLib) {
         long alive;
-        alive = ((scramble(lib)|externalLib) & mem);
+        alive = ((scramble(lib) | externalLib) & mem);
 
         long last = alive;
 
@@ -227,11 +227,162 @@ public class L64fbase {
         return ~mask;
     }
 
+    public static final class gob64Accel {
+
+        final gob64Struct ref;
+        long bFill = 0;
+        long wFill = 0;
+        long p0 = 0;
+        long p1 = 0;
+        long hit = 0;
+        long rand = 0;
+        long externLibs = 0;
+
+        public gob64Accel(gob64Struct ref) {
+            this.ref = ref;
+        }
+
+        private final void synchRefIn() {
+            this.p0 = ref.p0;
+            this.p1 = ref.p1;
+            this.rand = ref.rand;
+            this.externLibs = ref.externLibs;
+        }
+
+        public final void synchRefOut() {
+            ref.p0 = this.p0;
+            ref.p1 = this.p1;
+            ref.rand = this.rand;
+        }
+
+        public final void stepAccelGameWithConflict() {
+
+        }
+
+        // Initialement bFill et wFill sont couvrant
+        // A chaque step un hit est determine
+        // Les elements de bFill et wFill qui correspondent au hit
+        // sont propose et utilise ou rejet
+        // sont qui sont acceptes sont elimine petit à petit
+        public final void stepAccelGameNoConflict() {
+
+            long p0pre = p0;
+            long p1pre = p1;
+
+            long p0exp = hit & bFill;
+            long p1exp = hit & wFill;
+            p0 |= p0exp;
+            p1 |= p1exp;
+
+            //System.out.println("fullFill "+outString(bFill, wFill));
+            //System.out.println("fillIt "+outString(p0exp, p1exp));
+            //System.out.println("proposed "+outString(p0, p1));            
+            long e0 = deadFull(p0exp, ~p0, 0);
+            long e1 = deadFull(p1exp, ~p1, 0);
+
+            //System.out.println("autoEye "+outString(e0, e1));
+            long pseudo0 = ref.pseudoEyes(p0pre, p1pre);
+            long pseudo1 = ref.pseudoEyes(p1pre, p0pre);
+
+            //System.out.println("pseudoEye "+outString(pseudo0, pseudo1));
+            e0 &= ~pseudo0;
+            e1 &= ~pseudo1;
+
+            //System.out.println("finalForbid "+outString(e0, e1));
+            p0 ^= e0;
+            p1 ^= e1;
+
+            //System.out.println("finalProp before conflict "+outString(p0, p1));
+            long freeAft = ~(p0 | p1);
+
+            long d0 = deadFull(p0, freeAft, externLibs);
+            long d1 = deadFull(p1, freeAft, externLibs);
+
+            //System.out.println("no libs stones "+outString(d0, d1));
+            long d0voi = scramble(d0) & d1;
+            long d1voi = scramble(d1) & d0;
+
+            long noconf0 = deadFull(p0, d0voi, 0);
+            long noconf1 = deadFull(p1, d1voi, 0);
+
+            //System.out.println("Conflicting "+outString(noconf0^p0, noconf1^p1));
+            //System.out.println("other "+outString(~p0pre, ~p1pre));
+            //System.out.println("Asphixie "+outString(e0, e1));
+            p0 = p0pre | noconf0;
+            p1 = p1pre | noconf1;
+
+            //System.out.println("propo no conflict "+outString(p0, p1));
+            long freeFin = ~(p0 | p1) | externLibs;
+
+            bFill &= freeFin;
+            wFill &= freeFin;
+
+            long clean0 = deadFull(p0, freeFin, externLibs);
+            long clean1 = deadFull(p1, freeFin, externLibs);
+
+            //System.out.println("capture no confl "+outString(clean0, clean1));
+            p0 ^= clean0;
+            p1 ^= clean1;
+
+            //System.out.println("official pos "+outString(p0, p1));
+            //System.out.println("left to play "+outString(bFill, wFill));
+        }
+
+        public final void prepareAccelGame() {
+            this.synchRefIn();
+
+            rand = rule30(rand);
+            rand = rule30(rand);
+
+            long split = rand;
+            bFill = split;
+            wFill = ~split;
+
+            long free = ~(p0 | p1);
+            bFill &= free;
+            wFill &= free;
+        }
+
+        public final void hitSelectRand() {
+            rand = rule30(rand);
+            rand = rule30(rand);
+
+            hit = rand;
+        }
+
+        public final void hitSelectAll() {
+            hit = -1L;
+        }
+
+        public final void finishAccelGame() {
+
+            gob64Accel c = this;
+
+            for (int amaTot = 0; amaTot < 4; amaTot++) {
+                c.prepareAccelGame();
+                for (int i = 0; i < 4; i++) {
+                    //System.out.println("=================");
+                    c.hitSelectRand();
+                    c.stepAccelGameNoConflict();
+                    c.synchRefOut();
+
+                    //System.out.println(g.debug_show());
+                }
+                //System.out.println("=================");
+                c.hitSelectAll();
+                c.stepAccelGameNoConflict();
+                c.synchRefOut();
+
+                //System.out.println(g.debug_show());
+            }// Amatot
+        }
+    }
+
     public static final class gob64Struct {
 
         public long p0 = 0;
         public long p1 = 0;
-        public long externLibs=0;
+        public long externLibs = 0;
         public long rand = 1;
         public long phase = 0;
         public long repet = 0;
@@ -243,13 +394,13 @@ public class L64fbase {
 
         public final void reset() {
             p0 = p1 = 0;
-            phase=0;
-            past0=past1=past2=past3=0;
+            phase = 0;
+            past0 = past1 = past2 = past3 = 0;
         }
 
         public final void copy(gob64Struct src) {
-            externLibs=src.externLibs;
-            
+            externLibs = src.externLibs;
+
             p0 = src.p0;
             p1 = src.p1;
             phase = src.phase;
@@ -337,8 +488,8 @@ public class L64fbase {
                 p0 ^= pl;
                 libs ^= pl;
                 past = p0;
-                long suicide = deadFull(p0, libs , externLibs);
-                dead = deadFull(p1, libs , externLibs);
+                long suicide = deadFull(p0, libs, externLibs);
+                dead = deadFull(p1, libs, externLibs);
                 if (suicide != 0 && dead == 0) {
                     p0 ^= pl;
                     empty ^= pl;
@@ -375,6 +526,10 @@ public class L64fbase {
         }
 
         public final long pseudoEyes() {
+            return pseudoEyes(p0, p1);
+        }
+
+        public final long pseudoEyes(long p0, long p1) {
             long libs = ~(p0 | p1);
 
             long notP0 = ~p0;
@@ -404,43 +559,54 @@ public class L64fbase {
             long res = libs & eyePos & ((border & one) | two);
             return res;
         }
-        
-        public final int convertToNormalisedMove(long move){
-            if(move==0) return -1;
-            
-            for(int i=0;i<64;i++){
-                if(
-                        ((
-                            (move >>>(63-i))
-                        &1  )!= 0)
-                    ) return i;
+
+        public final int convertToNormalisedMove(long move) {
+            if (move == 0) {
+                return -1;
+            }
+
+            for (int i = 0; i < 64; i++) {
+                if ((((move >>> (63 - i))
+                        & 1) != 0)) {
+                    return i;
+                }
             }
             throw new RuntimeException("Impossible path");
         }
-        public final void forceNormalisedMove(int m,int phase){
-            if(phase!=this.phase) throw new RuntimeException("Inconsistent phase "+this.phase+" mais "+phase);
-            if(m==-1){ passMove(); return;}
-            
-            if(m<=0) m=0;
-            int curr= getAt(p0|p1,m%8, m/8);
-            if(curr!=0) throw new RuntimeException("playing non empty");
-            p0=setAt(p0, m%8, m/8, 1);
-            
-                long empty = ~(p0 | p1) ;
-                long dead0 = deadFull(p0, empty, externLibs);
-               
-            
-                empty = ~(p0 | p1 ) ;
-                //System.out.println("examined "+outString(p1, empty));
-                long dead1 = deadFull(p1, empty, externLibs);
-                p1 ^= dead1;
-                
-                //System.out.println("captured "+outString(dead1, 0));
-                
-                if(dead0!=0 && dead1==0) throw new RuntimeException("playing suicidal move");
-                
+
+        public final void forceNormalisedMove(int m, int phase) {
+            if (phase != this.phase) {
+                throw new RuntimeException("Inconsistent phase " + this.phase + " mais " + phase);
+            }
+            if (m == -1) {
                 passMove();
-            
+                return;
+            }
+
+            if (m <= 0) {
+                m = 0;
+            }
+            int curr = getAt(p0 | p1, m % 8, m / 8);
+            if (curr != 0) {
+                throw new RuntimeException("playing non empty");
+            }
+            p0 = setAt(p0, m % 8, m / 8, 1);
+
+            long empty = ~(p0 | p1);
+            long dead0 = deadFull(p0, empty, externLibs);
+
+            empty = ~(p0 | p1);
+            //System.out.println("examined "+outString(p1, empty));
+            long dead1 = deadFull(p1, empty, externLibs);
+            p1 ^= dead1;
+
+            //System.out.println("captured "+outString(dead1, 0));
+            if (dead0 != 0 && dead1 == 0) {
+                throw new RuntimeException("playing suicidal move");
+            }
+
+            passMove();
+
         }
 
         public final long playOneRandomMove() {
@@ -493,10 +659,10 @@ public class L64fbase {
             p0 |= hit & split;
             p1 |= hit & ~split;
 
-            long freeAft = ~(p0 | p1) ;
+            long freeAft = ~(p0 | p1);
 
-            long e0 = deadFull(p0 ^ p0pre, ~p0,0);
-            long e1 = deadFull(p1 ^ p1pre, ~p1,0);
+            long e0 = deadFull(p0 ^ p0pre, ~p0, 0);
+            long e1 = deadFull(p1 ^ p1pre, ~p1, 0);
 
             //System.out.println("other "+outString(~p0pre, ~p1pre));
             //System.out.println("Asphixie "+outString(e0, e1));
@@ -509,8 +675,8 @@ public class L64fbase {
             long d0voi = scramble(d0) & d1;
             long d1voi = scramble(d1) & d0;
 
-            long noconf0 = deadFull(p0, d0voi,0);
-            long noconf1 = deadFull(p1, d1voi,0);
+            long noconf0 = deadFull(p0, d0voi, 0);
+            long noconf1 = deadFull(p1, d1voi, 0);
 
             p0 = p0pre | noconf0;
             p1 = p1pre | noconf1;
