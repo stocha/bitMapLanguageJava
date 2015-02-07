@@ -17,11 +17,28 @@ public class Reg381 {
     static final int nbBitLast;
     
     
+    public static final long count(long mem) {
+        long v = mem;
+        long c;
+        v = v - ((v >>> 1) & 0x5555555555555555L);                           // temp
+        v = (v & (0x3333333333333333L)) + ((v >>> 2) & (0x3333333333333333L));      // temp
+        v = (v + (v >>> 4)) & 0xF0F0F0F0F0F0F0FL;                      // temp
+        c = (v * (0x101010101010101L)) >>> ((7) * 8); // count
+        return c;
+    }    
+    
+    
     public static Reg381[] allocBuff(int nb){
         Reg381 res[]=new Reg381[nb];
         for(int i=0;i<nb;i++) res[i]=new Reg381();
         return res;
     }
+    
+    public static Reg381 alloc(){
+        return new Reg381();
+    }
+    
+    
 
     static {
 
@@ -137,6 +154,10 @@ public class Reg381 {
                 throw new RuntimeException("Forbiden path");
         }
         return (int) ((datb >>> (blocSz - 1 - in)) & 1);
+    }
+    
+    public long count(){
+        return count(a)+count(b)+count(c)+count(d)+count(e)+count(f);
     }
 
     public void cp(Reg381 s) {

@@ -18,8 +18,35 @@ public class Bench_mesures {
         //timeRandomNoSuicideGame();
         //timeRandomNoSuicideGameAccelerated();
         
-        timeSomeFinishAccel();
+        //timeSomeFinishAccel();
+        time391RandHash();
     }
+    
+   public static void time391RandHash(){
+       Reg381 r[]=Reg381.allocBuff(10);
+       
+       Reg381 rh=Reg381.alloc();
+       rh.setAt(190, 1);
+       
+       
+        final int nbGame = 20000000;    
+        
+        long t0 = System.nanoTime();    
+        
+        for(int i=0;i<nbGame;i++){
+            rh.randHash(r);
+            //System.out.println("=================");
+            //System.out.println(g.debug_show());
+        }
+        
+       long t1 = System.nanoTime();
+
+        double t = (t1 - t0) / 1000000000.0;
+        System.out.println("time391RandHash " + nbGame + " actions en " + t + " secondes");
+        double nbgamSec = nbGame;
+        nbgamSec /= t;
+        System.out.println("" + nbgamSec + " actions par secondes");         
+    }    
     
       
     public static void timeSomeFinishAccel(){
