@@ -200,41 +200,41 @@ public class Reg381 {
         f &= finalMask;
     }
     
-    public void regShl(){
-        a=(a<<1)|(b>>>63);
-        b=(b<<1)|(c>>>63);
-        c=(c<<1)|(d>>>63);
-        d=(d<<1)|(e>>>63);
-        e=(e<<1)|(f>>>63);
-        f=(f<<1);
+    public void regShl(int v){
+        a=(a<<v)|(b>>>64-v);
+        b=(b<<v)|(c>>>64-v);
+        c=(c<<v)|(d>>>64-v);
+        d=(d<<v)|(e>>>64-v);
+        e=(e<<v)|(f>>>64-v);
+        f=(f<<v);
     }
-    public void regShr(){
-        f=((f>>>1)|(e<<63))&finalMask;
-        e=(e>>>1)|(d<<63);
-        d=(d>>>1)|(c<<63);
-        c=(c>>>1)|(b<<63);
-        b=(b>>>1)|(a<<63);
-        a=(a>>>1);        
+    public void regShr(int v){
+        f=((f>>>v)|(e<<64-v))&finalMask;
+        e=(e>>>v)|(d<<64-v);
+        d=(d>>>v)|(c<<64-v);
+        c=(c>>>v)|(b<<64-v);
+        b=(b>>>v)|(a<<64-v);
+        a=(a>>>v);        
     }    
     
-    public void regRol(){
+    public void regRol(int v){
         long oa=a;
-        a=(a<<1)|(b>>>63);
-        b=(b<<1)|(c>>>63);
-        c=(c<<1)|(d>>>63);
-        d=(d<<1)|(e>>>63);
-        e=(e<<1)|(f>>>63);
-        f=((f<<1)|(oa>>>(nbBitLast-1)))&finalMask;        
+        a=(a<<v)|(b>>>64-v);
+        b=(b<<v)|(c>>>64-v);
+        c=(c<<v)|(d>>>64-v);
+        d=(d<<v)|(e>>>64-v);
+        e=(e<<v)|(f>>>64-v);
+        f=((f<<v)|(oa>>>(nbBitLast-v)))&finalMask;        
     }
     
-    public void regRor(){
+    public void regRor(int v){
         long oa=f;
-        f=((f>>>1)|(e<<63))&finalMask;
-        e=(e>>>1)|(d<<63);
-        d=(d>>>1)|(c<<63);
-        c=(c>>>1)|(b<<63);
-        b=(b>>>1)|(a<<63);
-        a=(a>>>1)|(oa<<(nbBitLast-1));        
+        f=((f>>>v)|(e<<64-v))&finalMask;
+        e=(e>>>v)|(d<<64-v);
+        d=(d>>>v)|(c<<64-v);
+        c=(c>>>v)|(b<<64-v);
+        b=(b>>>v)|(a<<64-v);
+        a=(a>>>v)|(oa<<(nbBitLast-v));        
     }
     
     public void rule30(Reg381[] buff){
@@ -244,11 +244,34 @@ public class Reg381 {
         l.cp(this);
         r.cp(this);
         
-        l.regRor();
-        r.regRol();
+        l.regRor(1);
+        r.regRol(1);
         
         this.or(r);
         this.xor(l);
+    }
+    
+    public void randHash(Reg381[] buff){
+        Reg381 l=buff[0];
+        Reg381 r=buff[1];
+        
+        l.cp(this);
+        r.cp(this);
+        
+        l.regRor(47);
+        r.regRol(47);
+        
+        this.or(r);
+        this.xor(l);     
+        
+        l.cp(this);
+        r.cp(this);
+        
+        l.regRor(13);
+        r.regRol(13);
+        
+        this.or(r);
+        this.xor(l);           
     }
 
     String debug_regOut() {
