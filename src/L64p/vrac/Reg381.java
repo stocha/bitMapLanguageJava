@@ -17,7 +17,7 @@ public class Reg381 {
     static final int nbBitLast;
     
     
-    public static final long count(long mem) {
+    public final long count(long mem) {
         long v = mem;
         long c;
         v = v - ((v >>> 1) & 0x5555555555555555L);                           // temp
@@ -25,6 +25,16 @@ public class Reg381 {
         v = (v + (v >>> 4)) & 0xF0F0F0F0F0F0F0FL;                      // temp
         c = (v * (0x101010101010101L)) >>> ((7) * 8); // count
         return c;
+    }    
+    
+    public final long selectNth(long in, int at) {
+        int n;
+        long res = 0;
+        for (n = 0; in != 0 && n <= at; n++) {
+            res = in;
+            in &= in - 1;
+        }
+        return res ^ in;
     }    
     
     
@@ -168,10 +178,72 @@ public class Reg381 {
         e = s.e;
         f = s.f;
     }
+    
+    public long[] toLong(){
+        return new long[]{a,b,c,d,e,f};
+    }
+    
+    public void fromLong(long[] in){
+        a=in[0];
+        b=in[1];
+        c=in[2];
+        d=in[3];
+        e=in[4];
+        f=in[5];        
+    }
+    
+    public long randomSelectOneBitFrom(Reg381 onto,long rand){
+        long[] nb=new long[]{0,count(onto.a),count(onto.b),count(onto.c),count(onto.d),count(onto.e),count(onto.f)};
+        long nbBit=nb[0]+nb[1]+nb[2]+nb[3]+nb[4]+nb[5];
+        
+        long mask=511;
+        long nextm=mask>>>1;
+        while(nextm>nbBit){
+            mask=nextm;
+            nextm>>>=1;
+        }
+        
+        long rv;
+        
+        do{
+        rand=lHash(rand);
+        rv=(rand)&mask;
+        }while (rv>=nbBit);
+        
+        long[] t=onto.toLong();
+        int i=0;
+        long acc=0;
+        do{
+            acc+=nb[i++];
+        }while(rv>=acc);
+        long numBit=rv-(nb[i-2]);
+        int numlong=i-2;
+        
+        long[] res=new long[]{0,0,0,0,0,0};
+        res[numlong]=selectNth(t[numlong],(int)numBit);
+        
+        this.fromLong(res);
+        
+        return rand;
+    }
 
     public long tst0() {
         return a | b | c | d | e | f;
     }
+    
+    
+    
+    public final long lHash(long mem) {
+        //(l xor (c or r))
+        long l = (mem >>> 7 | mem << 64-7);
+        long r = (mem >>> 64-7 | mem << 7);
+        long part= (l ^ (mem | r));
+        
+        l = (part >>> 17 | part << 64-17);
+        r = (part >>> 64-17 | part << 17);
+        
+        return (l ^ (part | r));
+    }    
 
     public long cmp(Reg381 r) {
         long acc = 0;

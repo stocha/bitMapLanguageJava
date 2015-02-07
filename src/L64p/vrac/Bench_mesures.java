@@ -19,22 +19,28 @@ public class Bench_mesures {
         //timeRandomNoSuicideGameAccelerated();
         
         //timeSomeFinishAccel();
-        time391RandHash();
+        //time391RandHash();
+        time391RandomBit();
     }
     
-   public static void time391RandHash(){
+    
+    public static void time391RandomBit(){
        Reg381 r[]=Reg381.allocBuff(10);
        
        Reg381 rh=Reg381.alloc();
+       Reg381 rbit=Reg381.alloc();
        rh.setAt(190, 1);
+       long rand=1;
        
-       
-        final int nbGame = 20000000;    
+        final int nbGame = 6000000;    
         
-        long t0 = System.nanoTime();    
+        long t0 = System.nanoTime();   
+        double accCount=0;
         
         for(int i=0;i<nbGame;i++){
             rh.randHash(r);
+            //accCount+=Math.abs(rh.count()-190.5);
+            rand=rbit.randomSelectOneBitFrom(rh, rand);
             //System.out.println("=================");
             //System.out.println(g.debug_show());
         }
@@ -45,7 +51,36 @@ public class Bench_mesures {
         System.out.println("time391RandHash " + nbGame + " actions en " + t + " secondes");
         double nbgamSec = nbGame;
         nbgamSec /= t;
-        System.out.println("" + nbgamSec + " actions par secondes");         
+        System.out.println("" + nbgamSec + " actions par secondes");  
+        System.out.println("avg count = "+(accCount/(double) nbGame));        
+    }
+   public static void time391RandHash(){
+       Reg381 r[]=Reg381.allocBuff(10);
+       
+       Reg381 rh=Reg381.alloc();
+       rh.setAt(190, 1);
+       
+       
+        final int nbGame = 20000000;    
+        
+        long t0 = System.nanoTime();   
+        double accCount=0;
+        
+        for(int i=0;i<nbGame;i++){
+            rh.randHash(r);
+            accCount+=Math.abs(rh.count()-190.5);
+            //System.out.println("=================");
+            //System.out.println(g.debug_show());
+        }
+        
+       long t1 = System.nanoTime();
+
+        double t = (t1 - t0) / 1000000000.0;
+        System.out.println("time391RandHash " + nbGame + " actions en " + t + " secondes");
+        double nbgamSec = nbGame;
+        nbgamSec /= t;
+        System.out.println("" + nbgamSec + " actions par secondes");  
+        System.out.println("avg count = "+(accCount/(double) nbGame));
     }    
     
       
