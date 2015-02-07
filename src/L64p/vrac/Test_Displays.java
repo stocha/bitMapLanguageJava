@@ -177,9 +177,12 @@ public class Test_Displays {
         
         for(int i=0;i<40;i++){
             g.reset();
-            c.finishAccelGame();
+            c.finishAccelGameNoConfl();
+            
             System.out.println("=================");
             System.out.println(g.debug_show());
+            c.spreadLastCapture(c.lastCapture);
+            System.out.println("corrige "+g.debug_show());
         }
     }
 
@@ -188,7 +191,7 @@ public class Test_Displays {
         g.init();
         gob64Accel c = new gob64Accel(g);
 
-        for (int amaTot = 0; amaTot < 4; amaTot++) {
+        for (int amaTot = 0; amaTot < 3; amaTot++) {
             c.prepareAccelGame();
             for (int i = 0; i < 4; i++) {
                 //System.out.println("=================");
@@ -204,6 +207,7 @@ public class Test_Displays {
             c.synchRefOut();
 
             System.out.println(g.debug_show());
+            System.out.println("Last capture "+outString(c.lastCapture, ~c.lastCapture));
         }// Amatot
     }
 
@@ -212,6 +216,7 @@ public class Test_Displays {
         g.init();
         for (int i = 0; i < 40; i++) {
             g.randomizeAccelNoConflict();
+            
 
             System.out.println(g.debug_show());
         }

@@ -237,6 +237,7 @@ public class L64fbase {
         long hit = 0;
         long rand = 0;
         long externLibs = 0;
+        public long lastCapture = 0;
 
         public gob64Accel(gob64Struct ref) {
             this.ref = ref;
@@ -324,6 +325,9 @@ public class L64fbase {
             p0 ^= clean0;
             p1 ^= clean1;
 
+            lastCapture |= p1;
+            lastCapture &= ~p0;
+
             //System.out.println("official pos "+outString(p0, p1));
             //System.out.println("left to play "+outString(bFill, wFill));
         }
@@ -341,6 +345,11 @@ public class L64fbase {
             long free = ~(p0 | p1);
             bFill &= free;
             wFill &= free;
+
+            rand = rule30(rand);
+            rand = rule30(rand);
+            lastCapture = rand;
+
         }
 
         public final void hitSelectRand() {
@@ -354,11 +363,29 @@ public class L64fbase {
             hit = -1L;
         }
 
-        public final void finishAccelGame() {
+        public final void spreadLastCapture(long lastCapture) {
+            synchRefIn();
+
+            long freeAft = ~(p0 | p1);
+            long notP0 = ~p0;
+            long eyePos = ~((notP0 >>> 8) | (notP0 << 8) | ((notP0 << 1) & LMASK) | ((notP0 >>> 1) & RMASK));
+            freeAft &= ~eyePos;
+
+            notP0 = ~p1;
+            eyePos = ~((notP0 >>> 8) | (notP0 << 8) | ((notP0 << 1) & LMASK) | ((notP0 >>> 1) & RMASK));
+            freeAft &= ~eyePos;
+
+            p0 |= freeAft & lastCapture;
+            p1 |= freeAft & (~lastCapture);
+
+            synchRefOut();
+        }
+
+        public final void finishAccelGameNoConfl() {
 
             gob64Accel c = this;
 
-            for (int amaTot = 0; amaTot < 4; amaTot++) {
+            for (int amaTot = 0; amaTot < 3; amaTot++) {
                 c.prepareAccelGame();
                 for (int i = 0; i < 4; i++) {
                     //System.out.println("=================");

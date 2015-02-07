@@ -33,7 +33,7 @@ public class Bench_mesures {
         
         for(int i=0;i<nbGame;i++){
             g.reset();
-            c.finishAccelGame();
+            c.finishAccelGameNoConfl();
             //System.out.println("=================");
             //System.out.println(g.debug_show());
         }

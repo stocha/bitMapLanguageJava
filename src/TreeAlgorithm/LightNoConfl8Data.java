@@ -69,9 +69,10 @@ public class LightNoConfl8Data implements BoardData {
         
         sim.copy(mem);
         sim.rand=rand;        
-        //acc.finishAccelGame();
+        //acc.finishAccelGameNoConfl();
         //sim.finishRandNoSuicide(komi, metaphase);
-        acc.finishAccelGame();
+        acc.finishAccelGameNoConfl();
+        acc.spreadLastCapture(acc.lastCapture);
         
         double sc = sim.scoreGame(komi,metaphase);
         rand=sim.rand;

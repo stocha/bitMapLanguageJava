@@ -85,6 +85,6 @@ public class Test_Reg381 {
             
     public void doit(){
         testSimple();
-        testRegistre();
+        //testRegistre();
     }
 }
