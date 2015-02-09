@@ -6,8 +6,8 @@ package registerTheoric;
  * and open the template in the editor.
  */
 
-import registerTheoric.registers.RegisterUtilis;
-import registerTheoric.registers.T2BitReg;
+import v1.registerTheoric.registers.RegisterUtilis;
+import v1.registerTheoric.registers.T2BitReg;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

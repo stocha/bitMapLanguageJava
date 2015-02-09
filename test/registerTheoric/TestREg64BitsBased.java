@@ -6,12 +6,12 @@
 
 package registerTheoric;
 
-import registerTheoric.registers.RegisterUtilis;
-import registerTheoric.registers.Reg64BitsBased;
-import registerTheoric.registers.T2BitReg;
-import registerTheoric.registers.ComposedRegister;
-import registerTheoric.registers.IRegister;
-import registerTheoric.registers.IRegFactory;
+import v1.registerTheoric.registers.RegisterUtilis;
+import v1.registerTheoric.registers.Reg64BitsBased;
+import v1.registerTheoric.registers.T2BitReg;
+import v1.registerTheoric.registers.ComposedRegister;
+import v1.registerTheoric.registers.IRegister;
+import v1.registerTheoric.registers.IRegFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
