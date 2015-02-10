@@ -99,6 +99,7 @@ public class UctGraphNoGraph {
         public void deflat() {
             List<BoardData> next = state.getSubData();
             childs = new ArrayList<>(next.size());
+            childVisit = new ArrayList<>(next.size());
             for (BoardData n : next) {
                 childs.add(new UctNode(n, this.depth + 1));
                 childVisit.add(0);

@@ -21,7 +21,9 @@ public class Test_botComparison {
        //comp.setBots(new UctUltraFillNoConflict(7878786L,16*1000), new UctUltraFillNoConflict(9991112L,16*1000));
         //comp.setBots(new UctUltraFillNoConflict(7878786L,64*1000*2), new UctUltraFillNoConflict(9991112L,64*1000*2));
         //comp.setBots(new UctUltraFillNoConflict(7878786L,16*1000), new UctLightBot(9991112L,8*1000));
-        comp.setBots(new UctLightBot(7878786L,3*1000), new FlatBot(9991112L,6*1000));
+        //comp.setBots(new UctLightBot(7878786L,3*1000), new FlatBot(9991112L,6*1000));
+        
+        comp.setBots(new UctLightBotNoGraph(7878786L,6*1000), new UctLightBot(9991112L,6*1000));
         
         comp.setUp();
         comp.setGameSpooler((String gameDesc) -> {
