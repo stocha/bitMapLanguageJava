@@ -56,7 +56,7 @@ public class Test_Players {
             BanditManchotData band = new BanditManchotData(4);
             System.out.println("Theoritical values " + band.getSubData());
 
-            UctPlayer fp = new UctPlayer(band, null);
+            UctTree fp = new UctTree(band, null);
             fp.deflat();
 
             int nbSim = 10000000;
@@ -196,7 +196,7 @@ public class Test_Players {
                 Light64Data band = new Light64Data(gob, komi,mm&1);
             //System.out.println("Theoritical values "+band.getSubData());
 
-                UctPlayer fp = new UctPlayer(band, null);
+                UctTree fp = new UctTree(band, null);
                 fp.deflat();
 
                 int nbSim = 32000*2 +4;
@@ -213,7 +213,7 @@ public class Test_Players {
 
                 //System.out.println("" + nbSim + " en " + t + " /  " + simSec + " act per second");
 
-                for(UctPlayer chi:fp.childs){
+                for(UctTree chi:fp.childs){
                     //System.out.println("" + chi);
                 }
                 

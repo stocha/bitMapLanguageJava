@@ -20,7 +20,7 @@ public class Bench_mesures {
         
         //timeSomeFinishAccel();
         //time391RandHash(); time391RandHash();
-        //time391RandomBit(); time391RandomBit();
+        time391RandomBit(); time391RandomBit();
         //timeBitSet();timeBitSet();
     }
     
@@ -62,8 +62,14 @@ public class Bench_mesures {
        Reg381 r[]=Reg381.allocBuff(10);
        
        Reg381 rh=Reg381.alloc();
+       Reg381 divid=Reg381.alloc();
        Reg381 rbit=Reg381.alloc();
        rh.setAt(190, 1);
+       divid.setAt(56, 1);divid.setAt(23, 1);
+       for(int i=0;i<100;i++){
+           rh.randHash(r);
+           divid.randHash(r);
+       }
        long rand=1;
        
         final int nbGame = 6000000;    
@@ -74,7 +80,9 @@ public class Bench_mesures {
         for(int i=0;i<nbGame;i++){
             rh.randHash(r);
             //accCount+=Math.abs(rh.count()-190.5);
-            rand=rbit.randomSelectOneBitFrom(rh, rand);
+            r[1].cp(rh);
+            r[1].and(divid);
+            rand=rbit.randomSelectOneBitFrom(r[1], rand);
             //System.out.println("=================");
             //System.out.println(g.debug_show());
         }

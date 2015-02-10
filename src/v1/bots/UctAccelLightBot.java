@@ -9,7 +9,7 @@ import v1.L64p.vrac.L64fbase;
 import v1.TreeAlgorithm.BoardData;
 import v1.TreeAlgorithm.Light64Data;
 import v1.TreeAlgorithm.LightAccelAssymData;
-import v1.TreeAlgorithm.UctPlayer;
+import v1.TreeAlgorithm.UctTree;
 
 /**
  *
@@ -17,7 +17,7 @@ import v1.TreeAlgorithm.UctPlayer;
  */
 public class UctAccelLightBot implements IGoBot {
     
-    UctPlayer player;
+    UctTree player;
     L64fbase.gob64Struct gob;
     double komi=0;
     final int nbSim;
@@ -52,7 +52,7 @@ public class UctAccelLightBot implements IGoBot {
 
     @Override
     public int genMove() {
-        player=new UctPlayer(new LightAccelAssymData(gob,komi,(int)gob.phase), null);
+        player=new UctTree(new LightAccelAssymData(gob,komi,(int)gob.phase), null);
         player.deflat();
         
         for(int i=0;i<nbSim;i++){

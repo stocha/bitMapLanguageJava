@@ -8,7 +8,7 @@ package v1.bots;
 import v1.L64p.vrac.L64fbase;
 import v1.TreeAlgorithm.BoardData;
 import v1.TreeAlgorithm.LightNoConfl8Data;
-import v1.TreeAlgorithm.UctPlayer;
+import v1.TreeAlgorithm.UctTree;
 
 /**
  *
@@ -16,7 +16,7 @@ import v1.TreeAlgorithm.UctPlayer;
  */
 public class UctUltraFillNoConflict implements IGoBot {
 
-    UctPlayer player;
+    UctTree player;
     L64fbase.gob64Struct gob;
     double komi = 0;
     final int nbSim;
@@ -49,7 +49,7 @@ public class UctUltraFillNoConflict implements IGoBot {
 
     @Override
     public int genMove() {
-        player = new UctPlayer(new LightNoConfl8Data(gob, komi, (int) gob.phase), null);
+        player = new UctTree(new LightNoConfl8Data(gob, komi, (int) gob.phase), null);
         player.deflat();
 
         for (int i = 0; i < nbSim; i++) {

@@ -12,9 +12,9 @@ import java.util.List;
  *
  * @author denis
  */
-public class UctPlayer {
-    final UctPlayer father;
-    List<UctPlayer> childs=null;
+public class UctTree {
+    final UctTree father;
+    List<UctTree> childs=null;
     long hits=0;
     double scoreacc=0;
     final BoardData state;
@@ -34,28 +34,28 @@ public class UctPlayer {
         return res;
     }
 
-    public UctPlayer(BoardData state,UctPlayer father) {
+    public UctTree(BoardData state,UctTree father) {
         this.father=father;
         this.state = state;
     }
     
-    private static final UctPlayer nullp=new UctPlayer(null, null);
+    private static final UctTree nullp=new UctTree(null, null);
     public BoardData bestState(){
         double max=Double.NEGATIVE_INFINITY;
-        UctPlayer maxfp=nullp;
+        UctTree maxfp=nullp;
         
         //System.out.println("childs count : "+childs.size());
-        for(UctPlayer fp : childs){
+        for(UctTree fp : childs){
             double sc=fp.scoreAvg();
             if(sc>max) {max=sc;maxfp=fp;}
         }
         return maxfp.state;
     }
     
-    public UctPlayer selectChildToVisit(){
+    public UctTree selectChildToVisit(){
         double max=Double.NEGATIVE_INFINITY;
-        UctPlayer maxfp=null;
-        for(UctPlayer fp : childs){
+        UctTree maxfp=null;
+        for(UctTree fp : childs){
             double sc=visitValue(fp);
             //System.err.println(sc+" /"+max+" "+fp);
             if(sc>=max) {max=sc;maxfp=fp;}
@@ -63,7 +63,7 @@ public class UctPlayer {
         return maxfp;
     }
     
-    double visitValue(UctPlayer node){
+    double visitValue(UctTree node){
         if(node.hits==0) return Double.MAX_VALUE;
         double winrate=node.scoreAvg();
         if(false && hits==0){
@@ -91,7 +91,7 @@ public class UctPlayer {
             }
         
         if(childs!=null && childs.size()>0){
-            UctPlayer ch=selectChildToVisit();
+            UctTree ch=selectChildToVisit();
             double sc=1.0- ch.doSimulation();
             this.hits++;
             this.scoreacc+=sc;
@@ -112,7 +112,7 @@ public class UctPlayer {
         List<BoardData> next=state.getSubData();
         childs=new ArrayList<>(next.size());
         for(BoardData n:next){
-            childs.add(new UctPlayer(n, this));
+            childs.add(new UctTree(n, this));
         }
     }
     
