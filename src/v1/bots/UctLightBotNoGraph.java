@@ -52,6 +52,7 @@ public class UctLightBotNoGraph  implements IGoBot {
 
     @Override
     public int genMove() {
+        instGraph.clear();
         player=instGraph.new UctNode(new Light64Data(gob,komi,(int)gob.phase), 0);
         player.deflat();
         

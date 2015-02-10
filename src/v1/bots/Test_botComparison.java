@@ -37,6 +37,7 @@ public class Test_botComparison {
             comp.addNextComparison();
             System.out.println("<comparison ...>"+System.lineSeparator()+""+comp.aggregateData());
             UctGraph.printlnReuse();
+            System.gc();
         }
     }
 }
