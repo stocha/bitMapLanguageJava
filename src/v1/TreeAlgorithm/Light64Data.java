@@ -8,6 +8,7 @@ package v1.TreeAlgorithm;
 import v1.L64p.vrac.L64fbase;
 import v1.L64p.vrac.L64fbase.gob64Struct;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,6 +28,21 @@ public class Light64Data implements BoardData {
         this.komi = komi;
         this.metaphase=metaphase^1;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Light64Data o=(Light64Data)obj;
+        return Arrays.equals(new long[]{this.mem.p0,this.mem.p1}, new long[]{o.mem.p0,o.mem.p1});
+        //return  true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(new long[]{this.mem.p0,this.mem.p1});
+        //return 125;
+    }
+    
+    
     
     @Override
     public String toString(){

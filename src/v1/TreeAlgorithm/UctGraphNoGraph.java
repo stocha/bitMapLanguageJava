@@ -16,9 +16,23 @@ import java.util.List;
 public class UctGraphNoGraph {
     
     static public long reuse=0;
+    static public long shortenDepth=0;
+    static public long loopSkip=0;
+    static public long endPoint=0;
+    
+    public static void printlnReuse(){
+        System.out.println("reuse "+reuse+" | shorten "+shortenDepth+" | skip "+loopSkip
+        +" | endPoint "+endPoint);
+    }
 
     private final UctNode nullp = new UctNode(null, -1);
     private final HashMap<BoardData,UctNode> graph;
+    
+    public void clear(){
+        graph.clear();
+    }
+    
+    
 
     public UctGraphNoGraph(int hashMapSize) {
         graph=new HashMap<>(hashMapSize);
@@ -91,6 +105,13 @@ public class UctGraphNoGraph {
 
             if (childs != null && childs.size() > 0) {
                 int chInd = selectChildToVisit();
+                if(chInd==-1){
+                    endPoint++;
+                    double sc = state.scoreOnce();
+                    hits++;
+                    scoreacc += sc;
+                    return sc;
+                }
                 UctNode ch=childs.get(chInd);
                         double sc = 1.0 - ch.doSimulation();
                 this.hits++;
@@ -109,11 +130,14 @@ public class UctGraphNoGraph {
         public UctNode getExistingBoard(BoardData bd){
             UctNode res;
             
+            
             res=graph.get(bd);
             
             if(res==null){
                 res=new UctNode(bd, this.depth + 1);
                 graph.put(bd, res);
+                
+                //System.out.println("bd "+bd.hashCode()+" "+bd.getClass().getCanonicalName());
             }else{
                 reuse++;
             }
@@ -133,11 +157,26 @@ public class UctGraphNoGraph {
                 childVisit.add(0);
             }
         }
+        
+        boolean checkChildLoop(int childInd){
+            UctNode next=childs.get(childInd);
+            if(next.depth>this.depth+1){
+                shortenDepth++;
+                next.depth=this.depth+1;
+            }else if(next.depth<=this.depth){
+                loopSkip++;
+                return true;
+            }
+            
+            return false;
+        };
 
         public int selectChildToVisit() {
             double max = Double.NEGATIVE_INFINITY;
             int maxindex = -1;
             for (int i=0;i<childs.size();i++) {
+                if(checkChildLoop(i)) continue;
+                
                 double sc = visitValue(i);
                 //System.err.println(sc+" /"+max+" "+fp);
                 if (sc >= max) {

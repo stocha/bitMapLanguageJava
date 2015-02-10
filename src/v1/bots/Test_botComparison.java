@@ -36,7 +36,7 @@ public class Test_botComparison {
         {
             comp.addNextComparison();
             System.out.println("<comparison ...>"+System.lineSeparator()+""+comp.aggregateData());
-            System.out.println("Nb reuse = "+UctGraphNoGraph.reuse);
+            UctGraphNoGraph.printlnReuse();
         }
     }
 }
