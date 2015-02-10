@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author denis
  */
-public class UctGraph {
+public class UctGraphNoGraph {
 
     private final UctNode nullp = new UctNode(null, -1);
 
@@ -80,9 +80,11 @@ public class UctGraph {
             }
 
             if (childs != null && childs.size() > 0) {
-                UctNode ch = selectChildToVisit();
-                double sc = 1.0 - ch.doSimulation();
+                int chInd = selectChildToVisit();
+                UctNode ch=childs.get(chInd);
+                        double sc = 1.0 - ch.doSimulation();
                 this.hits++;
+                childVisit.set(chInd,(childVisit.get(chInd)+1) );
                 this.scoreacc += sc;
                 return sc;
             } else {
@@ -103,19 +105,18 @@ public class UctGraph {
             }
         }
 
-        public UctNode selectChildToVisit() {
+        public int selectChildToVisit() {
             double max = Double.NEGATIVE_INFINITY;
-            UctNode maxfp = null;
+            int maxindex = -1;
             for (int i=0;i<childs.size();i++) {
-                UctNode fp = childs.get(i);
                 double sc = visitValue(i);
                 //System.err.println(sc+" /"+max+" "+fp);
                 if (sc >= max) {
                     max = sc;
-                    maxfp = fp;
+                    maxindex = i;
                 }
             }
-            return maxfp;
+            return maxindex;
         }
 
     ;
