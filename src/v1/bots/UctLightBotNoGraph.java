@@ -8,15 +8,15 @@ package v1.bots;
 import v1.L64p.vrac.L64fbase;
 import v1.TreeAlgorithm.BoardData;
 import v1.TreeAlgorithm.Light64Data;
-import v1.TreeAlgorithm.UctGraphNoGraph;
+import v1.TreeAlgorithm.UctGraph;
 
 /**
  *
  * @author denis
  */
 public class UctLightBotNoGraph  implements IGoBot {
-    final UctGraphNoGraph instGraph;
-    UctGraphNoGraph.UctNode player;
+    final UctGraph instGraph;
+    UctGraph.UctNode player;
     L64fbase.gob64Struct gob;
     double komi=0;
     final int nbSim;
@@ -25,7 +25,7 @@ public class UctLightBotNoGraph  implements IGoBot {
     public UctLightBotNoGraph(long seed,int nbSim) {
         this.seed = seed;
         this.nbSim=nbSim;
-        instGraph=new UctGraphNoGraph(nbSim);
+        instGraph=new UctGraph(nbSim);
     }
     
     

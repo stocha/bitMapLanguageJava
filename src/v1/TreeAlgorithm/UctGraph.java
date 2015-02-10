@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author denis
  */
-public class UctGraphNoGraph {
+public class UctGraph {
     
     static public long reuse=0;
     static public long shortenDepth=0;
@@ -34,7 +34,7 @@ public class UctGraphNoGraph {
     
     
 
-    public UctGraphNoGraph(int hashMapSize) {
+    public UctGraph(int hashMapSize) {
         graph=new HashMap<>(hashMapSize);
     }
     

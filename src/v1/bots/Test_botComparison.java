@@ -5,7 +5,7 @@
  */
 package v1.bots;
 
-import v1.TreeAlgorithm.UctGraphNoGraph;
+import v1.TreeAlgorithm.UctGraph;
 
 /**
  *
@@ -36,7 +36,7 @@ public class Test_botComparison {
         {
             comp.addNextComparison();
             System.out.println("<comparison ...>"+System.lineSeparator()+""+comp.aggregateData());
-            UctGraphNoGraph.printlnReuse();
+            UctGraph.printlnReuse();
         }
     }
 }
