@@ -15,7 +15,7 @@ import v1.TreeAlgorithm.UctGraphNoGraph;
  * @author denis
  */
 public class UctLightBotNoGraph  implements IGoBot {
-    final UctGraphNoGraph instGraph=new UctGraphNoGraph();
+    final UctGraphNoGraph instGraph;
     UctGraphNoGraph.UctNode player;
     L64fbase.gob64Struct gob;
     double komi=0;
@@ -24,7 +24,8 @@ public class UctLightBotNoGraph  implements IGoBot {
 
     public UctLightBotNoGraph(long seed,int nbSim) {
         this.seed = seed;
-                this.nbSim=nbSim;
+        this.nbSim=nbSim;
+        instGraph=new UctGraphNoGraph(nbSim);
     }
     
     

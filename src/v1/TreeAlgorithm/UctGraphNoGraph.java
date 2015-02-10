@@ -6,6 +6,7 @@
 package v1.TreeAlgorithm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -13,8 +14,17 @@ import java.util.List;
  * @author denis
  */
 public class UctGraphNoGraph {
+    
+    static public long reuse=0;
 
     private final UctNode nullp = new UctNode(null, -1);
+    private final HashMap<BoardData,UctNode> graph;
+
+    public UctGraphNoGraph(int hashMapSize) {
+        graph=new HashMap<>(hashMapSize);
+    }
+    
+    
 
     public class UctNode {
 
@@ -95,13 +105,31 @@ public class UctGraphNoGraph {
                 return sc;
             }
         }
+        
+        public UctNode getExistingBoard(BoardData bd){
+            UctNode res;
+            
+            res=graph.get(bd);
+            
+            if(res==null){
+                res=new UctNode(bd, this.depth + 1);
+                graph.put(bd, res);
+            }else{
+                reuse++;
+            }
+            
+            
+            
+            
+            return res;
+        }
 
         public void deflat() {
             List<BoardData> next = state.getSubData();
             childs = new ArrayList<>(next.size());
             childVisit = new ArrayList<>(next.size());
             for (BoardData n : next) {
-                childs.add(new UctNode(n, this.depth + 1));
+                childs.add(getExistingBoard(n));
                 childVisit.add(0);
             }
         }

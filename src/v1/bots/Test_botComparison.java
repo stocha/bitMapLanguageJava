@@ -5,6 +5,8 @@
  */
 package v1.bots;
 
+import v1.TreeAlgorithm.UctGraphNoGraph;
+
 /**
  *
  * @author denis
@@ -34,6 +36,7 @@ public class Test_botComparison {
         {
             comp.addNextComparison();
             System.out.println("<comparison ...>"+System.lineSeparator()+""+comp.aggregateData());
+            System.out.println("Nb reuse = "+UctGraphNoGraph.reuse);
         }
     }
 }
