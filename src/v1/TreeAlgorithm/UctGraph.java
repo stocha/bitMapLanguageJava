@@ -49,6 +49,38 @@ public class UctGraph {
         final BoardData state;
 
         public int depth;
+        
+        public String debugFlat(){
+            String res="";
+            if(childs==null) return res;
+            for(int i=0;i<childs.size();i++){
+                res+=" Root child "+i+" ";
+                res+=" hit "+childVisit.get(i);
+                res+=" score "+childs.get(i).scoreAvg();
+                res+=childs.get(i).state;
+            }
+            
+            return res;
+        }
+        
+        public String debugRec(int depth){
+            String res="";
+            if(depth>0)
+            res+=String.format("%"+depth*3+"s", ("="+depth +"=="));
+            
+                res+=" hit "+hits;
+                res+=" score "+this.scoreAvg();
+                res+=this.state;
+            if(childs==null) return res;
+            
+            BoardData best=this.bestState();
+            UctNode next=graph.get(best);
+
+            if(next.depth>this.depth && depth < 7)
+                res+=next.debugRec(depth+1);
+            
+            return res;
+        }        
 
         public UctNode(BoardData state, int depth) {
 
@@ -59,9 +91,13 @@ public class UctGraph {
         public BoardData bestState() {
             double max = Double.NEGATIVE_INFINITY;
             UctNode maxfp = nullp;
+            
+            //System.err.println(""+this.debugFlat());
 
             //System.out.println("childs count : "+childs.size());
             for (UctNode fp : childs) {
+                
+                
                 double sc = fp.scoreAvg();
                 if (sc > max) {
                     max = sc;

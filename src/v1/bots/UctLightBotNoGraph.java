@@ -59,6 +59,7 @@ public class UctLightBotNoGraph  implements IGoBot {
         for(int i=0;i<nbSim;i++){
             player.doSimulation();
         }
+        //System.err.println(""+player.debugRec(0));
         BoardData bd=(Light64Data)player.bestState();
         if(bd==null){gob.passMove(); return -1;}
         L64fbase.gob64Struct best=((Light64Data)bd).mem;
