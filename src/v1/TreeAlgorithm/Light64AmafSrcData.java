@@ -52,6 +52,14 @@ public class Light64AmafSrcData  implements BoardData {
         double score;
     }
 
+    public Light64AmafSrcData(L64fbase.gob64Struct state, double komi,int metaphase, Light64AmafSrcData src,amafResult am,long m,long phase) {
+        this(state, komi, metaphase, src);
+        amaFromSrc.bamaf=am.bamaf;
+        amaFromSrc.wamaf=am.wamaf;
+        
+        if(phase==0) amaFromSrc.bamaf|=m;
+        else amaFromSrc.wamaf|=m;
+    }
     public Light64AmafSrcData(L64fbase.gob64Struct state, double komi,int metaphase, Light64AmafSrcData src) {
         mem.copy(state);
         this.komi = komi;
@@ -98,7 +106,12 @@ public class Light64AmafSrcData  implements BoardData {
     }
 
     private boolean tstSrc(long move){
-        return true;
+        long m=move;
+        long covam=amaFromSrc.bamaf|amaFromSrc.wamaf;
+        if((covam &m) !=0) return true;
+        return mem.isConflictingAmaf(amaFromSrc.bamaf|m, amaFromSrc.wamaf,0);
+        
+       // return true;
     }
     
     @Override
@@ -115,7 +128,7 @@ public class Light64AmafSrcData  implements BoardData {
             if(tstSrc(m)){
                mv.add(new Light64AmafSrcData(sim,komi,metaphase,null)); 
             }else{
-                throw new RuntimeException("node non source");
+                mv.add(new Light64AmafSrcData(sim,komi,metaphase,this.src,this.amaFromSrc,m,mem.phase)); 
             }
             
             sim.copy(mem);

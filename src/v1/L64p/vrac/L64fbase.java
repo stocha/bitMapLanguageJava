@@ -444,7 +444,7 @@ public class L64fbase {
         public final boolean isConflictingAmaf(long black,long white,int metaphase){
             final long b; final long w;
             
-            System.out.println("phase "+phase+" metaphase "+metaphase);
+            //System.out.println("phase "+phase+" metaphase "+metaphase);
             if((metaphase^(this.phase)) ==0) {b=black;w=white;}
             else {b=white;w=black;};
             
@@ -454,17 +454,17 @@ public class L64fbase {
             long all=b|w;
             
             boolean replay=((p0|p1)&all) != 0;
-            if(replay){
-                System.out.println("replayed = "+replay+" "+outString(p0|p1, all));
+            //if(replay){
+              //  System.out.println("replayed = "+replay+" "+outString(p0|p1, all));
                 
-            }
+            //}
             
             if(replay) return true; // replay into
             
             p0|=b;
             p1|=w;
             
-            System.out.println("Expected "+debug_show());
+            //System.out.println("Expected "+debug_show());
             
             long freeAft = ~(p0 | p1);
             
@@ -485,7 +485,7 @@ public class L64fbase {
             
             boolean result=(noconf0|noconf1)!=0;
             
-            System.out.println("Result = "+result);
+            //System.out.println("Result = "+result);
             return result;
             
         }
