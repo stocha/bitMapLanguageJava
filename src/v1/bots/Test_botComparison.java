@@ -8,6 +8,7 @@ package v1.bots;
 import v1.L64p.vrac.L64fbase;
 import v1.TreeAlgorithm.BoardData;
 import v1.TreeAlgorithm.Light64AmafSrcData;
+import v1.TreeAlgorithm.Light64AmafSrcData2;
 import v1.TreeAlgorithm.Light64Data;
 import v1.TreeAlgorithm.UctGraph;
 
@@ -45,28 +46,28 @@ public class Test_botComparison {
 //                        -> ((Light64Data)dat).mem)
 //                );
         
-//        comp.setBots(new UctGraphLightBot(7878786L,64*1000, 
-//                (L64fbase.gob64Struct stat, double komi, int phase)
-//                        -> new Light64AmafSrcData(stat, komi, phase, null),
-//                (BoardData dat)
-//                        -> ((Light64AmafSrcData)dat).mem), 
-//                new UctLightBot(7878786L,12*1000)
-//                );        
-        
-        comp.setBots(new UctGraphLightBot(7878786L,12*1000, 
+        comp.setBots(new UctGraphLightBot(7878786L,6*1000, 
                 (L64fbase.gob64Struct stat, double komi, int phase)
-                        -> new Light64Data(stat, komi, phase),
+                        -> new Light64AmafSrcData2(stat, komi, phase, null),
                 (BoardData dat)
-                        -> ((Light64Data)dat).mem), 
-                new UctLightBot(7878786L,12*1000)
-                );         
+                        -> ((Light64AmafSrcData2)dat).mem), 
+                new UctLightBot(7878786L,6*1000)
+                );        
+        
+//        comp.setBots(new UctGraphLightBot(7878786L,12*1000, 
+//                (L64fbase.gob64Struct stat, double komi, int phase)
+//                        -> new Light64Data(stat, komi, phase),
+//                (BoardData dat)
+//                        -> ((Light64Data)dat).mem), 
+//                new UctLightBot(7878786L,12*1000)
+//                );         
         
         
         comp.setUp();
         
         
         comp.setGameSpooler((String gameDesc) -> {
-            if(mm++ < 60)
+            if(mm++ < 0)
            System.out.println(""+gameDesc);
            //System.exit(0);
         });
