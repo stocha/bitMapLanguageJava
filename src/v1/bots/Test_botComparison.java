@@ -45,7 +45,7 @@ public class Test_botComparison {
 //                        -> ((Light64Data)dat).mem)
 //                );
         
-        comp.setBots(new UctGraphLightBot(7878786L,60*1000, 
+        comp.setBots(new UctGraphLightBot(7878786L,12*10, 
                 (L64fbase.gob64Struct stat, double komi, int phase)
                         -> new Light64AmafSrcData(stat, komi, phase, null),
                 (BoardData dat)
@@ -66,8 +66,8 @@ public class Test_botComparison {
         
         
         comp.setGameSpooler((String gameDesc) -> {
-            if(mm++ < 6)
-           System.out.println(""+gameDesc);
+           // if(mm++ < 6)
+           //System.out.println(""+gameDesc);
            //System.exit(0);
         });
         

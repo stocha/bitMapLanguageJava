@@ -193,6 +193,8 @@ public class ComparatorWithInitialState implements IBotComparator {
         data.add(r);
 
         nbComparisonDone++;
+        
+        System.out.println(""+r.scoreres+"   board "+gob.scoreBoard()+" phase "+gob.phase);
     }
 
     public String aggregateData() {

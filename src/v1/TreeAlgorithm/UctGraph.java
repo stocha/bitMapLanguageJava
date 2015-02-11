@@ -68,7 +68,7 @@ public class UctGraph {
         }
         
         public String debugRec(int depth){
-            String res="";
+            String res="\n";
             if(depth>0)
             res+=String.format("%"+depth*3+"s", ("="+depth +"=="));
             
@@ -137,7 +137,7 @@ public class UctGraph {
         }
 
         public double doSimulation() {
-            final long expandValue = 2000000;
+            final long expandValue = 20;
 
             if (childs == null && hits > expandValue) {
                 deflat();

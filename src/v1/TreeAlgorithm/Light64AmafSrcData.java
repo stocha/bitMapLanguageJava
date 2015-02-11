@@ -157,6 +157,8 @@ public class Light64AmafSrcData implements BoardData {
     }
 
     private boolean tstSrc(long move) {
+        if(true) return true;
+        
         long m = move;
         long covam = amaFromSrc.bamaf | amaFromSrc.wamaf;
         if ((covam & m) != 0) {
@@ -209,6 +211,7 @@ public class Light64AmafSrcData implements BoardData {
     public double scoreOnce() {
         if (true) {
             double sc = scoreFromAmaf();
+            System.out.print("|"+sc);
             if (sc > 0) {
                 return 1.0;
             } else {
@@ -248,14 +251,12 @@ public class Light64AmafSrcData implements BoardData {
 
     private double getCurrAmafScore() {
         double k = komi;
-        if (metaphase != 0) {
-            k = -k;
-        }
         double scoreBoard = src.amafStore.get(this.nbConsomedSimulation++).score;
+        
         if ((metaphase) == 0) {
             return scoreBoard - k;
         } else {
-            return -scoreBoard - k;
+            return -scoreBoard + k;
         }
     }
 
@@ -307,7 +308,13 @@ public class Light64AmafSrcData implements BoardData {
             }
             return getCurrAmafScore();
         } else {
+            System.out.println();
+            System.out.println("Stopping on "+mem.debug_show());
+            System.out.println("\n\nScore final = "+mem.scoreGame(komi, metaphase));
+            System.exit(0);
             return mem.scoreGame(komi, metaphase);
+            
+            
         }
 
     }
