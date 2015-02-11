@@ -19,10 +19,14 @@ public class Light64AmafSrcData implements BoardData {
 
     public static long nbNodeTotal = 0;
     public static long nbNodeSrc = 0;
+    public static long askedSim = 0;
+    public static long realSim = 0;
 
     public static final void resetStats() {
         nbNodeTotal = 0;
         nbNodeSrc = 0;
+        askedSim=0;
+        realSim=0;
     }
 
     public static String getStats() {
@@ -32,6 +36,7 @@ public class Light64AmafSrcData implements BoardData {
         }
         double ratio = nbNodeSrc / (double) nbNodeTotal;
         res += " Node " + nbNodeTotal + " NodeSrc " + nbNodeSrc + "   ratio " + ratio;
+        res+= "reelSim "+realSim+" askedSim="+askedSim;
 
         return res;
     }
@@ -211,7 +216,7 @@ public class Light64AmafSrcData implements BoardData {
     public double scoreOnce() {
         if (true) {
             double sc = scoreFromAmaf();
-            System.out.print("|"+sc);
+            //System.out.print("|"+sc+"m"+metaphase);
             if (sc > 0) {
                 return 1.0;
             } else {
@@ -261,6 +266,8 @@ public class Light64AmafSrcData implements BoardData {
     }
 
     private boolean addOneAmaf() {
+        realSim++;
+        
         amafResult res = new amafResult();
         res.cp(amaFromSrc);
         gob64Struct sim = new gob64Struct();
@@ -296,6 +303,8 @@ public class Light64AmafSrcData implements BoardData {
     }
 
     private double scoreFromAmaf() {
+        askedSim++;
+        
         if (findNextAmaf()) {
             return getCurrAmafScore();
         }
@@ -308,10 +317,10 @@ public class Light64AmafSrcData implements BoardData {
             }
             return getCurrAmafScore();
         } else {
-            System.out.println();
-            System.out.println("Stopping on "+mem.debug_show());
-            System.out.println("\n\nScore final = "+mem.scoreGame(komi, metaphase));
-            System.exit(0);
+            //System.out.println();
+            //System.out.println("Stopping on "+mem.debug_show()+" phase="+mem.phase+" meta="+metaphase);
+            //System.out.println("Score final = "+mem.scoreGame(komi, metaphase)+" meta="+metaphase);
+            //System.exit(0);
             return mem.scoreGame(komi, metaphase);
             
             

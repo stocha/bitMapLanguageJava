@@ -76,7 +76,7 @@ public class UctGraphLightBot  implements IGoBot {
         for(int i=0;i<nbSim;i++){
             player.doSimulation();
         }
-        System.out.println(""+player.debugRec(0));
+        //System.out.println(""+player.debugRec(0));
         BoardData bd=player.bestState();
         if(bd==null){gob.passMove(); return -1;}
         L64fbase.gob64Struct best=dataConv.toGob64(bd);
