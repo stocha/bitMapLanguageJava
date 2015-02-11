@@ -162,7 +162,7 @@ public class Light64AmafSrcData implements BoardData {
     }
 
     private boolean tstSrc(long move) {
-        if(true) return true;
+        //if(true) return true;
         
         long m = move;
         long covam = amaFromSrc.bamaf | amaFromSrc.wamaf;
@@ -187,7 +187,7 @@ public class Light64AmafSrcData implements BoardData {
         while (m != 0) {
             if (tstSrc(m)) {
 
-                if (false & !tstReplay(m)) {
+                if (false& !tstReplay(m)) {
                     System.out.println("source state" + src.mem.debug_show());
 
                     System.out.println("amarf +src " + outString(src.mem.p0, src.mem.p1, amaFromSrc.bamaf, amaFromSrc.wamaf, src.mem.phase));
@@ -216,6 +216,7 @@ public class Light64AmafSrcData implements BoardData {
     public double scoreOnce() {
         if (true) {
             double sc = scoreFromAmaf();
+           // System.out.println(" "+this.metaphase+" scoring "+mem.debug_show());
             //System.out.print("|"+sc+"m"+metaphase);
             if (sc > 0) {
                 return 1.0;
@@ -256,12 +257,15 @@ public class Light64AmafSrcData implements BoardData {
 
     private double getCurrAmafScore() {
         double k = komi;
+        if (!this.amaFromSrc.appartient(src.amafStore.get(this.nbConsomedSimulation))){
+            throw new RuntimeException("Utilisation d'un amaf non correspondant");
+        }
         double scoreBoard = src.amafStore.get(this.nbConsomedSimulation++).score;
         
         if ((metaphase) == 0) {
-            return scoreBoard - k;
+            return (scoreBoard - k);
         } else {
-            return -scoreBoard + k;
+            return -(scoreBoard - k);
         }
     }
 

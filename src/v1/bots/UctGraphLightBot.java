@@ -7,6 +7,7 @@ package v1.bots;
 
 import v1.L64p.vrac.L64fbase;
 import v1.TreeAlgorithm.BoardData;
+import v1.TreeAlgorithm.Light64AmafSrcData;
 import v1.TreeAlgorithm.Light64Data;
 import v1.TreeAlgorithm.UctGraph;
 
@@ -77,6 +78,8 @@ public class UctGraphLightBot  implements IGoBot {
             player.doSimulation();
         }
         //System.out.println(""+player.debugRec(0));
+        //System.out.println(""+player.debugFlat());
+        System.out.println(""+Light64AmafSrcData.getStats());
         BoardData bd=player.bestState();
         if(bd==null){gob.passMove(); return -1;}
         L64fbase.gob64Struct best=dataConv.toGob64(bd);

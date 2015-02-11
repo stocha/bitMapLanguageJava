@@ -45,7 +45,7 @@ public class Test_botComparison {
 //                        -> ((Light64Data)dat).mem)
 //                );
         
-        comp.setBots(new UctGraphLightBot(7878786L,24*1000, 
+        comp.setBots(new UctGraphLightBot(7878786L,256*1000, 
                 (L64fbase.gob64Struct stat, double komi, int phase)
                         -> new Light64AmafSrcData(stat, komi, phase, null),
                 (BoardData dat)
@@ -53,7 +53,7 @@ public class Test_botComparison {
                 new UctLightBot(7878786L,6*1000)
                 );        
         
-//        comp.setBots(new UctGraphLightBot(7878786L,60*1000, 
+//        comp.setBots(new UctGraphLightBot(7878786L,64*1000, 
 //                (L64fbase.gob64Struct stat, double komi, int phase)
 //                        -> new Light64Data(stat, komi, phase),
 //                (BoardData dat)

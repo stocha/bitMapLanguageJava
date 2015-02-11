@@ -59,7 +59,7 @@ public class UctGraph {
             if(childs==null) return res;
             for(int i=0;i<childs.size();i++){
                 res+=" Root child "+i+" ";
-                res+=" hit "+childVisit.get(i);
+                res+=" hit "+childVisit.get(i)+" / reel "+childs.get(i).hits;
                 res+=" score "+childs.get(i).scoreAvg();
                 res+=childs.get(i).state;
             }
@@ -111,8 +111,16 @@ public class UctGraph {
             return maxfp.state;
         }
 
-        double visitValue(int childNum) {
+        double visitValue(int childNum) {                        
             UctNode node = childs.get(childNum);
+            
+             if(true){
+                if(node.hits==0){
+                    return 4.0;
+                }else{
+                    return 1/(double)node.hits;
+                }
+            }
 
             if (node.hits == 0) {
                 return Double.MAX_VALUE;
@@ -137,6 +145,8 @@ public class UctGraph {
         }
 
         public double doSimulation() {
+            
+            //System.out.println("doing it simulation");
             final long expandValue = 20;
 
             if (childs == null && hits > expandValue) {
@@ -146,6 +156,8 @@ public class UctGraph {
             if (childs != null && childs.size() > 0) {
                 int chInd = selectChildToVisit();
                 if(chInd==-1){
+                    
+                    //System.out.println("endpoint reached");
                     endPoint++;
                     double sc = state.scoreOnce();
                     hits++;
@@ -159,7 +171,7 @@ public class UctGraph {
                 this.scoreacc += sc;
                 return sc;
             } else {
-
+                //System.out.println("Non deflat "+this.state);
                 double sc = state.scoreOnce();
                 hits++;
                 scoreacc += sc;
@@ -189,6 +201,7 @@ public class UctGraph {
         }
 
         public void deflat() {
+            //System.out.println("deflating "+this.state);
             List<BoardData> next = state.getSubData();
             childs = new ArrayList<>(next.size());
             childVisit = new ArrayList<>(next.size());
@@ -204,6 +217,7 @@ public class UctGraph {
                 shortenDepth++;
                 next.depth=this.depth+1;
             }else if(next.depth<=this.depth){
+                //System.out.println(""+this+" "+depth+"  next"+childInd+"  depth="+next.depth);
                 loopSkip++;
                 return true;
             }
@@ -218,7 +232,9 @@ public class UctGraph {
                 if(checkChildLoop(i)) continue;
                 
                 double sc = visitValue(i);
-                //System.err.println(sc+" /"+max+" "+fp);
+               //if(maxindex!=-1)
+                //System.err.println(sc+" /"+max+" mInd"+maxindex+" "+childs.get(maxindex));
+                
                 if (sc >= max) {
                     max = sc;
                     maxindex = i;
