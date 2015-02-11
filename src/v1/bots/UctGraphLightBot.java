@@ -78,7 +78,7 @@ public class UctGraphLightBot  implements IGoBot {
             player.doSimulation();
         }
         //System.out.println(""+player.debugRec(0));
-       // System.out.println(""+player.debugFlat());
+        //System.out.println(""+player.debugFlat());
        // System.out.println(""+Light64AmafSrcData.getStats());
         BoardData bd=player.bestState();
         if(bd==null){gob.passMove(); return -1;}

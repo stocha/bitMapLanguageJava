@@ -19,6 +19,8 @@ public class UctGraph {
     static public long shortenDepth = 0;
     static public long loopSkip = 0;
     static public long endPoint = 0;
+    
+    final long expandValue = 200;
 
     public static final void resetStats() {
         reuse = 0;
@@ -107,7 +109,7 @@ public class UctGraph {
             //System.out.println("childs count : "+childs.size());
             for (UctNode fp : childs) {
 
-                double sc = fp.scoreAvg();
+                double sc = fp.hits;
                 if (sc > max) {
                     max = sc;
                     maxfp = fp;
@@ -152,7 +154,7 @@ public class UctGraph {
         public double doSimulation() {
 
             //System.out.println("doing it simulation");
-            final long expandValue = 2000;
+            
 
             if (childs == null && hits > expandValue) {
                 deflat();
