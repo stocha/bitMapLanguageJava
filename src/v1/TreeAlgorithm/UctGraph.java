@@ -137,7 +137,7 @@ public class UctGraph {
         }
 
         public double doSimulation() {
-            final long expandValue = 20;
+            final long expandValue = 2000000;
 
             if (childs == null && hits > expandValue) {
                 deflat();
