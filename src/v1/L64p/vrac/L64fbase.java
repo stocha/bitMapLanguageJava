@@ -130,6 +130,10 @@ public class L64fbase {
         return res;
     }
 
+    public static final String outString(long mem0, long mem1,long abso0, long abso1,long phase){
+        if(phase==0) return outString(mem0|abso0, mem1|abso1);
+        return outString(mem1|abso0, mem0|abso1);
+    }
     public static final String outString(long mem0, long mem1) {
         StringBuilder sb = new StringBuilder();
         sb.append("<GOBAN>" + "\n");
