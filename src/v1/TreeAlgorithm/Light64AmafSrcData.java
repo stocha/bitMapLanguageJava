@@ -45,6 +45,8 @@ public class Light64AmafSrcData implements BoardData {
     final boolean isSrc;
     final List<amafResult> amafStore;
     final Light64AmafSrcData src;
+    
+    int nbConsomedSimulation=0;
 
     amafResult amaFromSrc = new amafResult();
 
@@ -53,6 +55,30 @@ public class Light64AmafSrcData implements BoardData {
         long bamaf;
         long wamaf;
         double score;
+        public  void cp(amafResult src){
+            this.bamaf=src.bamaf;
+            this.wamaf=src.wamaf;
+        }
+        
+        public void addMove(long move,long phase){
+            if((move&bamaf)!=0 || (move&wamaf)!=0) return;
+            if(phase==0) bamaf|=move; else wamaf |=move;
+        }
+        
+        public String out(){
+            return outString(bamaf, wamaf);
+        }
+        
+        public boolean appartient(amafResult am){
+            long a=bamaf&am.bamaf;
+            long b=wamaf&am.wamaf;
+            
+            a^=bamaf;
+            b^=wamaf;
+            a|=b;
+            
+            return a==0;
+        }
     }
 
     public Light64AmafSrcData(L64fbase.gob64Struct state, double komi, int metaphase, Light64AmafSrcData src, amafResult am, long m, long phase) {
@@ -172,6 +198,8 @@ public class Light64AmafSrcData implements BoardData {
 
     @Override
     public double scoreOnce() {
+        if(true ) return scoreFromAmaf();
+        
         L64fbase.gob64Struct sim = new L64fbase.gob64Struct();
 
         sim.copy(mem);
@@ -184,6 +212,80 @@ public class Light64AmafSrcData implements BoardData {
             return 0.0;
         }
         //return -sc;
+    }
+    
+    private boolean findNextAmaf(){
+        int len=this.src.amafStore.size();
+        for(;this.nbConsomedSimulation<len;this.nbConsomedSimulation++){
+            int i=this.nbConsomedSimulation;
+            amafResult cmp=src.amafStore.get(i);
+            if(this.amaFromSrc.appartient(cmp)){
+               // System.out.println(this.amaFromSrc.out()+" appartient a "+cmp.out());
+                
+                return true;
+            }
+            
+        }
+        
+        return false;
+    }
+    
+    private double getCurrAmafScore(){
+            double k = komi;
+            if (metaphase != 0) {
+                k = -k;
+            }
+            double scoreBoard=src.amafStore.get(this.nbConsomedSimulation).score;
+            if ((metaphase) == 0) {
+                return scoreBoard - k;
+            } else {
+                return -scoreBoard - k;
+            }
+    }
+    
+    private boolean addOneAmaf(){
+        amafResult res=new amafResult();
+        res.cp(amaFromSrc);
+        gob64Struct sim = new gob64Struct();
+        
+        sim.copy(this.mem);
+        
+        int pass = 0;
+        int play=0;
+            for (int i = 0; i < 64 * 3; i++) {
+                //System.out.println(g.debug_show());
+                long move = sim.playOneRandNoSuicide();
+                res.addMove(move, sim.phase^1);
+                if (move == 0) {
+                    pass++;
+                } else {
+                    pass = 0;
+                    play++;
+                }
+                if (pass == 2) {
+                    res.score= sim.scoreBoard();
+                    if(sim.phase!=0) res.score=-res.score;
+                    if(play>0) src.amafStore.add(res);
+                }
+            }
+        
+        return play>0;
+    }
+    
+    private double scoreFromAmaf(){
+        if(findNextAmaf()){
+            return getCurrAmafScore();
+        }
+        boolean add=addOneAmaf();
+        
+        if(add){
+            add=findNextAmaf();
+            if(!add) throw new RuntimeException("Impossible de ne pas trouver ce qu'on vient juste d'ajouter !");
+            return getCurrAmafScore();
+        }else{
+            return mem.scoreGame(komi, metaphase);
+        }
+        
     }
 
 }

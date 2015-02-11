@@ -24,6 +24,8 @@ public class UctGraphLightBot  implements IGoBot {
     
     final DataFactory dataFact;
     final DataConverter dataConv;
+    
+    final String subInstName;
 
     public UctGraphLightBot(long seed,int nbSim,DataFactory dataFact,DataConverter dataConv) {
         this.seed = seed;
@@ -31,6 +33,8 @@ public class UctGraphLightBot  implements IGoBot {
         this.dataFact=dataFact;
         this.dataConv=dataConv;
         instGraph=new UctGraph(nbSim);
+        
+        subInstName=dataFact.gen(new L64fbase.gob64Struct(), 0, 0).getClass().getName();
     }
     
     public interface DataFactory{
@@ -85,7 +89,7 @@ public class UctGraphLightBot  implements IGoBot {
 
     @Override
     public String name() {
-        return "UctLightNoGraph"+nbSim;
+        return "UctLightNoGraph"+nbSim+":"+subInstName;
     }
 
     @Override

@@ -33,7 +33,7 @@ public class Test_botComparison {
         //comp.setBots(new UctUltraFillNoConflict(7878786L,16*1000), new UctLightBot(9991112L,8*1000));
         //comp.setBots(new UctLightBot(7878786L,3*1000), new FlatBot(9991112L,6*1000));
         
-        comp.setBots(new UctGraphLightBot(7878786L,6*1000, 
+        comp.setBots(new UctGraphLightBot(7878786L,60*1000, 
                 (L64fbase.gob64Struct stat, double komi, int phase)
                         -> new Light64AmafSrcData(stat, komi, phase, null),
                 (BoardData dat)
@@ -49,7 +49,7 @@ public class Test_botComparison {
         
         
         comp.setGameSpooler((String gameDesc) -> {
-            if(mm++ < 0)
+            if(mm++ < 6)
            System.out.println(""+gameDesc);
            //System.exit(0);
         });
