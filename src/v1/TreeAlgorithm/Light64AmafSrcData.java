@@ -36,7 +36,7 @@ public class Light64AmafSrcData implements BoardData {
         }
         double ratio = nbNodeSrc / (double) nbNodeTotal;
         res += " Node " + nbNodeTotal + " NodeSrc " + nbNodeSrc + "   ratio " + ratio;
-        res+= "reelSim "+realSim+" askedSim="+askedSim;
+        res+= " reelSim "+realSim+" askedSim="+askedSim;
 
         return res;
     }
