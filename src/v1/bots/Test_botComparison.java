@@ -53,6 +53,13 @@ public class Test_botComparison {
                 new UctLightBot(7878786L,6*1000)
                 );        
         
+//        comp.setBots(new UctGraphLightBot(7878786L,60*1000, 
+//                (L64fbase.gob64Struct stat, double komi, int phase)
+//                        -> new Light64Data(stat, komi, phase),
+//                (BoardData dat)
+//                        -> ((Light64Data)dat).mem), 
+//                new UctLightBot(7878786L,6*1000)
+//                );         
         
         
         comp.setUp();

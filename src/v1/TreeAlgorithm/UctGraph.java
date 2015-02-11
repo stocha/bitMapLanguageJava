@@ -79,7 +79,7 @@ public class UctGraph {
             
             BoardData best=this.bestState();
             UctNode next=graph.get(best);
-
+            if(next==null) return res;
             if(next.depth>this.depth && depth < 7)
                 res+=next.debugRec(depth+1);
             

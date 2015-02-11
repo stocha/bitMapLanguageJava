@@ -73,7 +73,7 @@ public class Light64AmafSrcData implements BoardData {
         }
 
         public String out() {
-            return outString(bamaf, wamaf);
+            return "sc="+score+" "+outString(bamaf, wamaf);
         }
 
         public boolean appartient(amafResult am) {
@@ -251,7 +251,7 @@ public class Light64AmafSrcData implements BoardData {
         if (metaphase != 0) {
             k = -k;
         }
-        double scoreBoard = src.amafStore.get(this.nbConsomedSimulation).score;
+        double scoreBoard = src.amafStore.get(this.nbConsomedSimulation++).score;
         if ((metaphase) == 0) {
             return scoreBoard - k;
         } else {
@@ -265,6 +265,7 @@ public class Light64AmafSrcData implements BoardData {
         gob64Struct sim = new gob64Struct();
 
         sim.copy(this.mem);
+        sim.rand=rand;
 
         int pass = 0;
         int play = 0;
@@ -285,10 +286,11 @@ public class Light64AmafSrcData implements BoardData {
                 }
                 if (play > 0) {
                     src.amafStore.add(res);
+                    //System.out.println("adding "+res.out()+" to "+src.mem.debug_show());
                 }
             }
         }
-
+        rand=sim.rand;
         return play > 0;
     }
 
