@@ -36,6 +36,70 @@ public class Test_L64Bm_simpleFast {
             testPseudoEye();
             testScore();
             testExternalInterface();
+            testConflictDetect();
+
+        }
+
+        public void testConflictDetect() {
+            L64fbase.gob64Struct gob = new gob64Struct();
+            gob.debug_input("<GOBAN>\n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - O O O - - - \n"
+                    + "- - O X X O - - \n"
+                    + "- - O - - X - - \n"
+                    + "- - - O - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n");
+            L64fbase.gob64Struct amaf01 = new gob64Struct();
+            amaf01.debug_input("<GOBAN>\n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - X O - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n");
+
+            gob64Struct conf;
+
+            conf = amaf01;
+            assertEquals("" + gob.isConflictingAmaf(conf.p0, conf.p1, 0), "false");
+
+            L64fbase.gob64Struct amaf02 = new gob64Struct();
+            amaf02.debug_input("<GOBAN>\n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - X O - - - \n"
+                    + "- - - - X - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n");
+            conf = amaf02;
+            assertEquals("" + gob.isConflictingAmaf(conf.p0, conf.p1, 0), "true");
+
+            conf = amaf02;
+            assertEquals("" + gob.isConflictingAmaf(conf.p0, conf.p1, 1), "false");
+
+            gob.passMove();
+            conf = amaf02;
+            assertEquals("" + gob.isConflictingAmaf(conf.p0, conf.p1, 0), "true");
+            gob.passMove();
+
+            L64fbase.gob64Struct amaf03 = new gob64Struct();
+            amaf03.debug_input("<GOBAN>\n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - X - - - - \n"
+                    + "- - - X O - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n"
+                    + "- - - - - - - - \n");
+            conf = amaf03;
+            assertEquals("" + gob.isConflictingAmaf(conf.p0, conf.p1, 0), "true");
 
         }
 
@@ -119,11 +183,11 @@ public class Test_L64Bm_simpleFast {
             } catch (Exception e) {
                 assertEquals("playing suicidal move", e.getMessage());
             }
-            
+
             gob.reset();
             gob.forceNormalisedMove(48, 0);
-            assertEquals(""+gob.convertToNormalisedMove(gob.p1), "48");
-            assertEquals(""+gob.convertToNormalisedMove(gob.p0), "-1");
+            assertEquals("" + gob.convertToNormalisedMove(gob.p1), "48");
+            assertEquals("" + gob.convertToNormalisedMove(gob.p0), "-1");
 
         }
 

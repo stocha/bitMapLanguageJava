@@ -440,6 +440,55 @@ public class L64fbase {
             repet = src.repet;
             this.rand = src.rand;
         }
+        
+        public final boolean isConflictingAmaf(long black,long white,int metaphase){
+            final long b; final long w;
+            
+            System.out.println("phase "+phase+" metaphase "+metaphase);
+            if((metaphase^(this.phase)) ==0) {b=black;w=white;}
+            else {b=white;w=black;};
+            
+            long p0pre=p0;
+            long p1pre=p1;
+            
+            long all=b|w;
+            
+            boolean replay=((p0|p1)&all) != 0;
+            if(replay){
+                System.out.println("replayed = "+replay+" "+outString(p0|p1, all));
+                
+            }
+            
+            if(replay) return true; // replay into
+            
+            p0|=b;
+            p1|=w;
+            
+            System.out.println("Expected "+debug_show());
+            
+            long freeAft = ~(p0 | p1);
+            
+            long d0 = deadFull(p0, freeAft, externLibs);
+            long d1 = deadFull(p1, freeAft, externLibs);
+
+            long d0voi = scramble(d0) & d1;
+            long d1voi = scramble(d1) & d0;
+
+            long noconf0 = deadFull(p0, d0voi, 0);
+            long noconf1 = deadFull(p1, d1voi, 0);
+
+            noconf0^=p0;
+            noconf1^=p1;
+            
+            p0 = p0pre;
+            p1 = p1pre;            
+            
+            boolean result=(noconf0|noconf1)!=0;
+            
+            System.out.println("Result = "+result);
+            return result;
+            
+        }
 
         public final void init() {
             reset();
