@@ -5,6 +5,10 @@
  */
 package v1.bots;
 
+import v1.L64p.vrac.L64fbase;
+import v1.TreeAlgorithm.BoardData;
+import v1.TreeAlgorithm.Light64AmafSrcData;
+import v1.TreeAlgorithm.Light64Data;
 import v1.TreeAlgorithm.UctGraph;
 
 /**
@@ -16,7 +20,7 @@ public class Test_botComparison {
     
     public static void main(String args[]){
         ComparatorWithInitialState comp=new ComparatorWithInitialState();
-        comp.setInitialState(BibliothequePosTest.acs_p25_e18_lowAdd_m2);
+        //comp.setInitialState(BibliothequePosTest.acs_p25_e18_lowAdd_m2);
         
         //comp.setBots(new FlatBot(7878786L,64*1000), new FlatBot(9991112L,32*1000));
         
@@ -29,13 +33,23 @@ public class Test_botComparison {
         //comp.setBots(new UctUltraFillNoConflict(7878786L,16*1000), new UctLightBot(9991112L,8*1000));
         //comp.setBots(new UctLightBot(7878786L,3*1000), new FlatBot(9991112L,6*1000));
         
-        comp.setBots(new UctLightBotNoGraph(7878786L,6*1000), new UctLightBot(9991112L,6*1000));
+        comp.setBots(new UctGraphLightBot(7878786L,6*1000, 
+                (L64fbase.gob64Struct stat, double komi, int phase)
+                        -> new Light64AmafSrcData(stat, komi, phase, null),
+                (BoardData dat)
+                        -> ((Light64AmafSrcData)dat).mem), 
+                new UctGraphLightBot(7878786L,6*1000, 
+                (L64fbase.gob64Struct stat, double komi, int phase)
+                        -> new Light64Data(stat, komi, phase),
+                (BoardData dat)
+                        -> ((Light64Data)dat).mem)
+                );
         
         comp.setUp();
         
         
         comp.setGameSpooler((String gameDesc) -> {
-            if(mm++ < 7)
+            if(mm++ < 0)
            System.out.println(""+gameDesc);
            //System.exit(0);
         });
@@ -46,6 +60,9 @@ public class Test_botComparison {
             comp.addNextComparison();
             System.out.println("<comparison ...>"+System.lineSeparator()+""+comp.aggregateData());
             UctGraph.printlnReuse();
+            UctGraph.resetStats();
+            System.out.println(""+Light64AmafSrcData.getStats());
+            Light64AmafSrcData.resetStats();
             System.gc();
         }
     }

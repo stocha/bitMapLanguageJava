@@ -14,7 +14,24 @@ import v1.L64p.vrac.L64fbase;
  *
  * @author denis
  */
-public class Light64AmafSrc  implements BoardData {
+public class Light64AmafSrcData  implements BoardData {
+    
+    public static long nbNodeTotal=0;
+    public static long nbNodeSrc=0;
+    
+    public static final void resetStats(){
+        nbNodeTotal=0;
+        nbNodeSrc=0;
+    }
+    
+    public static String getStats(){
+        String res="Light64AmafSrc stats  ";
+        if(nbNodeTotal==0) return "No stats";
+        double ratio=nbNodeSrc/(double)nbNodeTotal;
+        res+=" Node "+nbNodeTotal+" NodeSrc "+nbNodeSrc+"   ratio "+ratio;
+        
+        return res;
+    }
 
     public final L64fbase.gob64Struct mem = new L64fbase.gob64Struct();
     final double komi;
@@ -24,7 +41,10 @@ public class Light64AmafSrc  implements BoardData {
     
     final boolean isSrc;
     final List<amafResult> amafStore;
-    final Light64AmafSrc src;
+    final Light64AmafSrcData src;
+    
+    amafResult amaFromSrc=new amafResult();
+    
     
     public static class amafResult{
         long bamaf;
@@ -32,24 +52,31 @@ public class Light64AmafSrc  implements BoardData {
         double score;
     }
 
-    public Light64AmafSrc(L64fbase.gob64Struct state, double komi,int metaphase, Light64AmafSrc src) {
+    public Light64AmafSrcData(L64fbase.gob64Struct state, double komi,int metaphase, Light64AmafSrcData src) {
         mem.copy(state);
         this.komi = komi;
         this.metaphase=metaphase^1;
+                
+        if(src==null){
+            this.src=this;
+        }else{
+            this.src=src;
+        }
         
-        this.src=src;
         if(this.src==this){
             isSrc=true;
             amafStore=new ArrayList<>();
+            nbNodeSrc++;
         }else{
             amafStore=null;
             isSrc=false;
         }
+        nbNodeTotal++;
     }
 
     @Override
     public boolean equals(Object obj) {
-        Light64Data o=(Light64Data)obj;
+        Light64AmafSrcData o=(Light64AmafSrcData)obj;
         return Arrays.equals(new long[]{this.mem.p0,this.mem.p1}, new long[]{o.mem.p0,o.mem.p1});
         //return  true;
     }
@@ -70,6 +97,10 @@ public class Light64AmafSrc  implements BoardData {
         return res;
     }
 
+    private boolean tstSrc(long move){
+        return true;
+    }
+    
     @Override
     public List<BoardData> getSubData() {
         List<BoardData> mv=new ArrayList<>();
@@ -81,7 +112,12 @@ public class Light64AmafSrc  implements BoardData {
         rand=sim.rand;
         long forbid=0;
         while(m!=0){
-            mv.add(new Light64AmafSrc(sim,komi,metaphase,null));
+            if(tstSrc(m)){
+               mv.add(new Light64AmafSrcData(sim,komi,metaphase,null)); 
+            }else{
+                throw new RuntimeException("node non source");
+            }
+            
             sim.copy(mem);
             forbid|=m;
             sim.rand=rand;

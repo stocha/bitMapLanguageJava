@@ -14,20 +14,32 @@ import v1.TreeAlgorithm.UctGraph;
  *
  * @author denis
  */
-public class UctLightBotNoGraph  implements IGoBot {
+public class UctGraphLightBot  implements IGoBot {
     final UctGraph instGraph;
     UctGraph.UctNode player;
     L64fbase.gob64Struct gob;
     double komi=0;
     final int nbSim;
     final long seed;
+    
+    final DataFactory dataFact;
+    final DataConverter dataConv;
 
-    public UctLightBotNoGraph(long seed,int nbSim) {
+    public UctGraphLightBot(long seed,int nbSim,DataFactory dataFact,DataConverter dataConv) {
         this.seed = seed;
         this.nbSim=nbSim;
+        this.dataFact=dataFact;
+        this.dataConv=dataConv;
         instGraph=new UctGraph(nbSim);
     }
     
+    public interface DataFactory{
+        public BoardData gen(L64fbase.gob64Struct stat,double komi,int phase);        
+    }
+    
+    public interface DataConverter{
+        public L64fbase.gob64Struct toGob64(BoardData dat);
+    }
     
 
     @Override
@@ -53,16 +65,17 @@ public class UctLightBotNoGraph  implements IGoBot {
     @Override
     public int genMove() {
         instGraph.clear();
-        player=instGraph.new UctNode(new Light64Data(gob,komi,(int)gob.phase), 0);
+        //player=instGraph.new UctNode(new Light64Data(gob,komi,(int)gob.phase), 0);
+        player=instGraph.new UctNode(dataFact.gen(gob,komi,(int)gob.phase), 0);
         player.deflat();
         
         for(int i=0;i<nbSim;i++){
             player.doSimulation();
         }
         //System.err.println(""+player.debugRec(0));
-        BoardData bd=(Light64Data)player.bestState();
+        BoardData bd=player.bestState();
         if(bd==null){gob.passMove(); return -1;}
-        L64fbase.gob64Struct best=((Light64Data)bd).mem;
+        L64fbase.gob64Struct best=dataConv.toGob64(bd);
         long pos=best.p1^gob.p0;
         int move= gob.convertToNormalisedMove(pos);
         gob.copy(best);

@@ -20,6 +20,10 @@ public class UctGraph {
     static public long loopSkip=0;
     static public long endPoint=0;
     
+    public static final void resetStats(){
+        reuse=0;shortenDepth=0;loopSkip=0;endPoint=0;
+    }
+    
     public static void printlnReuse(){
         System.out.println("reuse "+reuse+" | shorten "+shortenDepth+" | skip "+loopSkip
         +" | endPoint "+endPoint);
