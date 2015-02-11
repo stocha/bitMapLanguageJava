@@ -13,7 +13,9 @@ import v1.TreeAlgorithm.UctGraph;
  */
 public class Test_botComparison {
     public static void main(String args[]){
-        SimpleBotComparator comp=new SimpleBotComparator();
+        ComparatorWithInitialState comp=new ComparatorWithInitialState();
+        comp.setInitialState(BibliothequePosTest.acs_p25_e18_lowAdd_m2);
+        
         //comp.setBots(new FlatBot(7878786L,64*1000), new FlatBot(9991112L,32*1000));
         
         //comp.setBots(new UctLightBot(7878786L,8*1000), new FlatBot(9991112L,16*1000));
@@ -25,11 +27,11 @@ public class Test_botComparison {
         //comp.setBots(new UctUltraFillNoConflict(7878786L,16*1000), new UctLightBot(9991112L,8*1000));
         //comp.setBots(new UctLightBot(7878786L,3*1000), new FlatBot(9991112L,6*1000));
         
-        comp.setBots(new UctLightBotNoGraph(7878786L,6*1000), new UctLightBot(9991112L,6*1000));
+        comp.setBots(new UctLightBotNoGraph(7878786L,64*1000), new UctLightBotNoGraph(9991112L,6*1000));
         
         comp.setUp();
         comp.setGameSpooler((String gameDesc) -> {
-           //System.out.println(""+gameDesc);
+           System.out.println(""+gameDesc);
         });
         
         for(int i=0;i<1000;i++)
