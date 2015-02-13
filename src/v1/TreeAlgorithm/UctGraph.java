@@ -20,7 +20,7 @@ public class UctGraph {
     static public long loopSkip = 0;
     static public long endPoint = 0;
     
-    final long expandValue = 2;
+    final long expandValue = 40;
 
     public static final void resetStats() {
         reuse = 0;

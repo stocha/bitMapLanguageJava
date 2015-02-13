@@ -130,10 +130,13 @@ public class L64fbase {
         return res;
     }
 
-    public static final String outString(long mem0, long mem1,long abso0, long abso1,long phase){
-        if(phase==0) return outString(mem0|abso0, mem1|abso1);
-        return outString(mem1|abso0, mem0|abso1);
+    public static final String outString(long mem0, long mem1, long abso0, long abso1, long phase) {
+        if (phase == 0) {
+            return outString(mem0 | abso0, mem1 | abso1);
+        }
+        return outString(mem1 | abso0, mem0 | abso1);
     }
+
     public static final String outString(long mem0, long mem1) {
         StringBuilder sb = new StringBuilder();
         sb.append("<GOBAN>" + "\n");
@@ -262,6 +265,49 @@ public class L64fbase {
 
         public final void stepAccelGameWithConflict() {
 
+            long p0pre = p0;
+            long p1pre = p1;
+
+            long p0exp = hit & bFill;
+            long p1exp = hit & wFill;
+            p0 |= p0exp;
+            p1 |= p1exp;
+
+            //System.out.println("fullFill "+outString(bFill, wFill));
+            //System.out.println("fillIt "+outString(p0exp, p1exp));
+            //System.out.println("proposed "+outString(p0, p1));            
+            long e0 = deadFull(p0exp, ~p0, 0);
+            long e1 = deadFull(p1exp, ~p1, 0);
+
+            //System.out.println("autoEye "+outString(e0, e1));
+            long pseudo0 = ref.pseudoEyes(p0pre, p1pre);
+            long pseudo1 = ref.pseudoEyes(p1pre, p0pre);
+
+            //System.out.println("pseudoEye "+outString(pseudo0, pseudo1));
+            e0 &= ~pseudo0;
+            e1 &= ~pseudo1;
+
+            //System.out.println("finalForbid "+outString(e0, e1));
+            p0 ^= e0;
+            p1 ^= e1;
+
+            //System.out.println("finalProp before conflict "+outString(p0, p1));
+            long freeAft = ~(p0 | p1);
+            long d1 = deadFull(p1, freeAft, externLibs);
+            p1 ^= d1;
+
+            freeAft = ~(p0 | p1);
+            long d0 = deadFull(p0, freeAft, externLibs);
+            p0 ^= d0;
+
+            lastCapture |= d1;
+            lastCapture &= ~d0;
+
+            //System.out.println("propo no conflict "+outString(p0, p1));
+            long freeFin = ~(p0 | p1) | externLibs;
+            bFill &= freeFin;
+            wFill &= freeFin;
+
         }
 
         // Initialement bFill et wFill sont couvrant
@@ -329,15 +375,14 @@ public class L64fbase {
             p0 ^= clean0;
             p1 ^= clean1;
 
-            lastCapture |= p1;
-            lastCapture &= ~p0;
+            lastCapture |= clean1;
+            lastCapture &= ~clean0;
 
             //System.out.println("official pos "+outString(p0, p1));
             //System.out.println("left to play "+outString(bFill, wFill));
         }
 
         public final void prepareAccelGame() {
-            this.synchRefIn();
 
             rand = rule30(rand);
             rand = rule30(rand);
@@ -388,24 +433,28 @@ public class L64fbase {
         public final void finishAccelGameNoConfl() {
 
             gob64Accel c = this;
-
-            for (int amaTot = 0; amaTot < 3; amaTot++) {
+            this.synchRefIn();
+            for (int amaTot = 0; amaTot < 1; amaTot++) {
                 c.prepareAccelGame();
-                for (int i = 0; i < 4; i++) {
-                    //System.out.println("=================");
-                    c.hitSelectRand();
-                    c.stepAccelGameNoConflict();
-                    c.synchRefOut();
 
-                    //System.out.println(g.debug_show());
-                }
+                //System.out.println("=================");
+                c.hitSelectRand();
+                c.stepAccelGameNoConflict();
+
+                c.hitSelectRand();
+                c.stepAccelGameNoConflict();
+
+                //System.out.println("+++conflicting+++");
+                c.hitSelectRand();
+                c.stepAccelGameWithConflict();
+
+                //c.synchRefOut();System.out.println(g.debug_show());
                 //System.out.println("=================");
                 c.hitSelectAll();
                 c.stepAccelGameNoConflict();
-                c.synchRefOut();
-
-                //System.out.println(g.debug_show());
+                //c.synchRefOut();System.out.println(g.debug_show());
             }// Amatot
+            c.synchRefOut();
         }
     }
 
@@ -444,34 +493,39 @@ public class L64fbase {
             repet = src.repet;
             this.rand = src.rand;
         }
-        
-        public final boolean isConflictingAmaf(long black,long white,int metaphase){
-            final long b; final long w;
-            
+
+        public final boolean isConflictingAmaf(long black, long white, int metaphase) {
+            final long b;
+            final long w;
+
             //System.out.println("phase "+phase+" metaphase "+metaphase);
-            if((metaphase^(this.phase)) ==0) {b=black;w=white;}
-            else {b=white;w=black;};
-            
-            long p0pre=p0;
-            long p1pre=p1;
-            
-            long all=b|w;
-            
-            boolean replay=((p0|p1)&all) != 0;
+            if ((metaphase ^ (this.phase)) == 0) {
+                b = black;
+                w = white;
+            } else {
+                b = white;
+                w = black;
+            };
+
+            long p0pre = p0;
+            long p1pre = p1;
+
+            long all = b | w;
+
+            boolean replay = ((p0 | p1) & all) != 0;
             //if(replay){
-              //  System.out.println("replayed = "+replay+" "+outString(p0|p1, all));
-                
+            //  System.out.println("replayed = "+replay+" "+outString(p0|p1, all));
+
             //}
-            
-            if(replay) return true; // replay into
-            
-            p0|=b;
-            p1|=w;
-            
+            if (replay) {
+                return true; // replay into
+            }
+            p0 |= b;
+            p1 |= w;
+
             //System.out.println("Expected "+debug_show());
-            
             long freeAft = ~(p0 | p1);
-            
+
             long d0 = deadFull(p0, freeAft, externLibs);
             long d1 = deadFull(p1, freeAft, externLibs);
 
@@ -481,17 +535,17 @@ public class L64fbase {
             long noconf0 = deadFull(p0, d0voi, 0);
             long noconf1 = deadFull(p1, d1voi, 0);
 
-            noconf0^=p0;
-            noconf1^=p1;
-            
+            noconf0 ^= p0;
+            noconf1 ^= p1;
+
             p0 = p0pre;
-            p1 = p1pre;            
-            
-            boolean result=(noconf0|noconf1)!=0;
-            
+            p1 = p1pre;
+
+            boolean result = (noconf0 | noconf1) != 0;
+
             //System.out.println("Result = "+result);
             return result;
-            
+
         }
 
         public final void init() {

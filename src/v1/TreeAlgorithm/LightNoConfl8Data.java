@@ -7,6 +7,7 @@ package v1.TreeAlgorithm;
 
 import v1.L64p.vrac.L64fbase;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -79,5 +80,16 @@ public class LightNoConfl8Data implements BoardData {
         if(sc > 0) return 1.0; else return 0.0;        
         //return -sc;
     }
+    @Override
+    public boolean equals(Object obj) {
+        LightNoConfl8Data o=(LightNoConfl8Data)obj;
+        return Arrays.equals(new long[]{this.mem.p0,this.mem.p1}, new long[]{o.mem.p0,o.mem.p1});
+        //return  true;
+    }
 
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(new long[]{this.mem.p0,this.mem.p1});
+        //return 125;
+    }
 }

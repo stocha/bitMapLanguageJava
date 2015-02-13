@@ -193,22 +193,31 @@ public class Test_Displays {
 
         for (int amaTot = 0; amaTot < 3; amaTot++) {
             c.prepareAccelGame();
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 1; i++) {
                 //System.out.println("=================");
                 c.hitSelectRand();
                 c.stepAccelGameNoConflict();
-                c.synchRefOut();
-
-                //System.out.println(g.debug_show());
+                c.synchRefOut();System.out.println(g.debug_show());
+                
+                c.hitSelectRand();
+                c.stepAccelGameNoConflict();
+                c.synchRefOut();System.out.println(g.debug_show());
+                
+                System.out.println("+++conflicting+++");
+                c.hitSelectRand();
+                c.stepAccelGameWithConflict();
+                c.synchRefOut();System.out.println(g.debug_show());
+                
+                c.synchRefOut();System.out.println(g.debug_show());
             }
             System.out.println("=================");
             c.hitSelectAll();
             c.stepAccelGameNoConflict();
-            c.synchRefOut();
-
-            System.out.println(g.debug_show());
-            System.out.println("Last capture "+outString(c.lastCapture, ~c.lastCapture));
+            c.synchRefOut();System.out.println(g.debug_show());
         }// Amatot
+            System.out.println("Last capture "+outString(c.lastCapture, ~c.lastCapture));
+            c.spreadLastCapture(c.lastCapture);
+            c.synchRefOut();System.out.println(g.debug_show());
     }
 
     public static void dispRandFillAccell() {
