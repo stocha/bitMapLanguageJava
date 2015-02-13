@@ -144,6 +144,46 @@ public class ComparatorWithInitialState implements IBotComparator {
 
         return r;
     }
+    
+    public double doOneScore(){
+       int mPh = nbComparisonDone & 1;
+
+        int nbPass = 0;
+        int numMove = 0;
+        int resign = -1;
+
+        //long t0 = System.nanoTime();
+
+        reset();
+        while (nbPass < 2 && resign == -1 && numMove < MAXGAMEMOVE) {
+            int ap = (numMove & 1) ^ mPh;
+            int bp = (numMove & 1) ^ (mPh ^ 1);
+
+            //System.out.println("ap/bp "+ap+"/"+bp);
+            IGoBot playb = bot[ap];
+            IGoBot othb = bot[bp];
+            int m = playb.genMove();
+            othb.forceMove(m, numMove & 1);
+            if (m == -2) {
+                resign = ap;
+            }
+            if (m == -1) {
+                nbPass++;
+            } else {
+                nbPass = 0;
+            }
+
+            gob.forceNormalisedMove(m, numMove & 1);
+
+            //gdisp.spoolOut("move " + numMove + "\n" + gob.debug_show());
+            numMove++;
+        }      
+        
+        double gobscore = gob.scoreGame(komi, 0);
+        double winner = gobscore > 0 ? 1 : 0;
+        
+        return winner;
+    }
 
     @Override
     public void addNextComparison() {

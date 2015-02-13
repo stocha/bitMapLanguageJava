@@ -72,7 +72,7 @@ public class Test_botComparison {
                         (BoardData dat)
                         -> ((LightNoConfl8Data) dat).mem);
         
-        int lightRefSims=700;
+        int lightRefSims=1500;
         IGoBot graphLightRef
                 = new UctGraphLightBot(7878786L, lightRefSims,
                         (L64fbase.gob64Struct stat, double komi, int phase)
@@ -86,11 +86,21 @@ public class Test_botComparison {
                         -> new Light64Data(stat, komi, phase),
                         (BoardData dat)
                         -> ((Light64Data) dat).mem);
+        
+        
+        int nbHeavyRecursSim=100;
+        IGoBot heavyBotRec
+                = new UctGraphLightBot(7878786L, nbHeavyRecursSim,
+                        (L64fbase.gob64Struct stat, double komi, int phase)
+                        -> new HeavyRecursData(stat, komi, phase),
+                        (BoardData dat)
+                        -> ((HeavyRecursData) dat).mem);        
 
         //comp.setBots(ultraNoConfl, graphLightRef);      
         //comp.setBots(graphLightRef2, graphLightRef);      
-        comp.setBots(ultraNoConfl, ultraNoConfl2);
-        final int nbDisplayedMove = 0;
+        //comp.setBots(ultraNoConfl, ultraNoConfl2);
+        comp.setBots(heavyBotRec, graphLightRef);
+        final int nbDisplayedMove = 300;
 
         comp.setUp();
 
