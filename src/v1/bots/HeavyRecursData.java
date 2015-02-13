@@ -10,8 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 import v1.L64p.vrac.L64fbase;
 import v1.TreeAlgorithm.BoardData;
-import v1.TreeAlgorithm.Light64Data;
-import v1.bots.ComparatorWithInitialState;
 
 /**
  *
@@ -25,10 +23,13 @@ public class HeavyRecursData implements BoardData {
     
     static long rand=9888478;
     
-    public static ComparatorWithInitialState comp = new ComparatorWithInitialState();
-    static IGoBot a=new UctLightBot(7878786L,300);
-    static IGoBot b=new UctLightBot(9987L,300);
-    {
+    int mm=0;
+    
+    final static int NbHyperSims=3000;
+    public static final ComparatorWithInitialState comp = new ComparatorWithInitialState();
+    static final IGoBot a=new UctLightBot(7878786L,NbHyperSims);
+    static final IGoBot b=new UctLightBot(9987L,NbHyperSims);
+    static {
         comp.setBots(a, b);
         comp.setUp();        
     }
@@ -37,10 +38,7 @@ public class HeavyRecursData implements BoardData {
         mem.copy(src);
         this.komi = komi;
         this.metaphase=metaphase^1;
-        
-
-        
-                
+          
     }
 
     @Override
@@ -94,7 +92,20 @@ public class HeavyRecursData implements BoardData {
     @Override
     public double scoreOnce() {
         comp.setInitialState(mem.debug_show());
-        return comp.doOneScore();
+        mm=0;
+
+        
+        //comp.setGameSpooler((String gameDesc) -> {
+        //    if (mm++ < 300) {
+                //System.out.println("Simulated move "+mm+" " + gameDesc);
+        //    }
+        //});                      
+       // System.out.println("==================    SCORE ONCE ================");
+        double sc= comp.doOneScore();
+        
+        if(metaphase==0) return sc; else return -sc;
+        
+        //return 0.0;
         
         //double sc=comp.
         //if(sc > 0) return 1.0; else return 0.0;        

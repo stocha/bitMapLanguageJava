@@ -182,6 +182,8 @@ public class ComparatorWithInitialState implements IBotComparator {
         double gobscore = gob.scoreGame(komi, 0);
         double winner = gobscore > 0 ? 1 : 0;
         
+//        gdisp.spoolOut("simulated winner " + winner + "\n" + gob.debug_show());
+        
         return winner;
     }
 
