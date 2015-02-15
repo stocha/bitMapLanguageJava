@@ -3,47 +3,36 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package v1.bots;
+package v1.demostrators;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import v1.L64p.vrac.L64fbase;
 import v1.TreeAlgorithm.BoardData;
+import v1.demostrators.DemonstrationWithTarget.TargetDescr;
 
 /**
  *
  * @author denis
  */
-public class HeavyRecursData implements BoardData {
+public class Light64TargetData  implements BoardData {
 
     public final L64fbase.gob64Struct mem = new L64fbase.gob64Struct();
-    final double komi;
+    final DemonstrationWithTarget.TargetDescr objective;
     final int metaphase;
     
     static long rand=9888478;
-    
-    int mm=0;
-    
-    final static int NbHyperSims=1;
-    public static final ComparatorWithInitialState comp = new ComparatorWithInitialState();
-    static final IGoBot a=new UctLightBot(7878786L,NbHyperSims);
-    static final IGoBot b=new UctLightBot(9987L,NbHyperSims);
-    static {
-        comp.setBots(a, b);
-        comp.setUp();        
-    }
 
-    public HeavyRecursData(L64fbase.gob64Struct src, double komi,int metaphase) {
+    public Light64TargetData(L64fbase.gob64Struct src, TargetDescr objective,int metaphase) {
         mem.copy(src);
-        this.komi = komi;
+        this.objective=objective;
         this.metaphase=metaphase^1;
-          
     }
 
     @Override
     public boolean equals(Object obj) {
-        HeavyRecursData o=(HeavyRecursData)obj;
+        Light64TargetData o=(Light64TargetData)obj;
         return Arrays.equals(new long[]{this.mem.p0,this.mem.p1}, new long[]{o.mem.p0,o.mem.p1});
         //return  true;
     }
@@ -75,7 +64,7 @@ public class HeavyRecursData implements BoardData {
         rand=sim.rand;
         long forbid=0;
         while(m!=0){
-            mv.add(new HeavyRecursData(sim,komi,metaphase));
+            mv.add(new Light64TargetData(sim,objective,metaphase));
             sim.copy(mem);
             forbid|=m;
             sim.rand=rand;
@@ -91,25 +80,16 @@ public class HeavyRecursData implements BoardData {
 
     @Override
     public double scoreOnce() {
-        comp.setInitialState(mem.debug_show());
-        mm=0;
-
+        L64fbase.gob64Struct sim = new L64fbase.gob64Struct();
         
-        //comp.setGameSpooler((String gameDesc) -> {
-        //    if (mm++ < 300) {
-                //System.out.println("Simulated move "+mm+" " + gameDesc);
-        //    }
-        //});                      
-       // System.out.println("==================    SCORE ONCE ================");
-        double sc= comp.doOneScore();
-        
-        if(metaphase==0) return sc; else return -sc;
-        
-        //return 0.0;
-        
-        //double sc=comp.
+        sim.copy(mem);
+        sim.rand=rand;        
+        sim.finishRandNoSuicide(0,metaphase);
+        rand=sim.rand;
         //if(sc > 0) return 1.0; else return 0.0;        
         //return -sc;
+        return 0.0;
     }
 
 }
+

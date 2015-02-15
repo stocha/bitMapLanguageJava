@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package v1.L64p.vrac;
+package v1.demostrators;
 
-import static v1.L64p.vrac.L64fbase.getAt;
+import v1.L64p.vrac.L64fbase;
+import static v1.L64p.vrac.L64fbase.*;
 
 
 /**
@@ -13,12 +14,32 @@ import static v1.L64p.vrac.L64fbase.getAt;
  * @author denis
  */
 public class DemonstrationWithTarget {
+    
+    
+    
+    
+    
     public static class TargetDescr{
         long b;
         long w;
         long t;
         
-        public void ExoDescrFromStr(String inTarg){
+        public void invert(){
+            long tm=b;
+            b=w;
+            w=tm;
+        }
+        
+        public long scrblZone(final int nb){
+            long res=t;
+            
+            for(int i=0;i<nb;i++)
+                res=scramble(res);
+            
+            return res;
+        }
+        
+        public void inFromStr(String inTarg){
             String in=inTarg.replace("W", "O").replace("B", "X").replace("E", "-");
             //System.out.println("Input \n"+in);
             b=L64fbase.inputString(in, 0);
