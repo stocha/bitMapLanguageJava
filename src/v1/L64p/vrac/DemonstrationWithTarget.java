@@ -13,7 +13,7 @@ import static v1.L64p.vrac.L64fbase.getAt;
  * @author denis
  */
 public class DemonstrationWithTarget {
-    public static class ExoDescr{
+    public static class TargetDescr{
         long b;
         long w;
         long t;
@@ -73,8 +73,8 @@ public class DemonstrationWithTarget {
         return sb.toString();
         }
         
-        public static ExoDescr alloc(){
-            return new ExoDescr();
+        public static TargetDescr alloc(){
+            return new TargetDescr();
         }
     }
 }

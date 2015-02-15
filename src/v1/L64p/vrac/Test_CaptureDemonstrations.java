@@ -5,7 +5,7 @@
  */
 package v1.L64p.vrac;
 
-import v1.L64p.vrac.DemonstrationWithTarget.ExoDescr;
+import v1.L64p.vrac.DemonstrationWithTarget.TargetDescr;
 import v1.genericTesting.TestFramework;
 
 /**
@@ -20,7 +20,7 @@ public class Test_CaptureDemonstrations {
     }      
     
     private void doit(){
-        ExoDescr ed=new DemonstrationWithTarget.ExoDescr();
+        TargetDescr ed=new DemonstrationWithTarget.TargetDescr();
         String model="<TARGET>\n"
                     + "- - - - - - - - \n"
                     + "- - - - - - - - \n"
