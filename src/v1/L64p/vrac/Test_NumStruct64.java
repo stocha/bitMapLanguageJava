@@ -25,7 +25,7 @@ public class Test_NumStruct64 {
         
         NumStruct64 ns = new NumStruct64();
         int up=61;
-        int down=17;
+        int down=59;
         
         ns.clear();
         ns.set(27, up);
