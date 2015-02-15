@@ -195,11 +195,18 @@ public class L64fbase {
         StringBuilder sb = new StringBuilder();
         long mem = 0;
         int ci = 0;
+        boolean open=false;
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 char ap = 0;
-                while (ap != t && ap != f) {
+                
+                
+                while ((ap != t && ap != f)||open) {
+                    //System.out.println("Skipping "+ap+" open="+open);
                     ap = in.charAt(ci++);
+                    if(ap=='>') open=false;
+                    if(ap=='<') open=true;
+                    
                 }
 
                 if (ap == t) {

@@ -12,7 +12,7 @@ import static v1.L64p.vrac.L64fbase.getAt;
  *
  * @author denis
  */
-public class CaptureDemonstrations {
+public class DemonstrationWithTarget {
     public static class ExoDescr{
         long b;
         long w;
@@ -20,13 +20,14 @@ public class CaptureDemonstrations {
         
         public void ExoDescrFromStr(String inTarg){
             String in=inTarg.replace("W", "O").replace("B", "X").replace("E", "-");
-            System.out.println("Input \n"+in);
+            //System.out.println("Input \n"+in);
             b=L64fbase.inputString(in, 0);
             w=L64fbase.inputString(in, 1);
             String targS=inTarg.replace("W", "!").replace("B", "!").replace("E", "!")
                     .replace("X", "-").replace("O", "-");
-            System.out.println("targS \n"+targS);
+            //System.out.println("targS \n"+targS);
             t=L64fbase.inString('!', '-', targS);
+            //System.out.println(L64fbase.outString(t, 0));
         }
         
         public String out(){

@@ -5,7 +5,7 @@
  */
 package v1.L64p.vrac;
 
-import v1.L64p.vrac.CaptureDemonstrations.ExoDescr;
+import v1.L64p.vrac.DemonstrationWithTarget.ExoDescr;
 import v1.genericTesting.TestFramework;
 
 /**
@@ -20,8 +20,8 @@ public class Test_CaptureDemonstrations {
     }      
     
     private void doit(){
-        ExoDescr ed=new CaptureDemonstrations.ExoDescr();
-        ed.ExoDescrFromStr("<GOBAN>\n"
+        ExoDescr ed=new DemonstrationWithTarget.ExoDescr();
+        String model="<TARGET>\n"
                     + "- - - - - - - - \n"
                     + "- - - - - - - - \n"
                     + "- - O O O - - - \n"
@@ -29,8 +29,9 @@ public class Test_CaptureDemonstrations {
                     + "- - W - E X - - \n"
                     + "- - - O - - - - \n"
                     + "- - - - - - - - \n"
-                    + "- - - - - - - - \n");
-        System.out.println(""+ed.out());
+                    + "- - - - - - - - \n";
+        ed.ExoDescrFromStr(model);
+        TestFramework.assertEquals(model, ""+ed.out());
     }
         
 }
