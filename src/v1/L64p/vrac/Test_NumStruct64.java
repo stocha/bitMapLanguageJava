@@ -5,6 +5,9 @@
  */
 package v1.L64p.vrac;
 
+import v1.genericTesting.TestFramework;
+import static v1.L64p.vrac.L64fbase.*;
+
 /**
  *
  * @author denis
@@ -13,11 +16,54 @@ public class Test_NumStruct64 {
 
     public static void main(String args[]) {
         //test001();
-        test002();
+        //test002();
+        testGroupTest();
+    }
+    
+    public static void testGroupTest(){
+        long a=0;
+        
+        NumStruct64 ns = new NumStruct64();
+        int up=61;
+        int down=17;
+        
+        ns.clear();
+        ns.set(27, up);
+        ns.set(28, down);
+        a=L64fbase.setAt(0, 27, 1);a=L64fbase.setAt(a, 28, 1);
+        System.out.println("before\n" + ns.out());
+        ns.groupStep(a, 0);
+        System.out.println("after\n" + ns.out()); 
+        
+        ns.clear();
+        ns.set(27, up);
+        ns.set(26, down);
+        a=L64fbase.setAt(0, 27, 1);a=L64fbase.setAt(a, 26, 1);
+        System.out.println("before\n" + ns.out());
+        ns.groupStep(a, 0);
+        System.out.println("after\n" + ns.out()); 
+        
+        ns.clear();
+        ns.set(27, up);
+        ns.set(35, down);
+        a=L64fbase.setAt(0, 27, 1);a=L64fbase.setAt(a, 35, 1);
+        System.out.println("before\n" + ns.out());
+        ns.groupStep(a, 0);
+        System.out.println("after\n" + ns.out()); 
+        
+        ns.clear();
+        ns.set(19, up);
+        ns.set(27, down);
+        a=L64fbase.setAt(0, 19, 1);a=L64fbase.setAt(a, 27, 1);
+        System.out.println("before\n" + ns.out());
+        ns.groupStep(a, 0);
+        System.out.println("after\n" + ns.out());         
+        
+        //TestFramework.assertEquals(model, result);
     }
 
     public static void test002(){
-                NumStruct64 ns = new NumStruct64();
+        NumStruct64 ns = new NumStruct64();
         ns.clear();
         System.out.println("before\n" + ns.out());     
         

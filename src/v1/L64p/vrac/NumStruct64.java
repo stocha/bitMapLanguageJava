@@ -79,7 +79,7 @@ public class NumStruct64 {
         identity();
         int nb = 0;
         while (groupStep(a, b)) {
-            System.out.println("find group\n" + this.out());
+            //System.out.println("find group\n" + this.out());
             if (true && nb++ > 64) {
                 break;
             }
