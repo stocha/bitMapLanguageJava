@@ -15,9 +15,9 @@ import static v1.L64p.vrac.L64fbase.*;
 public class Test_NumStruct64 {
 
     public static void main(String args[]) {
-        //test001();
+        test001();
         //test002();
-        testGroupTest();
+        //testGroupTest();
     }
     
     public static void testGroupTest(){
