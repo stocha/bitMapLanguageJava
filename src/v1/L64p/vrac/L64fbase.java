@@ -80,6 +80,16 @@ public class L64fbase {
 
         return mem;
     }
+    
+    public static final long setAt(long mem, int dec, long value) {
+        long bcl = 1L << (63 - dec);
+        bcl = ~bcl;
+        mem &= bcl;
+        long v = value;
+        mem |= (v << (63 - dec));
+
+        return mem;
+    }    
 
     public static final long inputString(String model, int player) {
         long res = 0;

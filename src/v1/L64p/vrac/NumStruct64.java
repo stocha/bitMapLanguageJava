@@ -12,6 +12,18 @@ package v1.L64p.vrac;
 public class NumStruct64 {
 
     private final long[] d = new long[6];
+    
+    public void set(int pos, long val){
+        
+            
+        for(int i=0;i<d.length;i++){
+            //int k=d.length-1-i;   
+            long bit=(val>>>(i))&1L; 
+       
+           d[i]= L64fbase.setAt(d[i], pos, bit);
+        }
+        
+    }
 
     public long get(int pos) {
         long res = 0;
@@ -43,7 +55,7 @@ public class NumStruct64 {
         return res;
     }
 
-    public void clear() {
+    public void identity() {
         d[0] = 0xAAAAAAAAAAAAAAAAL;
         d[1] = 0xCCCCCCCCCCCCCCCCL;
         d[2] = 0xF0F0F0F0F0F0F0F0L;
@@ -52,9 +64,19 @@ public class NumStruct64 {
         d[5] = 0xFFFFFFFF00000000L;
         //System.out.println(""+L64fbase.outString(d[1],0));
     }
+    
+    public void clear() {
+        d[0] = 0;
+        d[1] = 0;
+        d[2] = 0;
+        d[3] = 0;
+        d[4] = 0;
+        d[5] = 0;
+        //System.out.println(""+L64fbase.outString(d[1],0));
+    }    
 
     public void findGroups(long a, long b) {
-        clear();
+        identity();
         int nb = 0;
         while (groupStep(a, b)) {
             System.out.println("find group\n" + this.out());

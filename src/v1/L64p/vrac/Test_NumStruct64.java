@@ -12,12 +12,23 @@ package v1.L64p.vrac;
 public class Test_NumStruct64 {
 
     public static void main(String args[]) {
-        test001();
+        //test001();
+        test002();
     }
 
+    public static void test002(){
+                NumStruct64 ns = new NumStruct64();
+        ns.clear();
+        System.out.println("before\n" + ns.out());     
+        
+        ns.set(27, 63);
+        System.out.println("before\n" + ns.out()); 
+        
+    }
+    
     public static void test001() {
         NumStruct64 ns = new NumStruct64();
-        ns.clear();
+        ns.identity();
 
         System.out.println("before\n" + ns.out());        
         
