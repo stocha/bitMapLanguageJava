@@ -19,11 +19,55 @@ public class Test_Displays {
         //showRandomGame();
         //showRandomEnd();
         //dispRandFinishAccell();
-        dispSomeFinishAccel();
+        //dispSomeFinishAccel();
+
+       // dispNoConflictLogicGameMultipledispNoConflictLogicGameMultiple();
+        dispNoConflict();
 
         //showDoubleKoGame();
         //showSimpleKoGame();
         //showTripleKoGame();
+    }
+    
+    public static void dispNoConflict(){
+        
+        L64fbase.gob64Struct g = new gob64Struct();
+        L64fbase.gob64Struct last = new gob64Struct();
+        g.init();
+
+        int pass = 0;
+        for (int r = 0; r < 200; r++) {
+            g.reset();
+            g.randomizeAccelNoConflict();   
+            g.randomizeAccelNoConflict();   
+            g.randomizeAccelNoConflict();   
+            System.out.println("===== End ====" + "\n" + g.debug_show()); 
+        }
+    }
+
+    public static void dispNoConflictLogicGameMultipledispNoConflictLogicGameMultiple() {
+        L64fbase.gob64Struct g = new gob64Struct();
+        L64fbase.gob64Struct last = new gob64Struct();
+        g.init();
+
+        int pass = 0;
+        for (int r = 0; r < 200; r++) {
+            g.reset();
+            g.randomizeAccelNoConflict();
+            pass = 0;
+            int nbFill = 0;
+            while (pass < 4) {
+                if (last.equals(g)) {
+                    pass++;
+                }else {pass=0;}
+                //System.out.println(g.debug_show());
+                last.copy(g);
+                g.randomizeAccelNoConflict();
+                nbFill++;
+            }
+            System.out.println("===== End ====" + nbFill + "\n" + g.debug_show());
+        }
+
     }
 
     public static void showRandomEnd() {
@@ -167,22 +211,20 @@ public class Test_Displays {
             System.out.println(outString(m, 'X', '-'));
         }
     }
-    
-    
-    public static void dispSomeFinishAccel(){
+
+    public static void dispSomeFinishAccel() {
         L64fbase.gob64Struct g = new L64fbase.gob64Struct();
         g.init();
         gob64Accel c = new gob64Accel(g);
-        
-        
-        for(int i=0;i<40;i++){
+
+        for (int i = 0; i < 40; i++) {
             g.reset();
             c.finishAccelGameNoConfl();
-            
+
             System.out.println("=================");
             System.out.println(g.debug_show());
             c.spreadLastCapture(c.lastCapture);
-            System.out.println("corrige "+g.debug_show());
+            System.out.println("corrige " + g.debug_show());
         }
     }
 
@@ -197,27 +239,33 @@ public class Test_Displays {
                 //System.out.println("=================");
                 c.hitSelectRand();
                 c.stepAccelGameNoConflict();
-                c.synchRefOut();System.out.println(g.debug_show());
-                
+                c.synchRefOut();
+                System.out.println(g.debug_show());
+
                 c.hitSelectRand();
                 c.stepAccelGameNoConflict();
-                c.synchRefOut();System.out.println(g.debug_show());
-                
+                c.synchRefOut();
+                System.out.println(g.debug_show());
+
                 System.out.println("+++conflicting+++");
                 c.hitSelectRand();
                 c.stepAccelGameWithConflict();
-                c.synchRefOut();System.out.println(g.debug_show());
-                
-                c.synchRefOut();System.out.println(g.debug_show());
+                c.synchRefOut();
+                System.out.println(g.debug_show());
+
+                c.synchRefOut();
+                System.out.println(g.debug_show());
             }
             System.out.println("=================");
             c.hitSelectAll();
             c.stepAccelGameNoConflict();
-            c.synchRefOut();System.out.println(g.debug_show());
+            c.synchRefOut();
+            System.out.println(g.debug_show());
         }// Amatot
-            System.out.println("Last capture "+outString(c.lastCapture, ~c.lastCapture));
-            c.spreadLastCapture(c.lastCapture);
-            c.synchRefOut();System.out.println(g.debug_show());
+        System.out.println("Last capture " + outString(c.lastCapture, ~c.lastCapture));
+        c.spreadLastCapture(c.lastCapture);
+        c.synchRefOut();
+        System.out.println(g.debug_show());
     }
 
     public static void dispRandFillAccell() {
@@ -225,7 +273,6 @@ public class Test_Displays {
         g.init();
         for (int i = 0; i < 40; i++) {
             g.randomizeAccelNoConflict();
-            
 
             System.out.println(g.debug_show());
         }

@@ -464,6 +464,8 @@ public class L64fbase {
             c.synchRefOut();
         }
     }
+    
+    
 
     public static final class gob64Struct {
 
@@ -500,6 +502,32 @@ public class L64fbase {
             repet = src.repet;
             this.rand = src.rand;
         }
+
+        @Override
+        public int hashCode() {
+            int hash = 7;
+            return hash;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            final gob64Struct other = (gob64Struct) obj;
+            if (this.p0 != other.p0) {
+                return false;
+            }
+            if (this.p1 != other.p1) {
+                return false;
+            }
+            return true;
+        }
+        
+        
 
         public final boolean isConflictingAmaf(long black, long white, int metaphase) {
             final long b;

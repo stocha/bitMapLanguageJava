@@ -70,7 +70,6 @@ public class LightAccelAssymData  implements BoardData {
         sim.randomizeAccelNoConflict();
         sim.randomizeAccelNoConflict();
         sim.randomizeAccelNoConflict();
-        sim.randomizeAccelNoConflict();
         
         double sc = sim.finishRandNoSuicide(komi,metaphase);
         rand=sim.rand;
