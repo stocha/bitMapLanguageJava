@@ -52,11 +52,15 @@ public class NumStruct64 {
         d[5] = 0xFFFFFFFF00000000L;
         //System.out.println(""+L64fbase.outString(d[1],0));
     }
-    
-    public void findGroups(long a,long b){
+
+    public void findGroups(long a, long b) {
         clear();
-        while(groupStep(a,b)){
-        System.out.println("find group\n" + this.out());
+        int nb = 0;
+        while (groupStep(a, b)) {
+            System.out.println("find group\n" + this.out());
+            if (true && nb++ > 64) {
+                break;
+            }
         }
     }
 
@@ -66,8 +70,8 @@ public class NumStruct64 {
 
         long lay;
         long dir;
-        
-        long cond=0;
+
+        long cond = 0;
 
         for (int i = 0; i < d.length; i++) {
             lay = d[i];
@@ -76,12 +80,14 @@ public class NumStruct64 {
         }
         for (int i = 0; i < d.length; i++) {
             dir = d[i] >>> 8;
-            cond=isH&(a&(a>>>8));
+            cond = isH & (a & (a >>> 8));
             d[i] &= ~(cond);
             d[i] |= dir & cond;
         }
         hasH |= cond;
         isH = 0;
+        System.out.println("down"+" "+L64fbase.outString(cond,0));
+        cond = 0;
 
         for (int i = 0; i < d.length; i++) {
             lay = d[i];
@@ -90,42 +96,47 @@ public class NumStruct64 {
         }
         for (int i = 0; i < d.length; i++) {
             dir = d[i] << 8;
-            cond=isH&(a&(a<<8));
+            cond = isH & (a & (a << 8));
             d[i] &= ~(cond);
             d[i] |= dir & cond;
         }
         hasH |= cond;
         isH = 0;
+        System.out.println("up"+" "+L64fbase.outString(cond,0));
+        cond = 0;
 
         for (int i = 0; i < d.length; i++) {
             lay = d[i];
-            dir = d[i] << 1 & L64fbase.LMASK;
+            dir = (d[i] << 1) & L64fbase.LMASK;
             isH = isH | (dir & ~lay);
         }
         for (int i = 0; i < d.length; i++) {
-            dir = d[i] << 1 & L64fbase.LMASK;
-            cond=isH&(a&(a<<1)&L64fbase.LMASK);
+            dir = (d[i] << 1) & L64fbase.LMASK;
+            cond = isH & (a & (a << 1) & L64fbase.LMASK);
             d[i] &= ~(cond);
             d[i] |= dir & cond;
         }
         hasH |= cond;
         isH = 0;
+        System.out.println("left"+" "+L64fbase.outString(cond,0));
+        cond = 0;
 
         for (int i = 0; i < d.length; i++) {
             lay = d[i];
-            dir = d[i] >>> 1 & L64fbase.RMASK;
+            dir = (d[i] >>> 1) & L64fbase.RMASK;
             isH = isH | (dir & ~lay);
         }
         for (int i = 0; i < d.length; i++) {
-            dir = d[i] >>> 1 & L64fbase.RMASK;
-            cond=isH&(a&(a>>>1)&L64fbase.RMASK);
+            dir = (d[i] >>> 1) & L64fbase.RMASK;
+            cond = isH & (a & (a >>> 1) & L64fbase.RMASK);
             d[i] &= ~(cond);
             d[i] |= dir & cond;
         }
-       
+
         isH = 0;
         hasH |= cond;
-
+        System.out.println("right"+" "+L64fbase.outString(cond,0));
+        cond = 0;
         //System.out.println(""+" "+L64fbase.outString(isH,0));
         return (hasH != 0L);
 

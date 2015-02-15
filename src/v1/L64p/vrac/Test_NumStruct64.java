@@ -21,14 +21,14 @@ public class Test_NumStruct64 {
 
         System.out.println("before\n" + ns.out());        
         
-        while (ns.groupStep(0, 0)) {
-            System.out.println("steping\n" + ns.out());
+        while (ns.groupStep(-1L, 0)) {
+           // System.out.println("steping\n" + ns.out());
         }
         
         L64fbase.gob64Struct gob=new L64fbase.gob64Struct();
         gob.init();
-        gob.finishRandNoSuicide(0.0, 0);
-        System.out.println(""+gob.debug_show());
+        gob.finishRandNoSuicide(0.0, 0);gob.passMove();
+        System.out.println("phase "+gob.phase+" "+gob.debug_show());
         ns.findGroups(gob.p0, gob.p1);
         System.out.println("groups\n" + ns.out());   
         
