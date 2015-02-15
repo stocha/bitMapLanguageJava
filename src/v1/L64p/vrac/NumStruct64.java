@@ -76,7 +76,7 @@ public class NumStruct64 {
         for (int i = 0; i < d.length; i++) {
             lay = d[i];
             dir = d[i] >>> 8;
-            isH = isH | (dir & ~lay);
+            isH = isH | ((dir & ~lay)& ~isH);
         }
         for (int i = 0; i < d.length; i++) {
             dir = d[i] >>> 8;
@@ -86,13 +86,13 @@ public class NumStruct64 {
         }
         hasH |= cond;
         isH = 0;
-        System.out.println("down"+" "+L64fbase.outString(cond,0));
+        //System.out.println("down"+" "+L64fbase.outString(cond,0));
         cond = 0;
 
         for (int i = 0; i < d.length; i++) {
             lay = d[i];
             dir = d[i] << 8;
-            isH = isH | (dir & ~lay);
+            isH = isH | ((dir & ~lay)& ~isH);
         }
         for (int i = 0; i < d.length; i++) {
             dir = d[i] << 8;
@@ -102,13 +102,13 @@ public class NumStruct64 {
         }
         hasH |= cond;
         isH = 0;
-        System.out.println("up"+" "+L64fbase.outString(cond,0));
+        //System.out.println("up"+" "+L64fbase.outString(cond,0));
         cond = 0;
 
         for (int i = 0; i < d.length; i++) {
             lay = d[i];
             dir = (d[i] << 1) & L64fbase.LMASK;
-            isH = isH | (dir & ~lay);
+            isH = isH |( (dir & ~lay)& ~isH);
         }
         for (int i = 0; i < d.length; i++) {
             dir = (d[i] << 1) & L64fbase.LMASK;
@@ -118,13 +118,13 @@ public class NumStruct64 {
         }
         hasH |= cond;
         isH = 0;
-        System.out.println("left"+" "+L64fbase.outString(cond,0));
+        //System.out.println("left"+" "+L64fbase.outString(cond,0));
         cond = 0;
 
         for (int i = 0; i < d.length; i++) {
             lay = d[i];
             dir = (d[i] >>> 1) & L64fbase.RMASK;
-            isH = isH | (dir & ~lay);
+            isH = isH | ((dir & ~lay)& ~isH);
         }
         for (int i = 0; i < d.length; i++) {
             dir = (d[i] >>> 1) & L64fbase.RMASK;
@@ -135,7 +135,7 @@ public class NumStruct64 {
 
         isH = 0;
         hasH |= cond;
-        System.out.println("right"+" "+L64fbase.outString(cond,0));
+        //System.out.println("right"+" "+L64fbase.outString(cond,0));
         cond = 0;
         //System.out.println(""+" "+L64fbase.outString(isH,0));
         return (hasH != 0L);
