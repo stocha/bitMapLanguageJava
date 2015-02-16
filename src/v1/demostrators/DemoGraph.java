@@ -82,10 +82,10 @@ public class DemoGraph {
             }
 //System.out.println(""+this.debugFlat());
             BoardData best = this.bestState();
-            //DemoGraphNode next = graph.get(best);
+            DemoGraphNode next = graph.get(best);
             
             int k=0;
-            for(DemoGraphNode next : childs)
+            //for(DemoGraphNode next : childs)
             {                    
                 if (next == null) {
                     return res+" DONE";
@@ -115,11 +115,18 @@ public class DemoGraph {
             //System.out.println("childs count : "+childs.size());
             for (DemoGraphNode fp : childs) {
     //System.err.println("lm "+fp.win);
-                if (fp.win > 0) {
+                if ((fp.win > 0) && fp.locked) {
                     //System.err.println("returned max"+fp.state);
                     return fp.state;
                 }
             }
+            for (DemoGraphNode fp : childs) {
+    //System.err.println("lm "+fp.win);
+                if (fp.locked) {
+                    //System.err.println("returned max"+fp.state);
+                    return fp.state;
+                }
+            }            
             return maxfp.state;
         }
 
@@ -165,6 +172,9 @@ public class DemoGraph {
                 
                 for(DemoGraphNode n : childs){
                     sc=Math.max(sc, n.win);
+                    if(n.win ==1 && n.locked){
+                        win=0;locked=true;break;
+                    }
                 }
                 
                 win= 1-sc;
