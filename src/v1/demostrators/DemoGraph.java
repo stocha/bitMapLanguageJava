@@ -75,7 +75,7 @@ public class DemoGraph {
             if (depth >= 0) {
                 res += String.format("%" + (depth+1) * 3 + "s", ("=" + depth + "=="));
             }
-            res += " score " + win+"  H"+hits;
+            res += " score " + win+"  H"+hits+" L"+locked;
             res += this.state;
             if (childs == null) {
                 return res;
@@ -141,6 +141,8 @@ public class DemoGraph {
         }
 
         public double doSimulation() {
+            
+            if(locked) return 0;
 
             //System.out.println("doing it simulation");
             hits++;
@@ -171,6 +173,7 @@ public class DemoGraph {
                 //System.out.println("Non deflat "+this.state);
                 double sc = state.scoreOnce();
                 win = sc;
+                if(sc==1) locked=true;
 
                 return 1-sc;
             }
@@ -222,7 +225,7 @@ public class DemoGraph {
             double max = Double.NEGATIVE_INFINITY;
             int maxindex = -1;
             for (int i = 0; i < childs.size(); i++) {
-                if (checkChildLoop(i)) {
+                if (checkChildLoop(i)||childs.get(i).locked==true) {
                     continue;
                 }
 

@@ -43,13 +43,14 @@ public class Test_CaptureDemonstrations {
         DemoGraph.DemoGraphNode no=dg.new  DemoGraphNode(new TargetCaptureData( ed, 0),0);
         
                 long t0 = System.nanoTime(); 
-        for(int i=0;i<nbGame;i++){
+        for(int i=0;i<nbGame && !no.locked;i++){
             no.doSimulation();
         }
         
        long t1 = System.nanoTime();
 
         double t = (t1 - t0) / 1000000000.0;
+        nbGame=(int)no.hits;
         System.out.println("search " + nbGame + " actions en " + t + " secondes");
         double nbgamSec = nbGame;
         nbgamSec /= t;
