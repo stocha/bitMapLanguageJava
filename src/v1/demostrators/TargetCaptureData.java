@@ -16,7 +16,7 @@ import v1.demostrators.DemonstrationWithTarget.TargetDescr;
  *
  * @author denis
  */
-public class Light64TargetData  implements BoardData {
+public class TargetCaptureData  implements BoardData {
 
     public final L64fbase.gob64Struct mem = new L64fbase.gob64Struct();
     final DemonstrationWithTarget.TargetDescr objective;
@@ -24,15 +24,22 @@ public class Light64TargetData  implements BoardData {
     
     static long rand=9888478;
 
-    public Light64TargetData(L64fbase.gob64Struct src, TargetDescr objective,int metaphase) {
-        mem.copy(src);
+    public TargetCaptureData( TargetDescr objective,int metaphase) {
+        mem.p0=objective.b;
+        mem.p1=objective.w;
         this.objective=objective;
         this.metaphase=metaphase^1;
     }
+    
+    public TargetCaptureData(L64fbase.gob64Struct sim, TargetDescr objective,int metaphase) {
+        mem.copy(sim);        
+        this.objective=objective;
+        this.metaphase=metaphase^1;
+    }    
 
     @Override
     public boolean equals(Object obj) {
-        Light64TargetData o=(Light64TargetData)obj;
+        TargetCaptureData o=(TargetCaptureData)obj;
         return Arrays.equals(new long[]{this.mem.p0,this.mem.p1}, new long[]{o.mem.p0,o.mem.p1});
         //return  true;
     }
@@ -59,17 +66,20 @@ public class Light64TargetData  implements BoardData {
         
         L64fbase.gob64Struct sim=new L64fbase.gob64Struct();
         sim.copy(mem);
+        //System.out.println("subdata src "+sim.debug_show());
         sim.rand=rand;
         long m=sim.playOneRandNoSuicide();
+        //System.out.println("first sim "+sim.debug_show());
         rand=sim.rand;
         long forbid=0;
         while(m!=0){
-            mv.add(new Light64TargetData(sim,objective,metaphase));
+            mv.add(new TargetCaptureData(sim,objective,metaphase));
             sim.copy(mem);
             forbid|=m;
             sim.rand=rand;
             m=sim.playOneRandNoSuicide(forbid);
             rand=sim.rand;
+           // System.out.println("other sim "+sim.debug_show());
         }
         
         
@@ -80,15 +90,29 @@ public class Light64TargetData  implements BoardData {
 
     @Override
     public double scoreOnce() {
+        
+        
         L64fbase.gob64Struct sim = new L64fbase.gob64Struct();
         
         sim.copy(mem);
         sim.rand=rand;        
-        sim.finishRandNoSuicide(0,metaphase);
+        //sim.finishRandNoSuicide(0,metaphase);
         rand=sim.rand;
         //if(sc > 0) return 1.0; else return 0.0;        
         //return -sc;
-        return 0.0;
+        if(metaphase!=mem.phase){
+            sim.passMove();
+        }
+        long wCont=sim.p0&objective.t;
+        
+        double sc=wCont==0?1.0:0;
+        
+        if(sc>0){ System.out.println("phas "+mem.phase+"| met "+metaphase+"| Found : "+mem.debug_show());
+        System.out.println("object "+L64fbase.outString(sim.p1&objective.t, sim.p0));
+        
+        }
+        
+        return sc;
     }
 
 }

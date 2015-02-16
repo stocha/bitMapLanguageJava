@@ -21,8 +21,45 @@ public class Test_CaptureDemonstrations {
         (new Test_CaptureDemonstrations()).doit();
         TestFramework.showResults();
     }
+    
+    private void doit(){
+        tst002Disp();
+    }
+    
+    private void tst002Disp(){
+        TargetDescr ed = new DemonstrationWithTarget.TargetDescr();
+        String model = "<TARGET>\n"
+                + "- - - - - - - - \n"
+                + "- - - - - - - - \n"
+                + "- - X X X - - - \n"
+                + "- - X W W X - - \n"
+                + "- - - - - X - - \n"
+                + "- - - X - - - - \n"
+                + "- - - - - - - - \n"
+                + "- - - - - - - - \n";
+        ed.inFromStr(model);    
+        int nbGame=5;
+        DemoGraph dg=new DemoGraph(nbGame);
+        DemoGraph.DemoGraphNode no=dg.new  DemoGraphNode(new TargetCaptureData( ed, 0),0);
+        
+                long t0 = System.nanoTime(); 
+        for(int i=0;i<nbGame;i++){
+            no.doSimulation();
+        }
+        
+       long t1 = System.nanoTime();
 
-    private void doit() {
+        double t = (t1 - t0) / 1000000000.0;
+        System.out.println("search " + nbGame + " actions en " + t + " secondes");
+        double nbgamSec = nbGame;
+        nbgamSec /= t;
+        System.out.println("" + nbgamSec + " actions par secondes");
+        DemoGraph.printlnReuse();
+        //System.out.println(""+no.debugRec(0));
+        
+         
+    }
+    private void tst001Disp() {
         TargetDescr ed = new DemonstrationWithTarget.TargetDescr();
         String model = "<TARGET>\n"
                 + "- - - - - - - - \n"
@@ -59,5 +96,9 @@ public class Test_CaptureDemonstrations {
         ed.t=ed.scrblZone(1);
         System.out.println("scrbl 1 " + ed.out());
     }
+
+    
+    
+    
 
 }
