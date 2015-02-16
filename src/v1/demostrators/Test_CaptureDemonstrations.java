@@ -29,16 +29,16 @@ public class Test_CaptureDemonstrations {
     private void tst002Disp(){
         TargetDescr ed = new DemonstrationWithTarget.TargetDescr();
         String model = "<TARGET>\n"
-                + "- - - - - - - - \n"
-                + "- - - - - - - - \n"
-                + "- - X X X - - - \n"
-                + "- - X W W X - - \n"
-                + "- - - - - X - - \n"
-                + "- - - X - - - - \n"
-                + "- - - - - - - - \n"
-                + "- - - - - - - - \n";
+                + "O O X - X - X O \n"
+                + "O O X X X X X O \n"
+                + "O O X X X X O O \n"
+                + "O O X W W X O O \n"
+                + "O O - - - X O O \n"
+                + "O O X X X X O O \n"
+                + "O O O O O O O O \n"
+                + "- O O O O O O - \n";
         ed.inFromStr(model);    
-        int nbGame=5;
+        int nbGame=25000*2;
         DemoGraph dg=new DemoGraph(nbGame);
         DemoGraph.DemoGraphNode no=dg.new  DemoGraphNode(new TargetCaptureData( ed, 0),0);
         
@@ -55,7 +55,7 @@ public class Test_CaptureDemonstrations {
         nbgamSec /= t;
         System.out.println("" + nbgamSec + " actions par secondes");
         DemoGraph.printlnReuse();
-        //System.out.println(""+no.debugRec(0));
+        System.out.println(""+no.debugRec(0));
         
          
     }

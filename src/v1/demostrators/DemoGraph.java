@@ -63,7 +63,7 @@ public class DemoGraph {
             }
             for (int i = 0; i < childs.size(); i++) {
                 res += " Root child " + i + " ";
-                res += " score " + win;
+                res += " score " + childs.get(i).win;
                 res += "" + childs.get(i).state;
             }
 
@@ -72,25 +72,26 @@ public class DemoGraph {
 
         public String debugRec(int depth) {
             String res = "\n";
-            if (depth > 0) {
-                res += String.format("%" + depth * 3 + "s", ("=" + depth + "=="));
+            if (depth >= 0) {
+                res += String.format("%" + (depth+1) * 3 + "s", ("=" + depth + "=="));
             }
-            res += " score " + win;
+            res += " score " + win+"  H"+hits;
             res += this.state;
             if (childs == null) {
                 return res;
             }
-
-            //BoardData best = this.bestState();
+//System.out.println(""+this.debugFlat());
+            BoardData best = this.bestState();
             //DemoGraphNode next = graph.get(best);
             
             int k=0;
-            for(DemoGraphNode next : childs){                    
+            for(DemoGraphNode next : childs)
+            {                    
                 if (next == null) {
-                    return res;
+                    return res+" DONE";
                 }
-                if (next.depth > this.depth && depth < 7) {
-                    res+="["+(k++)+"]";
+                if (next.depth > this.depth && depth < 4) {
+                    res+="["+(k++)+"]"+next.depth;
                     res += next.debugRec(depth + 1);
                 }
             }
@@ -113,8 +114,9 @@ public class DemoGraph {
             //System.err.println(""+this.debugFlat());
             //System.out.println("childs count : "+childs.size());
             for (DemoGraphNode fp : childs) {
-
+    //System.err.println("lm "+fp.win);
                 if (fp.win > 0) {
+                    //System.err.println("returned max"+fp.state);
                     return fp.state;
                 }
             }
@@ -125,7 +127,11 @@ public class DemoGraph {
             DemoGraphNode node = childs.get(childNum);
 
             if (true) {
-                return 1 / (double) node.hits;
+                
+                if(node.hits<=0.001){
+                    return 1.0;
+                }else
+                return 1.0 / (double) node.hits;
             }
             return 0;
         }
@@ -146,18 +152,27 @@ public class DemoGraph {
             if (childs != null && childs.size() > 0) {
                 int chInd = selectChildToVisit();
                 if (chInd == -1) {
+                    
+                    //System.out.println("<LOCKED "+this.debugFlat()+" LOCKED>");
                     locked = true;
                     return 1.0 - win;
                 }
                 DemoGraphNode ch = childs.get(chInd);
                 double sc = 1.0 - ch.doSimulation();
-                return sc;
+                sc=0;
+                
+                for(DemoGraphNode n : childs){
+                    sc=Math.max(sc, n.win);
+                }
+                
+                win= 1-sc;
+                return win;
             } else {
                 //System.out.println("Non deflat "+this.state);
                 double sc = state.scoreOnce();
                 win = sc;
 
-                return sc;
+                return 1-sc;
             }
         }
 
@@ -213,7 +228,7 @@ public class DemoGraph {
 
                 double sc = visitValue(i);
                 //if(maxindex!=-1)
-                //System.err.println(sc+" /"+max+" mInd"+maxindex+" "+childs.get(maxindex));
+                //System.err.println(sc+" /"+max+" mInd "+maxindex);
 
                 if (sc >= max) {
                     max = sc;
