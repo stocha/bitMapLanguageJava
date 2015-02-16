@@ -15,9 +15,12 @@ import static v1.L64p.vrac.L64fbase.*;
 public class Test_NumStruct64 {
 
     public static void main(String args[]) {
-        test001();
+        
+//test001();
         //test002();
         //testGroupTest();
+        
+        timeFindGroup();
     }
     
     public static void testGroupTest(){
@@ -91,4 +94,43 @@ public class Test_NumStruct64 {
         
         
     }
+    
+    
+    public static void timeFindGroup(){
+                NumStruct64 ns = new NumStruct64();
+        ns.identity();
+        long rh;
+       rh=setAt(0,32, 1);
+       for(int i=0;i<100;i++)
+        rh=L64fbase.rule30(rh);
+       
+       long aggreg=0;
+       
+        final int nbGame = 600000*2;    
+        
+        long t0 = System.nanoTime();   
+        double accCount=0;
+        
+        for(int i=0;i<nbGame;i++){
+            rh=L64fbase.rule30(rh);
+            long a=rh;
+            
+            rh=L64fbase.rule30(rh);
+            long b=rh;
+            
+            ns.identity();
+            ns.findGroups(a, b);
+            aggreg+=ns.get(32);
+        }
+        
+       long t1 = System.nanoTime();
+
+        double t = (t1 - t0) / 1000000000.0;
+        System.out.println("Contrainte timer "+aggreg);
+        System.out.println("timeFindGroups " + nbGame + " actions en " + t + " secondes");
+        double nbgamSec = nbGame;
+        nbgamSec /= t;
+        System.out.println("" + nbgamSec + " actions par secondes");  
+        System.out.println("avg count = "+(accCount/(double) nbGame));        
+    }        
 }

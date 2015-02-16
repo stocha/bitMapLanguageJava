@@ -102,7 +102,7 @@ public class NumStruct64 {
         }
         for (int i = 0; i < d.length; i++) {
             dir = d[i] >>> 8;
-            cond = isH & (a & (a >>> 8));
+            cond = isH & ((a & (a >>> 8))|((b & (b >>> 8))));
             d[i] &= ~(cond);
             d[i] |= dir & cond;
         }
@@ -118,7 +118,7 @@ public class NumStruct64 {
         }
         for (int i = 0; i < d.length; i++) {
             dir = d[i] << 8;
-            cond = isH & (a & (a << 8));
+            cond = isH & ((a & (a << 8))|((b & (b << 8))));
             d[i] &= ~(cond);
             d[i] |= dir & cond;
         }
@@ -135,7 +135,7 @@ public class NumStruct64 {
         }
         for (int i = 0; i < d.length; i++) {
             dir = ((d[i] << 1) & L64fbase.LMASK);
-            cond = isH & ((a & (a << 1) & L64fbase.LMASK));
+            cond = isH & ((a & (a << 1)& L64fbase.LMASK)|((b & (b << 1)& L64fbase.LMASK)));
             d[i] &= ~(cond);
             d[i] |= dir & cond;
         }
@@ -151,7 +151,7 @@ public class NumStruct64 {
         }
         for (int i = 0; i < d.length; i++) {
             dir = (d[i] >>> 1) & L64fbase.RMASK;
-            cond = isH & (a & (a >>> 1) & L64fbase.RMASK);
+            cond = isH & ((a & (a >>> 1)& L64fbase.RMASK)|((b & (b >>> 1)& L64fbase.RMASK)));
             d[i] &= ~(cond);
             d[i] |= dir & cond;
         }
