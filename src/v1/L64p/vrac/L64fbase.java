@@ -13,6 +13,14 @@ public class L64fbase {
 
     public static final long RMASK = 0x7f7f7f7f7f7f7f7fL;
     public static final long LMASK = 0xFEFEFEFEFEFEFEFEL;
+    
+    public static final long rsh(long v){
+        return (v>>>1) & RMASK;
+    }
+    
+    public static final long lsh(long v){
+        return (v<<1) & LMASK;
+    }
 
     public static final long scramble(long mem) {
         long acc = mem;

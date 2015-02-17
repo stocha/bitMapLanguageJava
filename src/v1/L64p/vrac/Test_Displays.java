@@ -23,19 +23,60 @@ public class Test_Displays {
 
        // dispNoConflictLogicGameMultipledispNoConflictLogicGameMultiple();
         //dispNoConflict();
+        dispRandFinishCrossEscap();
 
         //showDoubleKoGame();
         //showSimpleKoGame();
         //showTripleKoGame();
     }
-    
-    void dispRandFinishCrossEscap(){
-        
-    
+
+    public static void dispRandFinishCrossEscap() {
+        L64fbase.gob64Struct g = new gob64Struct();
+        g.init();
+        int pass = 0;
+        int count = 1;
+        while (count > 0) {
+            //System.out.println(g.debug_show());
+
+            
+            boolean played=false;
+            long move=0;
+            {
+                long hane = 0;
+
+                hane |= (lsh(g.p0) >>> 8) & ((g.p1 >>> 8) | lsh(g.p1));
+                hane |= (rsh(g.p0) >>> 8) & ((g.p1 >>> 8) | rsh(g.p1));
+                hane |= (lsh(g.p0) << 8) & ((g.p1 << 8) | lsh(g.p1));
+                hane |= (rsh(g.p0) << 8) & ((g.p1 << 8) | rsh(g.p1));
+
+                TargetDescr td = new TargetDescr();
+                td.b = g.p0;
+                td.w = g.p1;
+                td.t = hane & ~(g.p0 | g.p1);
+
+                System.out.println("Phase"+g.phase+" Targ : "+td.out());
+                
+                long escape = 0;
+                long voidiag = -1L;
+            }
+
+            move = g.playOneRandNoSuicide();
+            if (move == 0) {
+                pass++;
+            } else {
+                pass = 0;
+            }
+            if (pass == 2) {
+                System.out.println("Ending " + g.debug_show());
+                g.reset();
+                count--;
+            }
+        }
+
     }
-    
-    public static void dispNoConflict(){
-        
+
+    public static void dispNoConflict() {
+
         L64fbase.gob64Struct g = new gob64Struct();
         L64fbase.gob64Struct last = new gob64Struct();
         g.init();
@@ -43,10 +84,10 @@ public class Test_Displays {
         int pass = 0;
         for (int r = 0; r < 200; r++) {
             g.reset();
-            g.randomizeAccelNoConflict();   
-            g.randomizeAccelNoConflict();   
-            g.randomizeAccelNoConflict();   
-            System.out.println("===== End ====" + "\n" + g.debug_show()); 
+            g.randomizeAccelNoConflict();
+            g.randomizeAccelNoConflict();
+            g.randomizeAccelNoConflict();
+            System.out.println("===== End ====" + "\n" + g.debug_show());
         }
     }
 
@@ -64,7 +105,9 @@ public class Test_Displays {
             while (pass < 4) {
                 if (last.equals(g)) {
                     pass++;
-                }else {pass=0;}
+                } else {
+                    pass = 0;
+                }
                 //System.out.println(g.debug_show());
                 last.copy(g);
                 g.randomizeAccelNoConflict();
