@@ -13,13 +13,13 @@ public class L64fbase {
 
     public static final long RMASK = 0x7f7f7f7f7f7f7f7fL;
     public static final long LMASK = 0xFEFEFEFEFEFEFEFEL;
-    
-    public static final long rsh(long v){
-        return (v>>>1) & RMASK;
+
+    public static final long rsh(long v) {
+        return (v >>> 1) & RMASK;
     }
-    
-    public static final long lsh(long v){
-        return (v<<1) & LMASK;
+
+    public static final long lsh(long v) {
+        return (v << 1) & LMASK;
     }
 
     public static final long scramble(long mem) {
@@ -88,7 +88,7 @@ public class L64fbase {
 
         return mem;
     }
-    
+
     public static final long setAt(long mem, int dec, long value) {
         long bcl = 1L << (63 - dec);
         bcl = ~bcl;
@@ -97,7 +97,7 @@ public class L64fbase {
         mem |= (v << (63 - dec));
 
         return mem;
-    }    
+    }
 
     public static final long inputString(String model, int player) {
         long res = 0;
@@ -213,18 +213,21 @@ public class L64fbase {
         StringBuilder sb = new StringBuilder();
         long mem = 0;
         int ci = 0;
-        boolean open=false;
+        boolean open = false;
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 char ap = 0;
-                
-                
-                while ((ap != t && ap != f)||open) {
+
+                while ((ap != t && ap != f) || open) {
                     //System.out.println("Skipping "+ap+" open="+open);
                     ap = in.charAt(ci++);
-                    if(ap=='>') open=false;
-                    if(ap=='<') open=true;
-                    
+                    if (ap == '>') {
+                        open = false;
+                    }
+                    if (ap == '<') {
+                        open = true;
+                    }
+
                 }
 
                 if (ap == t) {
@@ -482,8 +485,6 @@ public class L64fbase {
             c.synchRefOut();
         }
     }
-    
-    
 
     public static final class gob64Struct {
 
@@ -544,8 +545,6 @@ public class L64fbase {
             }
             return true;
         }
-        
-        
 
         public final boolean isConflictingAmaf(long black, long white, int metaphase) {
             final long b;
@@ -669,15 +668,26 @@ public class L64fbase {
 
             long libs = ~(p0 | p1);
             long dead = 0;
-            long past = 0;
+            long past = p0;
             while (pl == 0) {
                 pl = selectOneFree(empty);
                 p0 ^= pl;
                 libs ^= pl;
-                past = p0;
                 long suicide = deadFull(p0, libs, externLibs);
                 dead = deadFull(p1, libs, externLibs);
+                past=p0;
                 if (suicide != 0 && dead == 0) {
+                    p0 ^= pl;
+                    empty ^= pl;
+                    libs ^= pl;
+                    pl = 0;
+
+                    if (empty == 0) {
+                        break;
+                    }
+                }else
+                if (p0 == past2 || p0 == past0 ) {
+                    //System.out.println("Replay "+outString(p0, p1));
                     p0 ^= pl;
                     empty ^= pl;
                     libs ^= pl;
@@ -689,16 +699,13 @@ public class L64fbase {
                 }
             }
 
-            if (past == past2 || past == past0) {
-                repet++;
-            } else {
-                repet = 0;
+            //System.out.println("new p0("+p0+")0("+past0+")"+")1("+past1+")"+")2("+past2+")"+")3("+past3+")");
+            if(pl!=0){
+                past0 = past1;
+                past1 = past2;
+                past2 = past3;
+                past3 = past;
             }
-
-            past0 = past1;
-            past1 = past2;
-            past2 = past3;
-            past3 = past;
 
             long sw = p0;
             p0 = p1;
@@ -706,9 +713,6 @@ public class L64fbase {
             phase ^= 1;
             //if(true)
             p0 ^= dead;
-            if (repet >= 4) {
-                return 0;
-            }
             return pl;
         }
 
@@ -879,10 +883,11 @@ public class L64fbase {
         }
 
         public String debug_show() {
+            String res = "phase " + phase + " ";
             if (phase == 0) {
-                return outString(p0, p1);
+                return res + outString(p0, p1);
             } else {
-                return outString(p1, p0);
+                return res + outString(p1, p0);
             }
         }
 
@@ -892,11 +897,28 @@ public class L64fbase {
             phase = 0;
         }
 
+        public final long haneForNextPlayer() {
+            long hane = 0;
+            gob64Struct g = this;
+            hane |= (lsh(g.p0) >>> 8) & ((g.p1 >>> 8) | lsh(g.p1));
+            hane |= (rsh(g.p0) >>> 8) & ((g.p1 >>> 8) | rsh(g.p1));
+            hane |= (lsh(g.p0) << 8) & ((g.p1 << 8) | lsh(g.p1));
+            hane |= (rsh(g.p0) << 8) & ((g.p1 << 8) | rsh(g.p1));
+
+            return hane;
+        }
+
         public void passMove() {
             long sw = p0;
             p0 = p1;
             p1 = sw;
             phase ^= 1;
+
+            long past = past0;
+            past0 = past1;
+            past1 = past2;
+            past2 = past3;
+            past3 = past;
         }
     }
 

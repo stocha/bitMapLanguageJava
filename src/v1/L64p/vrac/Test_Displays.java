@@ -36,33 +36,41 @@ public class Test_Displays {
         int pass = 0;
         int count = 1;
         while (count > 0) {
-            //System.out.println(g.debug_show());
+           System.out.println(g.debug_show());
 
             
             boolean played=false;
             long move=0;
             {
-                long hane = 0;
-
-                hane |= (lsh(g.p0) >>> 8) & ((g.p1 >>> 8) | lsh(g.p1));
-                hane |= (rsh(g.p0) >>> 8) & ((g.p1 >>> 8) | rsh(g.p1));
-                hane |= (lsh(g.p0) << 8) & ((g.p1 << 8) | lsh(g.p1));
-                hane |= (rsh(g.p0) << 8) & ((g.p1 << 8) | rsh(g.p1));
+                long hane = g.haneForNextPlayer();
+//
+//                hane |= (lsh(g.p0) >>> 8) & ((g.p1 >>> 8) | lsh(g.p1));
+//                hane |= (rsh(g.p0) >>> 8) & ((g.p1 >>> 8) | rsh(g.p1));
+//                hane |= (lsh(g.p0) << 8) & ((g.p1 << 8) | lsh(g.p1));
+//                hane |= (rsh(g.p0) << 8) & ((g.p1 << 8) | rsh(g.p1));
 
                 TargetDescr td = new TargetDescr();
                 td.b = g.p0;
                 td.w = g.p1;
                 td.t = hane & ~(g.p0 | g.p1);
 
-                System.out.println("Phase"+g.phase+" Targ : "+td.out());
+                //System.out.println("Phase"+g.phase+" Hane : "+td.out());
+                
+                move = g.playOneRandNoSuicide(~td.t);
                 
                 long escape = 0;
                 long voidiag = -1L;
             }
 
-            move = g.playOneRandNoSuicide();
+            if(move!=0){
+                
+            }else{                
+                move = g.playOneRandNoSuicide();
+            }
             if (move == 0) {
+                System.out.println("Passing : ");
                 pass++;
+                g.passMove();
             } else {
                 pass = 0;
             }
