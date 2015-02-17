@@ -7,6 +7,7 @@ package v1.bots;
 
 import v1.L64p.vrac.L64fbase;
 import v1.TreeAlgorithm.BoardData;
+import v1.TreeAlgorithm.CrossEmptyData;
 import v1.TreeAlgorithm.Light64AmafSrcData;
 import v1.TreeAlgorithm.Light64Data;
 import v1.TreeAlgorithm.LightNoConfl8Data;
@@ -58,6 +59,13 @@ public class Test_botComparison {
 //                        -> ((Light64Data)dat).mem), 
 //                new UctLightBot(7878786L,12*1000)
 //                );         
+      
+        int crossEmptySims=6000;
+        IGoBot emptyCross = new UctGraphLightBot(11002987L, crossEmptySims,
+                        (L64fbase.gob64Struct stat, double komi, int phase)
+                        -> new CrossEmptyData(stat, komi, phase),
+                        (BoardData dat)
+                        -> ((CrossEmptyData) dat).mem);        
         
         int ultraNoConflSims=600*4;
         IGoBot ultraNoConfl = new UctGraphLightBot(11002987L, ultraNoConflSims,
@@ -71,7 +79,7 @@ public class Test_botComparison {
                         (BoardData dat)
                         -> ((LightNoConfl8Data) dat).mem);
         
-        int lightRefSims=5000;
+        int lightRefSims=3000;
         IGoBot graphLightRef
                 = new UctGraphLightBot(7878786L, lightRefSims,
                         (L64fbase.gob64Struct stat, double komi, int phase)
@@ -98,7 +106,7 @@ public class Test_botComparison {
         //comp.setBots(ultraNoConfl, graphLightRef);      
         //comp.setBots(graphLightRef2, graphLightRef);      
         //comp.setBots(ultraNoConfl, ultraNoConfl2);
-        comp.setBots(heavyBotRec, graphLightRef);
+        comp.setBots(emptyCross, graphLightRef);
         final int nbDisplayedMove = 00;
 
         comp.setUp();

@@ -23,11 +23,34 @@ public class Test_Displays {
 
        // dispNoConflictLogicGameMultipledispNoConflictLogicGameMultiple();
         //dispNoConflict();
-        dispRandFinishCrossEscap();
-
+        //dispRandFinishCrossEscap();
         //showDoubleKoGame();
         //showSimpleKoGame();
         //showTripleKoGame();
+        
+        dispRandomCrossEmpty();
+    }
+
+    public static void dispRandomCrossEmpty() {
+
+        L64fbase.gob64Struct g = new gob64Struct();
+        g.init();
+        int pass = 0;
+        for (int i = 0; i < 64 * 100; i++) {
+            System.out.println(g.debug_show());
+            long move = g.play_Empty_Cross_();
+            if (move == 0) {
+                pass++;
+            } else {
+                pass = 0;
+            }
+            if (pass == 2) {
+                System.out.println("=========================== "+g.debug_show());
+                g.reset();
+            }
+        }
+        
+
     }
 
     public static void dispRandFinishCrossEscap() {
@@ -36,38 +59,45 @@ public class Test_Displays {
         int pass = 0;
         int count = 1;
         while (count > 0) {
-           System.out.println(g.debug_show());
+            System.out.println(g.debug_show());
 
-            
-            boolean played=false;
-            long move=0;
-            
+            boolean played = false;
+            long move = 0;
+
             {
-                long singleLib=0;
-                
-                long c0=0;
-                long c1=0;
-                
+                long singleLib = 0;
+
+                long c0 = 0;
+                long c1 = 0;
+
                 long lib;
-                long empty=~(g.p0|g.p1);
-                
-                lib=lsh(empty);c1|=c0&lib;c0^=lib;
-                lib=rsh(empty);c1|=c0&lib;c0^=lib;
-                lib=empty>>>8;c1|=c0&lib;c0^=lib;
-                lib=empty<<8;c1|=c0&lib;c0^=lib;
-                
-                singleLib=c0&~c1&g.p0;
-                
-                long hasNeigh=0;
-                hasNeigh|=lsh(g.p1);
-                hasNeigh|=rsh(g.p1);
-                hasNeigh|=ush(g.p1);
-                hasNeigh|=dsh(g.p1);
-                
-                singleLib&=hasNeigh;
-                singleLib=scramble(singleLib);
-                singleLib&=empty;                
-                
+                long empty = ~(g.p0 | g.p1);
+
+                lib = lsh(empty);
+                c1 |= c0 & lib;
+                c0 ^= lib;
+                lib = rsh(empty);
+                c1 |= c0 & lib;
+                c0 ^= lib;
+                lib = empty >>> 8;
+                c1 |= c0 & lib;
+                c0 ^= lib;
+                lib = empty << 8;
+                c1 |= c0 & lib;
+                c0 ^= lib;
+
+                singleLib = c0 & ~c1 & g.p0;
+
+                long hasNeigh = 0;
+                hasNeigh |= lsh(g.p1);
+                hasNeigh |= rsh(g.p1);
+                hasNeigh |= ush(g.p1);
+                hasNeigh |= dsh(g.p1);
+
+                singleLib &= hasNeigh;
+                singleLib = scramble(singleLib);
+                singleLib &= empty;
+
                 TargetDescr td = new TargetDescr();
                 td.b = g.p0;
                 td.w = g.p1;
@@ -76,9 +106,8 @@ public class Test_Displays {
                 //System.out.println("Phase"+g.phase+" SingleLib : "+td.out()); 
                 move = g.playOneRandNoSuicide(~singleLib);
             }
-            
-            if(move==0)
-            {
+
+            if (move == 0) {
                 long hane = g.haneForNextPlayer();
 //
 //                hane |= (lsh(g.p0) >>> 8) & ((g.p1 >>> 8) | lsh(g.p1));
@@ -92,14 +121,13 @@ public class Test_Displays {
                 td.t = hane & ~(g.p0 | g.p1);
 
                 //System.out.println("Phase"+g.phase+" Hane : "+td.out());
-                
                 move = g.playOneRandNoSuicide(~hane);
-                
+
             }
 
-            if(move!=0){
-                
-            }else{                
+            if (move != 0) {
+
+            } else {
                 move = g.playOneRandNoSuicide();
             }
             if (move == 0) {

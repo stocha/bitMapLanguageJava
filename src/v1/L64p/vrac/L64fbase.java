@@ -648,6 +648,7 @@ public class L64fbase {
                 long move = this.playOneRandNoSuicide();
                 if (move == 0) {
                     pass++;
+                    passMove();
                 } else {
                     pass = 0;
                 }
@@ -658,9 +659,83 @@ public class L64fbase {
 
             return komi;
         }
+        
+public final double finishEmptyCross(double komi, int metaphase) {
+            int pass = 0;
+            for (int i = 0; i < 64 * 3; i++) {
+                //System.out.println(g.debug_show());
+                long move = this.play_Empty_Cross_();
+                if (move == 0) {
+                    pass++;
+                    passMove();
+                } else {
+                    pass = 0;
+                }
+                if (pass == 2) {
+                    return scoreGame(komi, metaphase);
+                }
+            }
+
+            return komi;
+        }        
 
         public final long playOneRandNoSuicide() {
             return playOneRandNoSuicide(0L);
+        }
+        
+        public final long play_Empty_Cross_(){
+            gob64Struct g=this;
+            long move=0;
+            
+            {
+               
+                long singleLib=0;
+                
+                long c0=0;
+                long c1=0;
+                
+                long lib;
+                long empty=~(g.p0|g.p1);
+                
+                lib=lsh(empty);c1|=c0&lib;c0^=lib;
+                lib=rsh(empty);c1|=c0&lib;c0^=lib;
+                lib=empty>>>8;c1|=c0&lib;c0^=lib;
+                lib=empty<<8;c1|=c0&lib;c0^=lib;
+                
+                singleLib=c0&~c1&g.p0;
+                
+                long hasNeigh=0;
+                hasNeigh|=lsh(g.p1);
+                hasNeigh|=rsh(g.p1);
+                hasNeigh|=ush(g.p1);
+                hasNeigh|=dsh(g.p1);
+                
+                singleLib&=hasNeigh;
+                singleLib=scramble(singleLib);
+                long div= rand=rule30(rand);
+                div&=rand=rule30(rand);
+                singleLib&=empty&div;                
+ 
+                move = g.playOneRandNoSuicide(~singleLib);
+            }
+            
+            if(move==0)
+            {
+                long hane = g.haneForNextPlayer();
+                
+                long div= rand=rule30(rand);
+                div&=rand=rule30(rand);
+                hane&=div;
+                move = g.playOneRandNoSuicide(~hane);
+                
+            }
+
+            if(move!=0){
+                
+            }else{                
+                move = g.playOneRandNoSuicide();
+            }            
+            return move;
         }
 
         public final long playOneRandNoSuicide(long extforb) {
