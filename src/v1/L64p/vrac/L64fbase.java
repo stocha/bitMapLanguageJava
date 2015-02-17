@@ -21,6 +21,14 @@ public class L64fbase {
     public static final long lsh(long v) {
         return (v << 1) & LMASK;
     }
+    
+    public static final long ush(long v) {
+        return (v << 8);
+    }
+    
+    public static final long dsh(long v) {
+        return (v >>> 8);
+    }    
 
     public static final long scramble(long mem) {
         long acc = mem;

@@ -41,6 +41,43 @@ public class Test_Displays {
             
             boolean played=false;
             long move=0;
+            
+            {
+                long singleLib=0;
+                
+                long c0=0;
+                long c1=0;
+                
+                long lib;
+                long empty=~(g.p0|g.p1);
+                
+                lib=lsh(empty);c1|=c0&lib;c0^=lib;
+                lib=rsh(empty);c1|=c0&lib;c0^=lib;
+                lib=empty>>>8;c1|=c0&lib;c0^=lib;
+                lib=empty<<8;c1|=c0&lib;c0^=lib;
+                
+                singleLib=c0&~c1&g.p0;
+                
+                long hasNeigh=0;
+                hasNeigh|=lsh(g.p1);
+                hasNeigh|=rsh(g.p1);
+                hasNeigh|=ush(g.p1);
+                hasNeigh|=dsh(g.p1);
+                
+                singleLib&=hasNeigh;
+                singleLib=scramble(singleLib);
+                singleLib&=empty;                
+                
+                TargetDescr td = new TargetDescr();
+                td.b = g.p0;
+                td.w = g.p1;
+                td.t = singleLib & ~(g.p0 | g.p1);
+
+                //System.out.println("Phase"+g.phase+" SingleLib : "+td.out()); 
+                move = g.playOneRandNoSuicide(~singleLib);
+            }
+            
+            if(move==0)
             {
                 long hane = g.haneForNextPlayer();
 //
@@ -56,10 +93,8 @@ public class Test_Displays {
 
                 //System.out.println("Phase"+g.phase+" Hane : "+td.out());
                 
-                move = g.playOneRandNoSuicide(~td.t);
+                move = g.playOneRandNoSuicide(~hane);
                 
-                long escape = 0;
-                long voidiag = -1L;
             }
 
             if(move!=0){
