@@ -5,9 +5,8 @@
  */
 package v1.demostrators;
 
-import v1.L64p.vrac.L64fbase;
-import v1.demostrators.DemonstrationWithTarget;
-import v1.demostrators.DemonstrationWithTarget.TargetDescr;
+import v1.L64p.vrac.TargetDescr;
+
 import v1.genericTesting.TestFramework;
 
 /**
@@ -27,7 +26,7 @@ public class Test_CaptureDemonstrations {
     }
     
     private void tst004Disp(){
-        TargetDescr ed = new DemonstrationWithTarget.TargetDescr();
+        TargetDescr ed = new TargetDescr();
         String model = "<TARGET>\n"
                 + "- - - - - - - - \n"
                 + "- - - - - - - - \n"
@@ -62,7 +61,7 @@ public class Test_CaptureDemonstrations {
     }        
     
     private void tst003Disp(){
-        TargetDescr ed = new DemonstrationWithTarget.TargetDescr();
+        TargetDescr ed = new TargetDescr();
         String model = "<TARGET>\n"
                 + "O O X - X - X O \n"
                 + "O O X X X X X O \n"
@@ -97,7 +96,7 @@ public class Test_CaptureDemonstrations {
     }    
     
     private void tst002Disp(){
-        TargetDescr ed = new DemonstrationWithTarget.TargetDescr();
+        TargetDescr ed = new TargetDescr();
         String model = "<TARGET>\n"
                 + "O O X - X - X O \n"
                 + "O O X X X X X O \n"
@@ -131,7 +130,7 @@ public class Test_CaptureDemonstrations {
          
     }
     private void tst001Disp() {
-        TargetDescr ed = new DemonstrationWithTarget.TargetDescr();
+        TargetDescr ed = new TargetDescr();
         String model = "<TARGET>\n"
                 + "- - - - - - - - \n"
                 + "- - - - - - - - \n"

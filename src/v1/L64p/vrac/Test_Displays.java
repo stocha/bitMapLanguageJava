@@ -22,11 +22,16 @@ public class Test_Displays {
         //dispSomeFinishAccel();
 
        // dispNoConflictLogicGameMultipledispNoConflictLogicGameMultiple();
-        dispNoConflict();
+        //dispNoConflict();
 
         //showDoubleKoGame();
         //showSimpleKoGame();
         //showTripleKoGame();
+    }
+    
+    void dispRandFinishCrossEscap(){
+        
+    
     }
     
     public static void dispNoConflict(){

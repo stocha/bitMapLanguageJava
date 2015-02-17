@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import v1.L64p.vrac.L64fbase;
+import v1.L64p.vrac.TargetDescr;
 import v1.TreeAlgorithm.BoardData;
-import v1.demostrators.DemonstrationWithTarget.TargetDescr;
 
 /**
  *
@@ -19,7 +19,7 @@ import v1.demostrators.DemonstrationWithTarget.TargetDescr;
 public class TargetCaptureData implements BoardData {
 
     public final L64fbase.gob64Struct mem = new L64fbase.gob64Struct();
-    final DemonstrationWithTarget.TargetDescr objective;
+    final TargetDescr objective;
     final int metaphase;
 
     static long rand = 9888478;
