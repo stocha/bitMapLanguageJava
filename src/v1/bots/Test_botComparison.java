@@ -60,7 +60,7 @@ public class Test_botComparison {
 //                new UctLightBot(7878786L,12*1000)
 //                );         
       
-        int crossEmptySims=6000;
+        int crossEmptySims=50000;
         IGoBot emptyCross = new UctGraphLightBot(11002987L, crossEmptySims,
                         (L64fbase.gob64Struct stat, double komi, int phase)
                         -> new CrossEmptyData(stat, komi, phase),
@@ -79,7 +79,7 @@ public class Test_botComparison {
                         (BoardData dat)
                         -> ((LightNoConfl8Data) dat).mem);
         
-        int lightRefSims=3000;
+        int lightRefSims=50000;
         IGoBot graphLightRef
                 = new UctGraphLightBot(7878786L, lightRefSims,
                         (L64fbase.gob64Struct stat, double komi, int phase)

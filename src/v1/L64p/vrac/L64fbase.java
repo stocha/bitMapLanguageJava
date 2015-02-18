@@ -753,39 +753,28 @@ public final double finishEmptyCross(double komi, int metaphase) {
         
         public final long play_Empty_Cross_(){
             gob64Struct g=this;
-            long move=0;
+            rand=rule30(rand);
+            long att=rand&1L;
             
+            
+            long move=0;  
+            if(att==1)
             {
-               
-                long singleLib=0;
-                
-                long c0=0;
-                long c1=0;
-                
-                long lib;
-                long empty=~(g.p0|g.p1);
-                
-                lib=lsh(empty);c1|=c0&lib;c0^=lib;
-                lib=rsh(empty);c1|=c0&lib;c0^=lib;
-                lib=empty>>>8;c1|=c0&lib;c0^=lib;
-                lib=empty<<8;c1|=c0&lib;c0^=lib;
-                
-                singleLib=c0&~c1&g.p0;
-                
-                long hasNeigh=0;
-                hasNeigh|=lsh(g.p1);
-                hasNeigh|=rsh(g.p1);
-                hasNeigh|=ush(g.p1);
-                hasNeigh|=dsh(g.p1);
-                
-                singleLib&=hasNeigh;
-                singleLib=scramble(singleLib);
+                long singleLib=getSingleLibPointsAtt();                
                 long div= rand=rule30(rand);
                 div&=rand=rule30(rand);
-                singleLib&=empty&div;                
- 
+                singleLib&=div;                
                 move = g.playOneRandNoSuicide(~singleLib);
             }
+            else
+            if(att==0)
+            {
+                long singleLib=getSingleLibPointsDef();                
+                long div= rand=rule30(rand);
+                div&=rand=rule30(rand);
+                singleLib&=div;                
+                move = g.playOneRandNoSuicide(~singleLib);
+            }            
             
             if(move==0)
             {

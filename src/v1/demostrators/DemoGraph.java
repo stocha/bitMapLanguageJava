@@ -82,10 +82,10 @@ public class DemoGraph {
             }
 //System.out.println(""+this.debugFlat());
             BoardData best = this.bestState();
-            DemoGraphNode next = graph.get(best);
+            //DemoGraphNode next = graph.get(best);
             
             int k=0;
-            //for(DemoGraphNode next : childs)
+            for(DemoGraphNode next : childs)
             {                    
                 if (next == null) {
                     return res+" DONE";

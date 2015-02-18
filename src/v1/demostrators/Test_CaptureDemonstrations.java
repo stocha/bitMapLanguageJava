@@ -30,14 +30,14 @@ public class Test_CaptureDemonstrations {
     private void tstAnyCapt001(){
         TargetDescr ed = new TargetDescr();
         String model = "<TARGET>\n"
-                + "- - - - - - - - \n"
-                + "- - - - - - - - \n"
-                + "- - - X X - - - \n"
-                + "- - X O O X - - \n"
-                + "- O X - - X - - \n"
-                + "- O - X X - - - \n"
-                + "- - O O O - - - \n"
-                + "- - - - - - - - \n";
+                + "O O X - X - X O \n"
+                + "O O X X X X X O \n"
+                + "O O X X X X O O \n"
+                + "O O X O O X O O \n"
+                + "O O X - - X O O \n"
+                + "O O - X X - - O \n"
+                + "O O O O O - - O \n"
+                + "- O O O O O O - \n";
         ed.inFromStr(model); 
         //ed.invert();
         int nbGame=80000;
