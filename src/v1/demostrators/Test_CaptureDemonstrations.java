@@ -22,8 +22,46 @@ public class Test_CaptureDemonstrations {
     }
     
     private void doit(){
-        tst004Disp();
+        //tst004Disp();
+        tstAnyCapt001();
     }
+    
+   
+    private void tstAnyCapt001(){
+        TargetDescr ed = new TargetDescr();
+        String model = "<TARGET>\n"
+                + "- - - - - - - - \n"
+                + "- - - - - - - - \n"
+                + "- - - X X - - - \n"
+                + "- - X O O X - - \n"
+                + "- O X - - X - - \n"
+                + "- O - X X - - - \n"
+                + "- - O O O - - - \n"
+                + "- - - - - - - - \n";
+        ed.inFromStr(model); 
+        //ed.invert();
+        int nbGame=80000;
+        DemoGraph dg=new DemoGraph(nbGame);
+        DemoGraph.DemoGraphNode no=dg.new  DemoGraphNode(new AnyCaptureNoTarget( ed, 0),0);
+        
+                long t0 = System.nanoTime(); 
+        for(int i=0;i<nbGame && !no.locked;i++){
+            no.doSimulation();
+        }
+        
+       long t1 = System.nanoTime();
+
+        double t = (t1 - t0) / 1000000000.0;
+        nbGame=(int)no.hits;
+        System.out.println("search " + nbGame + " actions en " + t + " secondes");
+        double nbgamSec = nbGame;
+        nbgamSec /= t;
+        System.out.println("" + nbgamSec + " actions par secondes");
+        DemoGraph.printlnReuse();
+        System.out.println(""+no.debugRec(0));
+        
+         
+    }            
     
     private void tst004Disp(){
         TargetDescr ed = new TargetDescr();
