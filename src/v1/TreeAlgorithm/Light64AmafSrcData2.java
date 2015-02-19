@@ -8,7 +8,7 @@ package v1.TreeAlgorithm;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import v1.L64p.vrac.AmafResult;
+import v1.L64p.vrac.BiMap;
 import v1.L64p.vrac.L64fbase;
 import static v1.L64p.vrac.L64fbase.count;
 import static v1.L64p.vrac.L64fbase.outString;
@@ -51,7 +51,8 @@ public class Light64AmafSrcData2 implements BoardData {
     static long rand = 9888478;
 
     final boolean isSrc;
-    final List<AmafResult> amafStore;
+    final List<BiMap> amafStore;
+    final List<Double> amafScore;
     final Light64AmafSrcData2 src;
 
     int nbConsomedSimulation = 0;
@@ -59,9 +60,9 @@ public class Light64AmafSrcData2 implements BoardData {
     int nbSimulationConsomated = 0;
     int nbSimulationSkipped = 0;
 
-    AmafResult amaFromSrc = new AmafResult();
+    BiMap amaFromSrc = new BiMap();
 
-    public Light64AmafSrcData2(L64fbase.gob64Struct state, double komi, int metaphase, Light64AmafSrcData2 src, AmafResult am, long m, long phase) {
+    public Light64AmafSrcData2(L64fbase.gob64Struct state, double komi, int metaphase, Light64AmafSrcData2 src, BiMap am, long m, long phase) {
         this(state, komi, metaphase, src);
         amaFromSrc.bamaf = am.bamaf;
         amaFromSrc.wamaf = am.wamaf;
@@ -87,9 +88,12 @@ public class Light64AmafSrcData2 implements BoardData {
         if (this.src == this) {
             isSrc = true;
             amafStore = new ArrayList<>();
+            amafScore = new ArrayList<>();
+            
             nbNodeSrc++;
         } else {
             amafStore = null;
+            amafScore=null;
             isSrc = false;
         }
         nbNodeTotal++;
@@ -113,14 +117,17 @@ public class Light64AmafSrcData2 implements BoardData {
 
         double hit = 0;
         double sc = 0;
-        for (AmafResult ar : src.amafStore) {
+        
+        int i=0;
+        for (BiMap ar : src.amafStore) {
             if (amaFromSrc.appartient(ar)) {
-                double sco = ar.score;
+                double sco = amafScore.get(i);
                 hit++;
                 if (sco > 0) {
                     sc += 1;
                 }
             }
+            i++;
         }
 
         if (hit > 0) {
@@ -242,7 +249,7 @@ public class Light64AmafSrcData2 implements BoardData {
         int len = this.src.amafStore.size();
         for (; this.nbConsomedSimulation < len; this.nbConsomedSimulation++) {
             int i = this.nbConsomedSimulation;
-            AmafResult cmp = src.amafStore.get(i);
+            BiMap cmp = src.amafStore.get(i);
             if (this.amaFromSrc.appartient(cmp)) {
                 // System.out.println(this.amaFromSrc.out()+" appartient a "+cmp.out());
 
@@ -263,7 +270,7 @@ public class Light64AmafSrcData2 implements BoardData {
             throw new RuntimeException("Utilisation d'un amaf non correspondant");
         }
 
-        double scoreBoard = src.amafStore.get(this.nbConsomedSimulation++).score;
+        double scoreBoard = src.amafScore.get(this.nbConsomedSimulation++);
 
         if ((metaphase) == 0) {
             return (scoreBoard - k);
@@ -275,7 +282,8 @@ public class Light64AmafSrcData2 implements BoardData {
     private boolean addOneAmaf() {
         realSim++;
 
-        AmafResult res = new AmafResult();
+        BiMap res = new BiMap();
+        double resScore=0;
         res.cp(amaFromSrc);
         L64fbase.gob64Struct sim = new L64fbase.gob64Struct();
 
@@ -295,9 +303,9 @@ public class Light64AmafSrcData2 implements BoardData {
                 play++;
             }
             if (pass == 2) {
-                res.score = sim.scoreBoard();
+                resScore = sim.scoreBoard();
                 if (sim.phase != 0) {
-                    res.score = -res.score;
+                    resScore = -resScore;
                 }
                 if (play > 0) {
                     src.amafStore.add(res);
@@ -316,13 +324,13 @@ public class Light64AmafSrcData2 implements BoardData {
         double sc = 0;
         for (; this.nbConsomedSimulation < len; this.nbConsomedSimulation++) {
             int i = this.nbConsomedSimulation;
-            AmafResult cmp = src.amafStore.get(i);
+            BiMap cmp = src.amafStore.get(i);
             if (this.amaFromSrc.appartient(cmp)) {
                 // System.out.println(this.amaFromSrc.out()+" appartient a "+cmp.out());
 
                 hit++;
                 final double cs;
-                double scoreBoard = cmp.score;
+                double scoreBoard = src.amafScore.get(i);
                 if ((metaphase) == 0) {
                     cs = (scoreBoard - komi);
                 } else {

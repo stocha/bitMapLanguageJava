@@ -12,13 +12,13 @@ import static v1.L64p.vrac.L64fbase.outString;
  * @author denis
  */
 
-    public class AmafResult {
+    public class BiMap {
 
         public long bamaf;
         public long wamaf;
-        public double score;
+        //public double score;
 
-        public void cp(AmafResult src) {
+        public void cp(BiMap src) {
             this.bamaf = src.bamaf;
             this.wamaf = src.wamaf;
         }
@@ -35,10 +35,10 @@ import static v1.L64p.vrac.L64fbase.outString;
         }
 
         public String out() {
-            return "sc=" + score + " " + outString(bamaf, wamaf);
+            return outString(bamaf, wamaf);
         }
 
-        public boolean appartient(AmafResult am) {
+        public boolean appartient(BiMap am) {
             long a = bamaf & am.bamaf;
             long b = wamaf & am.wamaf;
 
