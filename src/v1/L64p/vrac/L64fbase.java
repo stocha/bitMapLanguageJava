@@ -640,6 +640,16 @@ public class L64fbase {
 
             return s0 - s1;
         }
+        
+        public final void controlMapImmediate(BiMap biControl){
+            long notP0 = ~p0;
+            long eyePos0 = ~((notP0 >>> 8) | (notP0 << 8) | ((notP0 << 1) & LMASK) | ((notP0 >>> 1) & RMASK));
+            notP0 = ~p1;
+            long eyePos1 = ~((notP0 >>> 8) | (notP0 << 8) | ((notP0 << 1) & LMASK) | ((notP0 >>> 1) & RMASK));
+            
+            biControl.bamaf=eyePos0 | p0;
+            biControl.wamaf=eyePos1 | p1;
+        }
 
         public final double finishRandNoSuicide(double komi, int metaphase) {
             int pass = 0;
