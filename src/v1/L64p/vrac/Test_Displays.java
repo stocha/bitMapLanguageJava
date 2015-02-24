@@ -28,7 +28,86 @@ public class Test_Displays {
         //showSimpleKoGame();
         //showTripleKoGame();
         
-        dispRandomCrossEmpty();
+        //dispRandomCrossEmpty();
+        
+        dispAmafSample();
+    }
+    
+    
+    public static void dispAmafSample(){
+        gob64Struct forRand=new gob64Struct();
+        
+        BiMap.AmafAccu acc=new BiMap.AmafAccu();
+        
+        forRand.init();
+      
+        final int nbGame = 400000;    
+        
+        long t0 = System.nanoTime();   
+        double accCount=0;
+        long rand=forRand.rand;
+        BiMap amaf=new BiMap();
+        for(int i=0;i<nbGame;i++){
+            rand=rule30(rand);
+            amaf.bamaf=rand;
+            amaf.wamaf=~rand;
+            
+            rand=rule30(rand);
+            long sc= rand&1;
+            acc.addAmaf(amaf,sc);
+            accCount+=sc;
+
+        }
+        
+       long t1 = System.nanoTime();
+
+        double t = (t1 - t0) / 1000000000.0;
+        System.out.println("timeBitSet " + nbGame + " actions en " + t + " secondes");
+        double nbgamSec = nbGame;
+        nbgamSec /= t;
+        System.out.println("" + nbgamSec + " actions par secondes");  
+        System.out.println("avg count = "+(accCount/(double) nbGame));  
+        System.out.println(""+acc.debug_out(true));
+    }    
+    
+    public static void time391RandomBit(){
+       Reg381 r[]=Reg381.allocBuff(10);
+       
+       Reg381 rh=Reg381.alloc();
+       Reg381 divid=Reg381.alloc();
+       Reg381 rbit=Reg381.alloc();
+       rh.setAt(190, 1);
+       divid.setAt(56, 1);divid.setAt(23, 1);
+       for(int i=0;i<100;i++){
+           rh.randHash(r);
+           divid.randHash(r);
+       }
+       long rand=1;
+       
+        final int nbGame = 6000000;    
+        
+        long t0 = System.nanoTime();   
+        double accCount=0;
+        
+        for(int i=0;i<nbGame;i++){
+            rh.randHash(r);
+            //accCount+=Math.abs(rh.count()-190.5);
+            r[1].cp(rh);
+            r[1].and(divid);
+            rand=rbit.randomSelectOneBitFrom(r[1], rand);
+            //System.out.println("=================");
+            //System.out.println(g.debug_show());
+        }
+        
+       long t1 = System.nanoTime();
+
+        double t = (t1 - t0) / 1000000000.0;
+        System.out.println("time391RandHash " + nbGame + " actions en " + t + " secondes");
+        double nbgamSec = nbGame;
+        nbgamSec /= t;
+        System.out.println("" + nbgamSec + " actions par secondes");  
+        System.out.println("avg count = "+(accCount/(double) nbGame));         
+        
     }
 
     public static void dispRandomCrossEmpty() {

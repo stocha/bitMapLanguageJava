@@ -85,6 +85,11 @@ public class L64fbase {
         int dec = (y << 3) + x;
         return (int) ((mem >>> (63 - dec)) & 1L);
     }
+    
+    public static final int getAt(long mem, int x) {
+        int dec = x;
+        return (int) ((mem >>> (63 - dec)) & 1L);
+    }    
 
     public static final long setAt(long mem, int x, int y, int value) {
         int dec = (y << 3) + x;
