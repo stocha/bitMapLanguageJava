@@ -49,11 +49,20 @@ public class Test_Displays {
         BiMap amaf=new BiMap();
         for(int i=0;i<nbGame;i++){
             rand=rule30(rand);
+            long div=rand;
+            rand=rule30(rand);
+            div&=rand;
+            
             amaf.bamaf=rand;
             amaf.wamaf=~rand;
             
             rand=rule30(rand);
-            long sc= rand&1;
+            rand=rule30(rand);
+            long sc=0;
+            
+            //sc=rand&1;
+            sc=(i%3)&1;
+            //long sc=1;
             acc.addAmaf(amaf,sc);
             accCount+=sc;
 
